@@ -1,0 +1,193 @@
+---
+sidebar: sidebar 
+permalink: backup/saphana-sr-scs-snapcenter-configuration-with-a-single-resource.html 
+keywords: virtual ip, single resource, configuration, 
+summary: 'Um recurso SnapCenter é configurado com o endereço IP virtual (nome do host) do ambiente de replicação do SISTEMA HANA. Com essa abordagem, o SnapCenter sempre se comunica com o host principal, independentemente de o host 1 ou o host 2 ser primário.' 
+---
+= Configuração do SnapCenter com um único recurso
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Um recurso SnapCenter é configurado com o endereço IP virtual (nome do host) do ambiente de replicação do SISTEMA HANA. Com essa abordagem, o SnapCenter sempre se comunica com o host principal, independentemente de o host 1 ou o host 2 ser primário. Os volumes de dados de ambos os hosts do SAP HANA estão incluídos no recurso SnapCenter.
+
+
+NOTE: Assumimos que o endereço IP virtual está sempre vinculado ao host SAP HANA primário. O failover do endereço IP virtual é realizado fora do SnapCenter como parte do fluxo de trabalho de failover de replicação do SISTEMA HANA.
+
+Quando um backup é executado com o host 1 como o host principal, um backup Snapshot consistente com banco de dados é criado no volume de dados do host 1. Como o volume de dados do host 2 faz parte do recurso SnapCenter, outra cópia Snapshot é criada para esse volume. Essa cópia Snapshot não é consistente com o banco de dados; em vez disso, é apenas uma imagem de falha do host secundário.
+
+O catálogo de backup do SAP HANA e o recurso SnapCenter incluem o backup criado no host 1.
+
+image:saphana-sr-scs-image27.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+A figura a seguir mostra a operação de backup após o failover para o host 2 e a replicação do host 2 para o host 1. O SnapCenter se comunica automaticamente com o host 2 usando o endereço IP virtual configurado no recurso SnapCenter. Os backups agora são criados no host 2. Duas cópias snapshot são criadas pelo SnapCenter: Um backup consistente com banco de dados no volume de dados no host 2 e uma imagem com falha cópia Snapshot no volume de dados no host 1. O catálogo de backup do SAP HANA e o recurso SnapCenter agora incluem o backup criado no host 1 e o backup criado no host 2.
+
+O serviço de limpeza dos backups de dados e de log é baseado na política de retenção definida do SnapCenter, e os backups são excluídos independentemente de qual host é primário ou secundário.
+
+image:saphana-sr-scs-image28.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Conforme discutido na link:saphana-sr-scs-storage-snapshot-backups-and-sap-system-replication.html["Backups de Snapshot de storage e replicação do sistema SAP"]seção , uma operação de restauração com backups Snapshot baseados em storage é diferente, dependendo de qual backup deve ser restaurado. É importante identificar em qual host o backup foi criado para determinar se a restauração pode ser executada no volume de armazenamento local ou se a restauração deve ser realizada no volume de armazenamento do outro host.
+
+Com a configuração SnapCenter de recurso único, o SnapCenter não sabe onde o backup foi criado. Portanto, a NetApp recomenda que você adicione um script de pré-backup ao fluxo de trabalho de backup do SnapCenter para identificar qual host é atualmente o principal host do SAP HANA.
+
+A figura a seguir mostra a identificação do host de backup.
+
+image:saphana-sr-scs-image29.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+
+
+== Configuração do SnapCenter
+
+A figura a seguir mostra a configuração do laboratório e uma visão geral da configuração SnapCenter necessária.
+
+image:saphana-sr-scs-image30.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Para executar operações de backup, independentemente de qual host SAP HANA é primário e mesmo quando um host está inativo, o plug-in SAP HANA do SnapCenter deve ser implantado em um host de plug-in central. Em nossa configuração de laboratório, usamos o servidor SnapCenter como um host de plug-in central e implantamos o plug-in SAP HANA no servidor SnapCenter.
+
+Um usuário foi criado no banco de DADOS HANA para executar operações de backup. Uma chave de armazenamento de usuário foi configurada no servidor SnapCenter no qual o plug-in SAP HANA foi instalado. A chave de armazenamento de usuários inclui o endereço IP virtual dos hosts SAP HANA System Replication (`ssr-vip`).
+
+....
+hdbuserstore.exe -u SYSTEM set SSRKEY ssr-vip:31013 SNAPCENTER <password>
+....
+Você pode encontrar mais informações sobre as opções de implantação do plug-in SAP HANA e a configuração do armazenamento de usuários no relatório técnico TR-4614: https://docs.netapp.com/us-en/netapp-solutions-sap/backup/saphana-br-scs-overview.html["Backup e recuperação do SAP HANA com o SnapCenter"^].
+
+No SnapCenter, o recurso é configurado como mostrado na figura a seguir usando a chave de armazenamento de usuário, configurada antes, e o servidor SnapCenter como o `hdbsql` host de comunicação.
+
+image:saphana-sr-scs-image31.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Os volumes de dados de ambos os hosts do SAP HANA estão incluídos na configuração de espaço físico do storage, como mostra a figura a seguir.
+
+image:saphana-sr-scs-image32.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Como discutido anteriormente, o SnapCenter não sabe onde o backup foi criado. Portanto, a NetApp recomenda que você adicione um script de pré-backup no fluxo de trabalho de backup do SnapCenter para identificar qual host é atualmente o principal host do SAP HANA. Você pode executar essa identificação usando uma instrução SQL que é adicionada ao fluxo de trabalho de backup, como mostra a figura a seguir.
+
+....
+Select host from “SYS”.M_DATABASE
+....
+image:saphana-sr-scs-image33.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+
+
+== Operação de backup do SnapCenter
+
+As operações de backup agora são executadas como de costume. O serviço de limpeza de dados e backups de log é realizado independentemente de qual host SAP HANA é primário ou secundário.
+
+Os logs de tarefas de backup incluem a saída da instrução SQL, que permite identificar o host SAP HANA onde o backup foi criado.
+
+A figura a seguir mostra o log de tarefas de backup com o host 1 como o host principal.
+
+image:saphana-sr-scs-image34.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Esta figura mostra o log de tarefas de backup com o host 2 como o host principal.
+
+image:saphana-sr-scs-image35.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+A figura a seguir mostra o catálogo de backup do SAP HANA no SAP HANA Studio. Quando o banco de dados do SAP HANA está online, o host do SAP HANA onde o backup foi criado fica visível no SAP HANA Studio.
+
+
+NOTE: O catálogo de backup do SAP HANA no sistema de arquivos, que é usado durante uma operação de restauração e recuperação, não inclui o nome do host no qual o backup foi criado. A única maneira de identificar o host quando o banco de dados está inativo é combinar as entradas do catálogo de backup com o `backup.log` arquivo de ambos os hosts SAP HANA.
+
+image:saphana-sr-scs-image36.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+
+
+== Restauração e recuperação
+
+Como discutido anteriormente, você deve ser capaz de identificar onde o backup selecionado foi criado para definir a operação de restauração necessária. Se o banco de dados do SAP HANA ainda estiver online, você poderá usar o SAP HANA Studio para identificar o host no qual o backup foi criado. Se a base de dados estiver offline, as informações só estarão disponíveis no registo de trabalhos de cópia de segurança do SnapCenter.
+
+A figura a seguir ilustra as diferentes operações de restauração, dependendo do backup selecionado.
+
+Se uma operação de restauração tiver de ser executada após o carimbo de data/hora T3 e o host 1 for o principal, você poderá restaurar o backup criado em T1 ou T3 usando o SnapCenter. Esses backups Snapshot estão disponíveis no volume de storage conectado ao host 1.
+
+Se você precisar restaurar usando o backup criado no host 2 (T2), que é uma cópia Snapshot no volume de storage do host 2, o backup precisa estar disponível para o host 1. Você pode disponibilizar esse backup criando uma cópia NetApp FlexClone a partir do backup, montando a cópia FlexClone no host 1 e copiando os dados para o local original.
+
+image:saphana-sr-scs-image37.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Com uma única configuração de recurso do SnapCenter, as cópias Snapshot são criadas em ambos os volumes de storage de ambos os hosts do SAP HANA System Replication. Somente o backup Snapshot criado no volume de storage do host principal SAP HANA é válido para uso para recuperação futura. A cópia Snapshot criada no volume de storage do host secundário SAP HANA é uma imagem de falha que não pode ser usada para recuperação futura.
+
+Uma operação de restauração com SnapCenter pode ser executada de duas maneiras diferentes:
+
+* Restaure apenas a cópia de segurança válida
+* Restaure o recurso completo, incluindo a cópia de segurança válida e a imagem de falha. As secções seguintes discutem mais detalhadamente as duas operações de restauro diferentes.
+
+
+Uma operação de restauração de um backup criado no outro host é descrita na link:saphana-sr-scs-restore-and-recovery-from-a-backup-created-at-the-other-host.html["Restaurar e recuperar a partir de um backup criado no outro host"]seção .
+
+A figura a seguir mostra as operações de restauração com uma única configuração de recursos do SnapCenter.
+
+image:saphana-sr-scs-image38.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+
+
+=== Restauração do SnapCenter somente do backup válido
+
+A figura a seguir mostra uma visão geral do cenário de restauração e recuperação descrito nesta seção.
+
+Um backup foi criado em T1 no host 1. Um failover foi executado no host 2. Após um certo ponto no tempo, outro failover de volta ao host 1 foi executado. No momento atual, o host 1 é o host principal.
+
+. Ocorreu uma falha e você deve restaurar o backup criado em T1 no host 1.
+. O host secundário (host 2) é desligado, mas nenhuma operação de restauração é executada.
+. O volume de armazenamento do host 1 é restaurado para o backup criado em T1.
+. Uma recuperação avançada é realizada com logs do host 1 e host 2.
+. O host 2 é iniciado e uma ressincronização de replicação do sistema do host 2 é iniciada automaticamente.
+
+
+image:saphana-sr-scs-image39.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+A figura a seguir mostra o catálogo de backup do SAP HANA no SAP HANA Studio. O backup realçado mostra o backup criado em T1 no host 1.
+
+image:saphana-sr-scs-image40.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Uma operação de restauração e recuperação é iniciada no SAP HANA Studio. Como mostra a figura a seguir, o nome do host onde o backup foi criado não é visível no fluxo de trabalho de restauração e recuperação.
+
+
+NOTE: Em nosso cenário de teste, conseguimos identificar o backup correto (o backup criado no host 1) no SAP HANA Studio quando o banco de dados ainda estava online. Se a base de dados não estiver disponível, tem de verificar o registo de trabalhos de cópia de segurança do SnapCenter para identificar a cópia de segurança correta.
+
+image:saphana-sr-scs-image41.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+No SnapCenter, o backup é selecionado e uma operação de restauração no nível do arquivo é executada. Na tela de restauração no nível do arquivo, apenas o volume do host 1 é selecionado para que somente o backup válido seja restaurado.
+
+image:saphana-sr-scs-image42.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Após a operação de restauração, o backup é destacado em verde no SAP HANA Studio. Você não precisa inserir um local de backup de log adicional, porque o caminho do arquivo dos backups de log do host 1 e do host 2 estão incluídos no catálogo de backup.
+
+image:saphana-sr-scs-image43.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Após a conclusão da recuperação avançada, o host secundário (host 2) é iniciado e a ressincronização do SAP HANA System Replication é iniciada.
+
+
+NOTE: Embora o host secundário esteja atualizado (nenhuma operação de restauração foi realizada para o host 2), o SAP HANA executa uma replicação completa de todos os dados. Esse comportamento é padrão após uma operação de restauração e recuperação com o SAP HANA System Replication.
+
+image:saphana-sr-scs-image44.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+
+
+=== Restauração de SnapCenter de backup válido e imagem de falha
+
+A figura a seguir mostra uma visão geral do cenário de restauração e recuperação descrito nesta seção.
+
+Um backup foi criado em T1 no host 1. Um failover foi executado no host 2. Após um certo ponto no tempo, outro failover de volta ao host 1 foi executado. No momento atual, o host 1 é o host principal.
+
+. Ocorreu uma falha e você deve restaurar o backup criado em T1 no host 1.
+. O host secundário (host 2) é encerrado e a imagem de falha T1 é restaurada.
+. O volume de armazenamento do host 1 é restaurado para o backup criado em T1.
+. Uma recuperação avançada é realizada com logs do host 1 e host 2.
+. O host 2 é iniciado e uma ressincronização de replicação do sistema do host 2 é iniciada automaticamente.
+
+
+image:saphana-sr-scs-image45.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+A operação de restauração e recuperação com o SAP HANA Studio é idêntica às etapas descritas na link:saphana-sr-scs-snapcenter-configuration-with-a-single-resource.html#snapcenter-restore-of-the-valid-backup-only["Restauração do SnapCenter somente do backup válido"]seção .
+
+Para executar a operação de restauração, selecione concluir recurso no SnapCenter. Os volumes de ambos os hosts são restaurados.
+
+image:saphana-sr-scs-image46.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Após a conclusão da recuperação avançada, o host secundário (host 2) é iniciado e a ressincronização do SAP HANA System Replication é iniciada. A replicação completa de todos os dados é executada.
+
+image:saphana-sr-scs-image47.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]

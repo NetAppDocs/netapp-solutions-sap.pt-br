@@ -1,0 +1,31 @@
+---
+sidebar: sidebar 
+permalink: backup/amazon-fsx-add-a-backup-svm-to-snapcenter.html 
+keywords: svm, backup, snapcenter 
+summary: Esta seção descreve como adicionar um SVM de backup ao SnapCenter. 
+---
+= Adicionar um SVM de backup ao SnapCenter
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Para adicionar um SVM de backup ao SnapCenter, siga estas etapas:
+
+. Configurar o SVM onde o volume de destino do SnapVault está localizado no SnapCenter.
++
+image:amazon-fsx-image76.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Na janela mais opções, selecione All Flash FAS como a plataforma e selecione secundário.
++
+image:amazon-fsx-image77.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+
+
+O SVM agora está disponível no SnapCenter.
+
+image:amazon-fsx-image78.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]

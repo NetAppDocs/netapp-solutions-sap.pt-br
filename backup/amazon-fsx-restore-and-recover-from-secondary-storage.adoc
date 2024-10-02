@@ -1,0 +1,27 @@
+---
+sidebar: sidebar 
+permalink: backup/amazon-fsx-restore-and-recover-from-secondary-storage.html 
+keywords: restore, recover, secondary, storage, 
+summary: Esta seção descreve como restaurar e recuperar do armazenamento secundário. 
+---
+= Restaure e recupere do storage secundário
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Para restaurar e recuperar do armazenamento secundário, siga estas etapas:
+
+Para recuperar a lista de todos os backups no armazenamento secundário, no modo de exibição topologia do SnapCenter, clique em cópias do cofre, selecione um backup e clique em Restaurar.
+
+image:amazon-fsx-image92.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+A caixa de diálogo Restore (Restaurar) mostra as localizações secundárias.
+
+image:amazon-fsx-image93.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+As etapas de restauração e recuperação adicionais são idênticas às anteriormente abordadas para um backup Snapshot no storage primário.

@@ -1,0 +1,17 @@
+---
+sidebar: sidebar 
+permalink: sap-bp-tools.html 
+summary: Ferramentas e dicas para as práticas recomendadas de configuração do SAP 
+keywords: netapp, solutions, SAP, best practices, tools 
+---
+= Ferramentas de práticas recomendadas de configuração SAP
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Visão geral das ferramentas para soluções e soluções de boas práticas SAP Configuration.

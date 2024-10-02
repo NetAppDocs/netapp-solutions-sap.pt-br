@@ -1,0 +1,26 @@
+---
+sidebar: sidebar 
+permalink: lifecycle/lama-ansible-sap-system-clone,-copy,-and-refresh-scenarios.html 
+keywords:  
+summary:  
+---
+= Cenários de clone, cópia e atualização do sistema SAP
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+O termo cópia do sistema SAP é frequentemente usado como sinônimo de três processos diferentes: Clone do sistema SAP, cópia do sistema SAP ou atualização do sistema SAP. É importante distinguir entre as diferentes operações porque os fluxos de trabalho e os casos de uso diferem para cada uma.
+
+* *Clone do sistema SAP.* Um clone de sistema SAP é um clone idêntico de um sistema SAP de origem. Os clones do sistema SAP geralmente são usados para solucionar a corrupção lógica ou para testar cenários de recuperação de desastre. Com uma operação de clone do sistema, o nome do host, o número da instância e o SID permanecem os mesmos. Por conseguinte, é importante estabelecer uma vedação de rede adequada para o sistema de destino para garantir que não haja comunicação com o ambiente de produção.
+* *Cópia do sistema SAP.* Uma cópia do sistema SAP é uma configuração de um novo sistema SAP de destino com dados de um sistema SAP de origem. O novo sistema alvo poderia ser, por exemplo, um sistema de teste adicional com dados do sistema de produção. O nome do host, o número da instância e o SID são diferentes para os sistemas de origem e destino.
+* *Atualização do sistema SAP.* Uma atualização do sistema SAP é uma atualização de um sistema SAP de destino existente com dados de um sistema SAP de origem. O sistema de destino geralmente faz parte de um cenário de transporte SAP, por exemplo, um sistema de garantia de qualidade, que é atualizado com os dados do sistema de produção. O nome do host, o número da instância e o SID são diferentes para os sistemas de origem e destino.
+
+
+A figura a seguir ilustra as etapas principais que devem ser executadas durante um clone do sistema, cópia do sistema ou operação de atualização do sistema. As caixas roxas indicam as etapas em que os recursos de armazenamento do NetApp podem ser integrados. Todas as três operações podem ser totalmente automatizadas com o SAP lama.
+
+image:lama-ansible-image1.png["Este gráfico descreve três cronogramas de processo para o clone do sistema, cópia do sistema e atualização do sistema, respetivamente."]

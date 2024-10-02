@@ -1,0 +1,21 @@
+---
+sidebar: sidebar 
+permalink: bp/saphana_aff_fc_sap_hana_storage_connector_api.html 
+keywords: api, failover, ha, high availability 
+summary: Um conetor de storage é necessário apenas em ambientes de vários hosts que tenham recursos de failover. Em configurações de vários hosts, o SAP HANA fornece funcionalidade de alta disponibilidade para que um host de banco de dados SAP HANA possa fazer failover para um host de reserva. Nesse caso, os LUNs do host com falha são acessados e usados pelo host de reserva. 
+---
+= API do conetor de storage do SAP HANA
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Um conetor de storage é necessário apenas em ambientes de vários hosts que tenham recursos de failover. Em configurações de vários hosts, o SAP HANA fornece funcionalidade de alta disponibilidade para que um host de banco de dados SAP HANA possa fazer failover para um host de reserva.
+
+Nesse caso, os LUNs do host com falha são acessados e usados pelo host de reserva. O conetor de armazenamento é usado para garantir que uma partição de armazenamento possa ser acessada ativamente por apenas um host de banco de dados de cada vez.
+
+Nas configurações de vários hosts do SAP HANA com storage NetApp, o conector de storage padrão fornecido pela SAP é usado. O "Guia do administrador do conetor de storage Fibre Channel SAP HANA" pode ser encontrado como um anexo ao https://service.sap.com/sap/support/notes/1900823["SAP nota 1900823"^].

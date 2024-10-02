@@ -1,0 +1,31 @@
+---
+sidebar: sidebar 
+permalink: lifecycle/lama-ansible-netapp-sap-lama-integration-using-ansible.html 
+keywords: integration, lama, ansible, 
+summary: A abordagem de integração usa o provisionamento personalizado e ganchos operacionais do SAP lama, combinados com os playbooks do Ansible para gerenciamento de storage do NetApp. A figura a seguir mostra uma visão geral de alto nível da configuração no lado lama, bem como os componentes correspondentes da implementação de exemplo. 
+---
+= Integração do NetApp SAP lama com o Ansible
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+A abordagem de integração usa o provisionamento personalizado e ganchos operacionais do SAP lama, combinados com os playbooks do Ansible para gerenciamento de storage do NetApp. A figura a seguir mostra uma visão geral de alto nível da configuração no lado lama, bem como os componentes correspondentes da implementação de exemplo.
+
+image:lama-ansible-image6.png["Essa é uma imagem bastante complexa com três caixas rotuladas como SAP lama, nó de controle do Ansible e storage do NetApp. Cada caixa contém as respetivas etapas de processo que ocorrem em cada nível."]
+
+Um host central atuando como um nó de controle do Ansible é usado para executar as solicitações do SAP lama e acionar as operações de storage do NetApp com os playbooks do Ansible. Os componentes do agente host SAP devem ser instalados nesse host para que o host possa ser usado como um gateway de comunicação para o SAP lama.
+
+No lama Automation Studio, é definido um fornecedor registrado no agente de host SAP do host do Ansible. Um arquivo de configuração de agente host aponta para um script de shell chamado pelo SAP lama com um conjunto de parâmetros de linha de comando, dependendo da operação solicitada.
+
+No lama Automation Studio, o provisionamento personalizado e um gancho personalizado são definidos para executar operações de clonagem de storage durante o provisionamento e também durante operações de limpeza quando o sistema é desprovisionado. Depois, o script de shell no nó de controle do Ansible executa os playbooks correspondentes do Ansible, que acionam as operações do Snapshot e do FlexClone, bem como a exclusão dos clones com o fluxo de trabalho de desprovisionamento.
+
+Mais informações sobre os módulos do NetApp Ansible e as definições do provedor lama podem ser encontradas em:
+
+* https://www.ansible.com/integrations/infrastructure/netapp["Módulos do NetApp Ansible"^]
+* https://help.sap.com/doc/700f9a7e52c7497cad37f7c46023b7ff/3.0.11.0/en-US/bf6b3e43340a4cbcb0c0f3089715c068.html["Documentação do SAP lama – definições do provedor"^]
+

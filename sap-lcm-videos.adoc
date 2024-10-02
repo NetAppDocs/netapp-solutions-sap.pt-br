@@ -1,0 +1,25 @@
+---
+sidebar: sidebar 
+permalink: sap-lcm-videos.html 
+summary: Série de vídeos e demonstrações que discutem o SAP Lifecycle Management 
+keywords: netapp, solutions, SAP, lifecycle, management, lcm, videos, demos 
+---
+= Vídeos e demonstrações do SAP Lifecycle Management
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Visão geral dos vídeos e demonstrações destacando o SAP Lifecycle Management.
+
+
+
+== Vídeos e demonstrações do SAP Lifecycle Management
+
+* link:https://media.netapp.com/video-detail/c1229d10-fe84-58f1-9cdf-ca3c0f9d9104/ensure-continuity-for-lines-of-business-in-the-face-of-unexpected-events["Assegurar a continuidade das linhas de negócio em face de Eventos inesperados"^]
+* link:https://media.netapp.com/video-detail/1c753169-f70d-5f2b-b798-cd09a604541c/snapcenter-use-cases["Casos de uso do SnapCenter"^]
+

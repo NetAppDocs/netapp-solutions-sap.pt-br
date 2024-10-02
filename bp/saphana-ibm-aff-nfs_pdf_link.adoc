@@ -1,0 +1,26 @@
+---
+sidebar: sidebar 
+permalink: bp/saphana-ibm-aff-nfs_pdf_link.html 
+keywords: tr-4821, pdf, sap, hana, ibm, aff, nfs 
+summary: 'O IBM Power Systems foi desenvolvido para cargas de trabalho críticas e intensivas em dados, como o SAP HANA. O IBM Power Systems simplifica e acelera as implantações do SAP HANA fornecendo quatro recursos principais: Virtualização e flexibilidade superiores, provisionamento mais rápido, escalabilidade acessível e tempo de atividade maximizado. A família de produtos NetApp AFF é certificada para uso com SAP HANA em projetos de integração de data center (TDI) personalizados e complementa perfeitamente os sistemas IBM Power. Este documento descreve as práticas recomendadas para uma configuração de storage nas (NFS) usando o NetApp ONTAP com a família de produtos AFF e IBM Power Systems.' 
+---
+= TR-4821: SAP HANA em sistemas IBM Power e sistemas NetApp AFF com NFS
+:allow-uri-read: 
+:firstname: : hardbreaks:
+:author: : hardbreaks:
+:authorinitials: :
+:authors: : hardbreaks:
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+O IBM Power Systems foi desenvolvido para cargas de trabalho críticas e intensivas em dados, como o SAP HANA. O IBM Power Systems simplifica e acelera as implantações do SAP HANA fornecendo quatro recursos principais: Virtualização e flexibilidade superiores, provisionamento mais rápido, escalabilidade acessível e tempo de atividade maximizado. A família de produtos NetApp AFF é certificada para uso com SAP HANA em projetos de integração de data center (TDI) personalizados e complementa perfeitamente os sistemas IBM Power. Este documento descreve as práticas recomendadas para uma configuração de storage nas (NFS) usando o NetApp ONTAP com a família de produtos AFF e IBM Power Systems.
+
+Autores:
+
+Brantl, NetApp, são Paulo, Brasil
+
+link:https://www.netapp.com/pdf.html?item=/media/19887-TR-4821.pdf["https://www.netapp.com/pdf.html?item=/media/19887-TR-4821.pdf"]

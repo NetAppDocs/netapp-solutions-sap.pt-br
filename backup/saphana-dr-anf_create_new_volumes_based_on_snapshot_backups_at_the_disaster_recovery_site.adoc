@@ -1,0 +1,54 @@
+---
+sidebar: sidebar 
+permalink: backup/saphana-dr-anf_create_new_volumes_based_on_snapshot_backups_at_the_disaster_recovery_site.html 
+keywords: create, new, volumes, snapshot, backups, disaster, recovery, site 
+summary: 'Dependendo da configuração de recuperação de desastres (com ou sem replicação de backup de log), dois ou três novos volumes com base em backups de snapshot devem ser criados.' 
+---
+= Criar novos volumes com base em backups de snapshot no local de recuperação de desastre
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Dependendo da configuração de recuperação de desastres (com ou sem replicação de backup de log), dois ou três novos volumes com base em backups de snapshot devem ser criados. Em ambos os casos, é necessário criar um novo volume de dados e o volume compartilhado HANA.
+
+Um novo volume do volume de backup de log deve ser criado se os dados de backup de log também forem replicados. No nosso exemplo, os dados e o volume de backup de log foram replicados para o local de recuperação de desastres. As etapas a seguir usam o Portal do Azure.
+
+. Um dos backups Snapshot consistentes com aplicações é selecionado como fonte para o novo volume do volume de DADOS HANA. Restore to New volume (Restaurar para novo volume) é selecionado para criar um novo volume com base no backup instantâneo.
++
+image:saphana-dr-anf_image19.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. O novo nome do volume e a cota devem ser fornecidos na interface do usuário.
++
+image:saphana-dr-anf_image20.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. No separador Protocol (Protocolo), o caminho do ficheiro e a política de exportação são configurados.
++
+image:saphana-dr-anf_image21.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. O ecrã criar e rever resume a configuração.
++
+image:saphana-dr-anf_image22.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Um novo volume agora foi criado com base no backup instantâneo do HANA.
++
+image:saphana-dr-anf_image23.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+
+
+As mesmas etapas agora devem ser executadas para o HANA compartilhado e o volume de backup de log, como mostrado nas duas capturas de tela a seguir. Como não foram criados snapshots adicionais para o volume de backup compartilhado e de log do HANA, a cópia Snapshot mais recente do SnapMirror precisa ser selecionada como a origem do novo volume. Trata-se de dados não estruturados, e a cópia Snapshot do SnapMirror pode ser usada para esse caso de uso.
+
+image:saphana-dr-anf_image24.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+A captura de tela a seguir mostra o volume compartilhado DO HANA restaurado para o novo volume.
+
+image:saphana-dr-anf_image25.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+
+NOTE: Se um pool de capacidade com uma categoria de baixa performance tiver sido usado, os volumes precisam ser movidos para um pool de capacidade que forneça a performance necessária.
+
+Todos os três novos volumes estão agora disponíveis e podem ser montados no host de destino.

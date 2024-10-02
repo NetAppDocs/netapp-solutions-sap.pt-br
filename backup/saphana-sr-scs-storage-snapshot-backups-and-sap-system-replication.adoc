@@ -1,0 +1,31 @@
+---
+sidebar: sidebar 
+permalink: backup/saphana-sr-scs-storage-snapshot-backups-and-sap-system-replication.html 
+keywords: Snapshot, storage, backup, primary host, sql 
+summary: Operações de backup sempre são executadas no host principal do SAP HANA. Os comandos SQL necessários para a operação de backup não podem ser executados no host secundário do SAP HANA. 
+---
+= Backups de Snapshot de storage e replicação do sistema SAP
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Operações de backup sempre são executadas no host principal do SAP HANA. Os comandos SQL necessários para a operação de backup não podem ser executados no host secundário do SAP HANA.
+
+Para operações de backup do SAP HANA, os hosts SAP HANA primário e secundário são uma única entidade. Eles compartilham o mesmo catálogo de backup do SAP HANA e usam backups para restauração e recuperação, independentemente de o backup ter sido criado no host SAP HANA primário ou secundário.
+
+A capacidade de usar qualquer backup para restauração e encaminhar a recuperação usando backups de log de ambos os hosts requer um local de backup de log compartilhado acessível a partir de ambos os hosts. A NetApp recomenda que você use um volume de storage compartilhado. No entanto, você também deve separar o destino de backup de log em subdiretórios dentro do volume compartilhado.
+
+Cada host do SAP HANA tem seu próprio volume de storage. Quando você usa um Snapshot baseado em storage para executar um backup, um Snapshot consistente com banco de dados é criado no volume de storage do host SAP HANA primário.
+
+image:saphana-sr-scs-image3.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Quando um failover para o host 2 é executado, o host 2 se torna o host principal, os backups são executados no host 2 e os backups Snapshot são criados no volume de storage do host 2.
+
+O backup criado no host 2 pode ser restaurado diretamente na camada de storage. Se você precisar usar um backup criado no host 1, o backup deve ser copiado do volume de storage do host 1 para o volume de storage do host 2. A recuperação avançada usa os backups de log de ambos os hosts.
+
+image:saphana-sr-scs-image4.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]

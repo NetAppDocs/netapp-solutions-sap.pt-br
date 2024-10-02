@@ -1,0 +1,57 @@
+---
+sidebar: sidebar 
+permalink: lifecycle/lama-ansible-sap-lama-provisioning-workflow-copy-system.html 
+keywords: system copy, timeline, storage workflow 
+summary: Neste capítulo, discutimos brevemente as diferenças para o fluxo de trabalho clone do sistema e telas de entrada. 
+---
+= Fluxo de trabalho de provisionamento do SAP lama - sistema de cópia
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+A figura a seguir destaca as etapas principais executadas com o fluxo de trabalho de cópia do sistema.
+
+image:lama-ansible-image40.png["Esta figura fornece uma linha do tempo para o fluxo de trabalho do System Copy. Ele contém as etapas Storage Clonagem, preparar o sistema, ativar o isolamento, renomear o sistema, iniciar o sistema, importar configuração, automação pós-cópia e desativar o sistema."]
+
+Neste capítulo, discutimos brevemente as diferenças para o fluxo de trabalho clone do sistema e telas de entrada. Como você pode ver na imagem a seguir, nada muda no fluxo de trabalho de armazenamento.
+
+image:lama-ansible-image41.png["Esta figura fornece um diagrama arquitetônico com etapas sobrepostas mostrando onde cada etapa do fluxo de trabalho ocorre."]
+
+. O fluxo de trabalho de cópia do sistema pode ser iniciado quando o sistema é preparado em conformidade. Esta não é uma tarefa específica para esta configuração, e não a explicamos detalhadamente. Se precisar de mais informações, consulte a documentação do SAP lama.
++
+image:lama-ansible-image42.png["Esta captura de tela mostra a exibição do sistema de provisionamento na guia sistemas. Dois sistemas estão listados e o menu suspenso Copy System (sistema de cópia) foi realçado."]
+
+. Durante o fluxo de trabalho de cópia, o sistema é renomeado, como deve ser especificado na primeira tela.
++
+image:lama-ansible-image43.png["Esta captura de tela mostra a página Copiar sistema com as caixas ID do sistema e SID HANA realçadas."]
+
+. Durante o fluxo de trabalho, você pode alterar os números da instância.
++
+image:lama-ansible-image44.png["Esta captura de tela mostra a guia números de instância SAP com três caixas para dados."]
+
++
+
+NOTE: A alteração dos números de instância não foi testada e pode exigir alterações no script do provedor.
+
+. Como descrito, a tela *Clone personalizado* não difere do fluxo de trabalho de clonagem, como é mostrado aqui.
++
+image:lama-ansible-image45.png["Esta captura de tela mostra a página sistema de cópia com informações de clone personalizado e parâmetros de operação."]
+
+. Como já descrevemos, as restantes máscaras de entrada não se afastam do padrão, e não entramos neles mais aqui. A tela final mostra um resumo e a execução pode agora ser iniciada.
++
+image:lama-ansible-image46.png["Esta captura de tela mostra a tela Copiar sistema com informações básicas e uma lista de hosts. No canto inferior direito está o botão Executar."]
+
+
+
+Após o processo de cópia, a instância de destino não é habilitada para o processo de clonagem personalizada.
+
+image:lama-ansible-image47.png["Esta captura de tela mostra a tela Lama Systems juntamente com detalhes do sistema."]
+
+Ele deve ser adotado manualmente para executar a etapa de pré-gancho durante o processo de destruição do sistema porque uma restrição é definida e iria impedir a execução.
+
+image:lama-ansible-image48.png["Esta captura de tela mostra a tela Lama Systems juntamente com os detalhes do sistema, e a caixa de seleção usar processo de processamento personalizado está marcada."]

@@ -1,0 +1,116 @@
+---
+sidebar: sidebar 
+permalink: bp/saphana_aff_fc_adding_additional_data_volume_partitions_for_sap_hana_single-host_systems.html 
+keywords: data, volume, partitions, lun 
+summary: A partir do SAP HANA 2,0 SPS4, partições de volume de dados adicionais podem ser configuradas. Esse recurso permite configurar duas ou mais LUNs para o volume de dados de um banco de dados de locatário do SAP HANA e dimensionar além dos limites de tamanho e performance de um único LUN. 
+---
+= Adição de partições de volume de dados adicionais para sistemas SAP HANA de um único host
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+A partir do SAP HANA 2,0 SPS4, partições de volume de dados adicionais podem ser configuradas. Esse recurso permite configurar duas ou mais LUNs para o volume de dados de um banco de dados de locatário do SAP HANA e dimensionar além dos limites de tamanho e performance de um único LUN.
+
+
+NOTE: Não é necessário usar várias partições para cumprir os KPIs do SAP HANA. Um único LUN com uma única partição cumpre os KPIs necessários.
+
+
+NOTE: O uso de duas ou mais LUNs individuais para o volume de dados está disponível apenas para sistemas SAP HANA de host único. O conector de storage SAP necessário para sistemas SAP HANA de vários hosts dá suporte apenas a um dispositivo para o volume de dados.
+
+A adição de partições de volume de dados adicionais pode ser feita a qualquer momento, mas pode exigir a reinicialização do banco de dados SAP HANA.
+
+
+
+== Habilitando partições adicionais de volume de dados
+
+Para ativar partições de volume de dados adicionais, execute as seguintes etapas:
+
+. Adicione a seguinte entrada dentro do `global.ini` arquivo.
++
+....
+[customizable_functionalities]
+persistence_datavolume_partition_multipath = true
+....
+. Reinicie o banco de dados para ativar o recurso. Adicionar o parâmetro através do SAP HANA Studio ao `global.ini` arquivo usando a configuração Systemdb impede a reinicialização do banco de dados.
+
+
+
+
+== Configuração de volume e LUN
+
+O layout de volumes e LUNs é como o layout de um único host com uma partição de volume de dados, mas com um volume de dados adicional e LUN armazenados em um agregado diferente como o volume de log e o outro volume de dados. A tabela a seguir mostra um exemplo de configuração de sistemas SAP HANA de um único host com duas partições de volume de dados.
+
+|===
+| Agregar 1 no controlador A | Agregar 2 no controlador A | Agregado 1 no controlador B | Agregado 2 no controlador B 
+
+
+| Volume de dados: SID_data_mnt00001 | Volume compartilhado: SID_shared | Volume de dados: SID_data2_mnt00001 | Volume de log: SID_log_mnt00001 
+|===
+A tabela a seguir mostra um exemplo da configuração do ponto de montagem para um sistema de host único com duas partições de volume de dados.
+
+|===
+| LUN | Ponto de montagem no host HANA | Nota 
+
+
+| SID_data_mnt00001 | /Hana/data/SID/mnt00001 | Montado usando a entrada /etc/fstab 
+
+
+| SID_data2_mnt00001 | /Hana/data2/SID/mnt00001 | Montado usando a entrada /etc/fstab 
+
+
+| SID_log_mnt00001 | /Hana/log/SID/mnt00001 | Montado usando a entrada /etc/fstab 
+
+
+| SID_shared | /Hana/shared/SID | Montado usando a entrada /etc/fstab 
+|===
+Crie novos LUNs de dados usando o Gerenciador de sistemas do ONTAP ou a CLI do ONTAP.
+
+
+
+== Configuração de host
+
+Para configurar um host, execute as seguintes etapas:
+
+. Configurar multipathing para os LUNs adicionais, conforme descrito no capítulo 0.
+. Crie o sistema de arquivos XFS em cada LUN adicional pertencente ao sistema HANA:
++
+....
+stlrx300s8-6:/ # mkfs.xfs /dev/mapper/hana-SS3_data2_mnt00001
+....
+. Adicione o(s) sistema(s) de arquivos adicional(s) ao `/etc/fstab` arquivo de configuração.
++
+
+NOTE: Os sistemas de arquivos XFS para o LUN de dados e log devem ser montados com as `relatime` opções de montagem e. `inode64`
+
++
+....
+stlrx300s8-6:/ # cat /etc/fstab
+/dev/mapper/hana-SS3_shared /hana/shared xfs defaults 0 0
+/dev/mapper/hana-SS3_log_mnt00001 /hana/log/SS3/mnt00001 xfs relatime,inode64 0 0
+/dev/mapper/hana-SS3_data_mnt00001 /hana/data/SS3/mnt00001 xfs relatime,inode64 0 0
+/dev/mapper/hana-SS3_data2_mnt00001 /hana/data2/SS3/mnt00001 xfs relatime,inode64 0 0
+....
+. Crie pontos de montagem e defina permissões no host do banco de dados.
++
+....
+stlrx300s8-6:/ # mkdir -p /hana/data2/SS3/mnt00001
+stlrx300s8-6:/ # chmod –R 777 /hana/data2/SS3
+....
+. Monte os sistemas de arquivos, execute o `mount –a` comando.
+
+
+
+
+== Adicionando uma partição datavolume adicional
+
+Para adicionar uma partição datavolume adicional ao seu banco de dados de inquilinos, execute a seguinte instrução SQL contra o banco de dados de inquilinos. Cada LUN adicional pode ter um caminho diferente:
+
+....
+ALTER SYSTEM ALTER DATAVOLUME ADD PARTITION PATH '/hana/data2/SID/';
+....
+image:saphana_aff_fc_image20.jpg["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]

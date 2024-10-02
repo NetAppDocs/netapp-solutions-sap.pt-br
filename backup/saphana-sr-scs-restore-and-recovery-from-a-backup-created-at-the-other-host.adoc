@@ -1,0 +1,81 @@
+---
+sidebar: sidebar 
+permalink: backup/saphana-sr-scs-restore-and-recovery-from-a-backup-created-at-the-other-host.html 
+keywords: restore, backup, recovery 
+summary: Uma operação de restauração a partir de um backup criado no outro host SAP HANA é um cenário válido para ambas as opções de configuração do SnapCenter. 
+---
+= Restauração e recuperação a partir de um backup criado no outro host
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Uma operação de restauração a partir de um backup criado no outro host SAP HANA é um cenário válido para ambas as opções de configuração do SnapCenter.
+
+A figura a seguir mostra uma visão geral do cenário de restauração e recuperação descrito nesta seção.
+
+Um backup foi criado em T1 no host 1. Um failover foi executado no host 2. No momento atual, o host 2 é o host principal.
+
+. Ocorreu uma falha e você deve restaurar o backup criado em T1 no host 1.
+. O host principal (host 1) é desligado.
+. Os dados de backup T1 do host 1 são restaurados para o host 2.
+. Uma recuperação avançada é realizada usando logs do host 1 e do host 2.
+. O host 1 é iniciado e uma ressincronização de replicação do sistema do host 1 é iniciada automaticamente.
+
+
+image:saphana-sr-scs-image48.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+A figura a seguir mostra o catálogo de backup do SAP HANA e destaca o backup, criado no host 1, que foi usado para a operação de restauração e recuperação.
+
+image:saphana-sr-scs-image49.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+A operação de restauração envolve as seguintes etapas:
+
+. Crie um clone a partir do backup criado no host 1.
+. Monte o volume clonado no host 2.
+. Copie os dados do volume clonado para o local original.
+
+
+No SnapCenter, o backup é selecionado e a operação de clone é iniciada.
+
+image:saphana-sr-scs-image50.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Você deve fornecer o servidor clone e o endereço IP de exportação NFS.
+
+
+NOTE: Em uma configuração de recurso único do SnapCenter, o plug-in do SAP HANA não é instalado no host do banco de dados. Para executar o fluxo de trabalho clone do SnapCenter, qualquer host com um plug-in HANA instalado pode ser usado como um servidor clone.
+
+Em uma configuração do SnapCenter com recursos separados, o host do banco de dados HANA é selecionado como um servidor clone, e um script de montagem é usado para montar o clone no host de destino.
+
+image:saphana-sr-scs-image51.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Para determinar o caminho de junção necessário para montar o volume clonado, verifique o registo de trabalhos do trabalho de clonagem, conforme mostra a figura seguinte.
+
+image:saphana-sr-scs-image52.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+O volume clonado pode agora ser montado.
+
+....
+stlrx300s8-5:/mnt/tmp # mount 192.168.173.101:/Scc373da37-00ff-4694-b1e1-8153dbd46caf /mnt/tmp
+....
+O volume clonado contém os dados do banco de DADOS HANA.
+
+....
+stlrx300s8-5:/mnt/tmp/# ls –al
+drwxr-x--x 2 ssradm sapsys 4096 Jun 27 11:12 hdb00001
+drwx------ 2 ssradm sapsys 4096 Jun 21 09:38 hdb00002.00003
+drwx------ 2 ssradm sapsys 4096 Jun 27 11:12 hdb00003.00003
+-rw-r--r-- 1 ssradm sapsys   22 Jun 27 11:12 nameserver.lck
+....
+Os dados são copiados para a localização original.
+
+....
+stlrx300s8-5:/mnt/tmp # cp -Rp hdb00001 /hana/data/SSR/mnt00001/
+stlrx300s8-5:/mnt/tmp # cp -Rp hdb00002.00003/ /hana/data/SSR/mnt00001/
+stlrx300s8-5:/mnt/tmp # cp -Rp hdb00003.00003/ /hana/data/SSR/mnt00001/
+....
+A recuperação com o SAP HANA Studio é realizada conforme descrito na link:saphana-sr-scs-snapcenter-configuration-with-a-single-resource.html#snapcenter-restore-of-the-valid-backup-only["Restauração do SnapCenter somente do backup válido"]seção .

@@ -1,0 +1,80 @@
+---
+sidebar: sidebar 
+permalink: lifecycle/lama-ansible-conclusion.html 
+keywords: conclusion, additional information, version history 
+summary: A integração de uma estrutura de automação moderna, como o Ansible, aos workflows de provisionamento do SAP lama, oferece aos clientes uma solução flexível para lidar com requisitos de infraestrutura padrão ou mais complexos. 
+---
+= Conclusão
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+A integração de uma estrutura de automação moderna, como o Ansible, aos workflows de provisionamento do SAP lama, oferece aos clientes uma solução flexível para lidar com requisitos de infraestrutura padrão ou mais complexos.
+
+
+
+== Onde encontrar informações adicionais
+
+Para saber mais sobre as informações descritas neste documento, consulte os seguintes documentos e/ou sites:
+
+* Coleções no namespace NetApp
++
+https://docs.ansible.com/ansible/latest/collections/netapp/index.html["https://docs.ansible.com/ansible/latest/collections/netapp/index.html"^]
+
+* Documentação sobre o Ansible Integration e exemplos de Playbooks do Ansible
++
+https://github.com/sap-linuxlab/demo.netapp_ontap["https://github.com/sap-linuxlab/demo.netapp_ontap"^]
+
+* Integração geral com Ansible e NetApp
++
+https://www.ansible.com/integrations/infrastructure/netapp["https://www.ansible.com/integrations/infrastructure/netapp"^]
+
+* Blog sobre a integração do SAP lama com o Ansible
++
+https://blogs.sap.com/2020/06/08/outgoing-api-calls-from-sap-landscape-management-lama-with-automation-studio/["https://blogs.sap.com/2020/06/08/outgoing-api-calls-from-sap-landscape-management-lama-with-automation-studio/"^]
+
+* Documentação do SAP Landscape Management 3,0, Enterprise Edition
++
+https://help.sap.com/doc/700f9a7e52c7497cad37f7c46023b7ff/3.0.11.0/en-US/4df88a8f418c5059e10000000a42189c.html["https://help.sap.com/doc/700f9a7e52c7497cad37f7c46023b7ff/3.0.11.0/en-US/4df88a8f418c5059e10000000a42189c.html#loio4df88a8f418c5059e10000000a42189c"^]
+
+* Documentação do SAP lama – Definições de fornecedores
++
+https://help.sap.com/doc/700f9a7e52c7497cad37f7c46023b7ff/3.0.11.0/en-US/bf6b3e43340a4cbcb0c0f3089715c068.html["https://help.sap.com/doc/700f9a7e52c7497cad37f7c46023b7ff/3.0.11.0/en-US/bf6b3e43340a4cbcb0c0f3089715c068.html"^]
+
+* Documentação do SAP lama - ganchos personalizados
++
+https://help.sap.com/doc/700f9a7e52c7497cad37f7c46023b7ff/3.0.11.0/en-US/139eca2f925e48738a20dbf0b56674c5.html["https://help.sap.com/doc/700f9a7e52c7497cad37f7c46023b7ff/3.0.11.0/en-US/139eca2f925e48738a20dbf0b56674c5.html"^]
+
+* Documentação do SAP lama - Configurando os scripts registrados do SAP Host Agent
++
+https://help.sap.com/doc/700f9a7e52c7497cad37f7c46023b7ff/3.0.11.0/en-US/250dfc5eef4047a38bab466c295d3a49.html["https://help.sap.com/doc/700f9a7e52c7497cad37f7c46023b7ff/3.0.11.0/en-US/250dfc5eef4047a38bab466c295d3a49.html"^]
+
+* Documentação do SAP lama - parâmetros para operações personalizadas e ganchos personalizados
++
+https://help.sap.com/doc/700f9a7e52c7497cad37f7c46023b7ff/3.0.11.0/en-US/0148e495174943de8c1c3ee1b7c9cc65.html["https://help.sap.com/doc/700f9a7e52c7497cad37f7c46023b7ff/3.0.11.0/en-US/0148e495174943de8c1c3ee1b7c9cc65.html"^]
+
+* Documentação do SAP lama - Adaptive Design
++
+https://help.sap.com/doc/700f9a7e52c7497cad37f7c46023b7ff/3.0.11.0/en-US/737a99e86f8743bdb8d1f6cf4b862c79.html["https://help.sap.com/doc/700f9a7e52c7497cad37f7c46023b7ff/3.0.11.0/en-US/737a99e86f8743bdb8d1f6cf4b862c79.html"^]
+
+* Documentação do produto NetApp
++
+https://www.netapp.com/support-and-training/documentation/["https://www.netapp.com/support-and-training/documentation/"^]
+
+
+
+
+
+== Histórico de versões
+
+|===
+| Versão | Data | Histórico de versões do documento 
+
+
+| Versão 1,0 | Janeiro de 2023 | Lançamento inicial 
+|===

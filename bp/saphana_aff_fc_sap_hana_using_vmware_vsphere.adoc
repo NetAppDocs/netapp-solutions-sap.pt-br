@@ -1,0 +1,28 @@
+---
+sidebar: sidebar 
+permalink: bp/saphana_aff_fc_sap_hana_using_vmware_vsphere.html 
+keywords:  
+summary:  
+---
+= SAP HANA usando o VMware vSphere
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Existem várias opções para conetar o armazenamento a máquinas virtuais (VMs). O preferido é conectar os volumes de storage ao NFS diretamente do sistema operacional convidado. Esta opção é descrita em link:saphana_aff_nfs_introduction.html["SAP HANA em sistemas NetApp AFF com NFS"].
+
+Também são suportados mapeamentos de dispositivos brutos (RDM), armazenamentos de dados FCP ou armazenamentos de dados VVOL com FCP. Para ambas as opções de armazenamento de dados, apenas um volume de log ou dados do SAP HANA deve ser armazenado no armazenamento de dados para casos de uso produtivos. Além disso, o backup e a recuperação baseados em Snapshot orquestrados pelo SnapCenter e as soluções baseadas nisso, como a clonagem do sistema SAP, não podem ser implementadas.
+
+Para obter mais informações sobre como usar o vSphere com o SAP HANA, consulte os seguintes links:
+
+https://wiki.scn.sap.com/wiki/display/VIRTUALIZATION/SAP+HANA+on+VMware+vSphere["SAP HANA no VMware vSphere - virtualização - Community Wiki"^]
+
+* http://www.vmware.com/files/pdf/SAP_HANA_on_vmware_vSphere_best_practices_guide.pdf["Práticas recomendadas e recomendações para implantações de escalabilidade vertical do SAP HANA no VMware vSphere"^]
+* http://www.vmware.com/files/pdf/sap-hana-scale-out-deployments-on-vsphere.pdf["Práticas recomendadas e recomendações para implantações de escalabilidade horizontal do SAP HANA no VMware vSphere"^]
+* https://launchpad.support.sap.com/["2161991 - diretrizes de configuração do VMware vSphere - SAP ONE Support Launchpad (Login necessário)"^]
+

@@ -1,0 +1,34 @@
+---
+sidebar: sidebar 
+permalink: backup/hana-hycl-backup-restore.html 
+keywords: BlueXP, SAP HANA, restore 
+summary: Esta seção descreve como restaurar um backup do SAP HANA com o BlueXP . 
+---
+= Restaurar o backup do SAP HANA BlueXP 
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+A restauração do backup só pode ser feita em um sistema de storage baseado em NetApp ONTAP no local ou no NetApp CVO na nuvem. Uma restauração pode ser feita seguindo os seguintes passos:
+
+. Na IU do BlueXP , clique em *proteção* > *Backup e recuperação* > *aplicativos* e escolha híbrido.
+. No   campo *Filtrar por*, selecione o  filtro *tipo* e, na lista suspensa, selecione *HANA*.
+. Clique em *Exibir detalhes* correspondente ao banco de dados que você deseja restaurar. E image:hana-hycl-back-image38.jpeg["hana-hycl-back-image38, largura de 624 mm, altura de 305 mm"]
+. Selecione o backup desejado e escolha exportação de armazenamento. E image:hana-hycl-back-image39.jpeg["largura: 624mm, altura: 308mm"]
+. Forneça as opções desejadas image:hana-hycl-back-image40.jpeg["largura: 624mm, altura: 308mm"]
++
+.. No ambiente nas, especifique o FQDN ou o endereço IP do host para o qual os volumes restaurados do armazenamento de objetos devem ser exportados.
+.. No ambiente SAN, especifique os iniciadores do host para os quais LUNs dos volumes restaurados do armazenamento de objetos devem ser mapeados.
+
+
+. Se o instantâneo estiver em armazenamento de arquivo, selecione a prioridade para restaurar os dados do armazenamento de arquivamento.
+. Se não houver espaço suficiente no armazenamento de origem ou se o armazenamento de origem estiver inativo, selecione *alterar local de armazenamento*.
+. Se  selecionar *alterar localização de armazenamento*, pode anexar um sufixo ao volume de destino. Se você não selecionou a caixa de seleção, por padrão *_Restore* é anexado ao volume de destino. Clique em *seguinte*.
+. Se você selecionou alterar local de armazenamento, especifique os detalhes do local de armazenamento alternativo onde os dados restaurados do armazenamento de objetos serão armazenados na página de mapeamento de armazenamento e clique em *Next*.
+. Revise os detalhes e clique em *Restaurar*. image:hana-hycl-back-image41.jpeg["hana-hycl-back-image41, largura de 624 mm, altura de 309 mm"]Esta operação faz apenas a exportação de armazenamento do backup restaurado para o host dado. Você deve montar manualmente o sistema de arquivos no host e abrir o banco de dados. Depois de utilizar o volume, o administrador de armazenamento pode eliminar o volume do cluster ONTAP.
+

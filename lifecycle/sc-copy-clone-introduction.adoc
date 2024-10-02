@@ -1,0 +1,74 @@
+---
+sidebar: sidebar 
+permalink: lifecycle/sc-copy-clone-introduction.html 
+keywords: tr4667, 4667, SAP HANA, cloning, system refresh 
+summary: As soluções da NetApp para otimizar o gerenciamento do ciclo de vida do SAP são integradas ao banco de dados SAP HANA e às ferramentas de gerenciamento de ciclo de vida, combinando proteção de dados eficiente integrada a aplicações com o provisionamento flexível dos sistemas de teste do SAP. 
+---
+= TR-4667: Automatizando as operações de clonagem e cópia do sistema SAP HANA com o SnapCenter
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+:firstname: ---
+:author: ---
+:authorinitials: -
+:authors: ---
+
+
+[role="lead"]
+No ambiente de negócios dinâmico de hoje, as empresas precisam fornecer inovação contínua e reagir rapidamente a mercados em constante mudança. Sob essas circunstâncias competitivas, as empresas que implementam maior flexibilidade em seus processos de trabalho podem se adaptar às demandas do mercado de forma mais eficaz.
+
+Autor: Nils Bauer, NetApp
+
+
+
+== Introdução
+
+As demandas dinâmicas do mercado também afetam os ambientes SAP de uma empresa, de modo que eles exigem integrações, mudanças e atualizações regulares. Os departamentos DE TI devem implementar essas mudanças com menos recursos e em períodos de tempo mais curtos. Minimizar o risco ao implantar essas alterações requer testes e treinamento completos que exigem sistemas SAP adicionais com dados reais da produção.
+
+As abordagens tradicionais de gerenciamento de ciclo de vida da SAP para provisionar esses sistemas são baseadas principalmente em processos manuais. Esses processos manuais costumam ser demorados e propensos a erros, atrasando a inovação e a resposta aos requisitos de negócios.
+
+As soluções da NetApp para otimizar o gerenciamento do ciclo de vida do SAP são integradas ao banco de dados SAP HANA e às ferramentas de gerenciamento de ciclo de vida, combinando proteção de dados eficiente integrada a aplicações com o provisionamento flexível dos sistemas de teste SAP, como mostra a figura a seguir. Essas soluções estão disponíveis para SAP HANA que é executado no local ou na nuvem no Azure NetApp Files (ANF) ou no Amazon FSX for NetApp ONTAP (FSX for ONTAP).
+
+image:sc-copy-clone-image1.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+
+
+=== *Operações de backup Snapshot integradas ao aplicativo*
+
+A capacidade de criar backups Snapshot consistentes com aplicações na camada de storage é a base para as operações de cópia do sistema e clone de sistema descritas neste documento. Os backups Snapshot baseados em storage são criados com o plug-in NetApp SnapCenter para SAP HANA e as interfaces fornecidas pelo banco de dados SAP HANA. O SnapCenter Registra os backups de Snapshot no catálogo de backup do SAP HANA para que os backups possam ser usados para restauração e recuperação, bem como para operações de clonagem.
+
+
+
+=== *Replicação de dados de backup e/ou recuperação de desastres fora do local*
+
+Os backups Snapshot consistentes com aplicações podem ser replicados na camada de storage para um local de backup externo ou um local de recuperação de desastres controlado pela SnapCenter. A replicação é baseada em blocos novos e alterados, portanto, é eficiente em espaço e largura de banda.
+
+
+
+=== *Use qualquer backup Snapshot para operações de cópia ou clone do sistema SAP*
+
+A integração de software e tecnologia NetApp permite que você use qualquer backup instantâneo de um sistema de origem para uma operação de cópia ou clone do sistema SAP. Esse backup Snapshot pode ser selecionado no mesmo storage usado nos sistemas de produção SAP, no storage usado para backups externos ou no storage no local de recuperação de desastres. Essa flexibilidade permite separar os sistemas de desenvolvimento e teste da produção, se necessário, e abrange outros cenários, como o teste da recuperação de desastres no local de recuperação de desastres.
+
+
+NOTE: A clonagem a partir do backup externo ou armazenamento de recuperação de desastres é suportada para sistemas NetApp locais e para o Amazon FSX for NetApp ONTAP. Com o Azure NetApp Files, os clones só podem ser criados no volume de origem.
+
+
+
+=== *Automação com integração*
+
+Existem vários cenários e casos de uso para o provisionamento de sistemas de teste SAP, e você também pode ter requisitos diferentes para o nível de automação. Os produtos de software da NetApp integram-se a produtos de gerenciamento de ciclo de vida e banco de dados da SAP para dar suporte a diferentes cenários e níveis de automação.
+
+O NetApp SnapCenter com o plug-in para SAP HANA é usado para provisionar os volumes de storage necessários com base em um backup Snapshot consistente com a aplicação e para executar todas as operações de host e banco de dados necessárias até um banco de dados SAP HANA iniciado. Dependendo do caso de uso, a cópia do sistema SAP, clone do sistema, atualização do sistema ou etapas manuais adicionais, como pós-processamento SAP, podem ser necessárias. Mais detalhes são abordados na próxima seção.
+
+Um fornecimento completo e totalmente automatizado de sistemas de teste SAP pode ser realizado usando ferramentas de terceiros e integração de recursos do NetApp. Mais detalhes estão disponíveis em:
+
+https://docs.netapp.com/us-en/netapp-solutions-sap/lifecycle/lama-ansible-introduction.html["TR-4953: Integração de gerenciamento de cenários SAP da NetApp com Ansible"]
+
+https://docs.netapp.com/us-en/netapp-solutions-sap/lifecycle/libelle-sc-overview.html["TR-4929: Automatizando as operações de cópia do sistema SAP com o Libelle SystemCopy (NetApp.com)"]
+
+https://docs.netapp.com/us-en/netapp-solutions-sap/briefs/sap-alpaca-automation.html#solution-overview["Automação da cópia e amp do sistema SAP; nº 44; Refresh nº 44; e clonar fluxos de trabalho com ALPACA e NetApp SnapCenter"]
+
+https://docs.netapp.com/us-en/netapp-solutions-sap/briefs/sap-avantra-automation.html#solution-overview["Automatizar a cópia e o amp do sistema SAP; n.o 44; Refresh n.o 44; e clonar fluxos de trabalho com Avantra e NetApp SnapCenter"]

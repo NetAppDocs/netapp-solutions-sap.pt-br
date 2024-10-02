@@ -1,0 +1,56 @@
+---
+sidebar: sidebar 
+permalink: bp/saphana-fas-nfs_network_setup.html 
+keywords: network, setup, vmware, sap, hana, storage, hosts 
+summary: Use as diretrizes a seguir ao configurar a rede. 
+---
+= Configuração de rede
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Use as seguintes diretrizes ao configurar a rede:
+
+* Uma rede de storage dedicada deve ser usada para conectar os hosts SAP HANA às controladoras de storage com uma rede 10GbE ou mais rápida.
+* Use a mesma velocidade de conexão para controladores de storage e hosts SAP HANA. Se isso não for possível, certifique-se de que os componentes de rede entre as controladoras de storage e os hosts SAP HANA sejam capazes de lidar com diferentes velocidades. Por exemplo, você precisa fornecer espaço suficiente para permitir negociação de velocidade no nível NFS entre storage e hosts. Os componentes de rede geralmente são switches, mas outros componentes dentro do chassi blade, como o plano traseiro, também devem ser considerados.
+* Desative o controle de fluxo em todas as portas físicas usadas para o tráfego de armazenamento no switch de rede de armazenamento e na camada de host.
+* Cada host SAP HANA precisa ter uma conexão de rede redundante com um mínimo de 10Gb Gbps de largura de banda.
+* Os quadros jumbo com um tamanho máximo de unidade de transmissão (MTU) de 9.000 MB devem ser ativados em todos os componentes de rede entre os hosts SAP HANA e os controladores de storage.
+* Em uma configuração VMware, adaptadores de rede VMXNET3 dedicados devem ser atribuídos a cada máquina virtual em execução. Consulte os artigos relevantes mencionados no link:saphana-fas-nfs_introduction.html["Introdução"] para obter mais requisitos.
+* Para evitar interferência entre si, use caminhos de rede/e/S separados para o log e a área de dados.
+
+
+A figura a seguir mostra um exemplo com quatro hosts SAP HANA conectados a um par de HA com controladora de storage usando uma rede 10GbEG. Cada host SAP HANA tem uma conexão ativo-passivo com a malha redundante.
+
+Na camada de storage, quatro conexões ativas são configuradas para fornecer taxa de transferência de 10Gb Gbps para cada host SAP HANA. Além disso, uma interface sobressalente é configurada em cada controlador de storage.
+
+Na camada de storage, um domínio de broadcast com um tamanho de MTU de 9000 é configurado e todas as interfaces físicas necessárias são adicionadas a esse domínio de broadcast. Essa abordagem atribui automaticamente essas interfaces físicas ao mesmo grupo de failover. Todas as interfaces lógicas (LIFs) atribuídas a essas interfaces físicas são adicionadas a esse grupo de failover.
+
+image:saphana-fas-nfs_image10.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Em geral, também é possível usar grupos de interface HA nos servidores (bonds) e nos sistemas de armazenamento (por exemplo, Link Aggregation Control Protocol [LACP] e ifgroups). Com os grupos de interface de HA, verifique se a carga está distribuída igualmente entre todas as interfaces dentro do grupo. A distribuição de carga depende da funcionalidade da infra-estrutura do switch de rede.
+
+
+NOTE: Dependendo do número de hosts SAP HANA e da velocidade de conexão usada, é necessário um número diferente de portas físicas ativas.
+
+
+
+== Configuração de rede específica da VMware
+
+Como todos os dados para instâncias do SAP HANA, incluindo dados essenciais à performance e volumes de log para o banco de dados, são fornecidos por meio do NFS nesta solução, o design e a configuração adequados da rede são essenciais. Uma rede de storage dedicada é usada para separar o tráfego NFS da comunicação e o tráfego de acesso do usuário entre os nós do SAP HANA. Cada nó SAP HANA requer uma conexão de rede dedicada redundante com um mínimo de 10Gb Gbps de largura de banda. Maior largura de banda também é suportada. Essa rede deve se estender de ponta a ponta da camada de storage por meio da comutação de rede e da computação até o sistema operacional convidado hospedado no VMware vSphere. Além da infraestrutura de comutação física, um VMware Distributed Switch (vDS) é usado para fornecer desempenho e capacidade de gerenciamento adequados do tráfego de rede na camada do hipervisor.
+
+A figura a seguir fornece uma visão geral da rede.
+
+image:saphana-fas-nfs_image11.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Cada nó do SAP HANA usa um grupo de portas dedicado no switch distribuído VMware. Esse grupo de portas permite uma qualidade de serviço (QoS) aprimorada e atribuição dedicada de placas de interface de rede física (NICs) nos hosts ESX. Para usar placas de rede físicas dedicadas, preservando os recursos de HA se houver uma falha de NIC, a NIC física dedicada é configurada como um uplink ativo. As placas de rede adicionais são configuradas como uplinks de reserva nas configurações de agrupamento e failover do grupo de portas SAP HANA. Além disso, os quadros jumbo (MTU 9.000) devem ser ativados de ponta a ponta em switches físicos e virtuais. Além disso, desative o controle de fluxo em todas as portas ethernet usadas para tráfego de armazenamento em servidores, switches e sistemas de armazenamento. A figura a seguir mostra um exemplo de tal configuração.
+
+
+NOTE: LRO (descarga de receção grande) deve ser desligado para interfaces usadas para tráfego NFS. Para obter todas as outras diretrizes de configuração de rede, consulte os respetivos guias de práticas recomendadas da VMware para SAP HANA.
+
+image:saphana-fas-nfs_image12.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]

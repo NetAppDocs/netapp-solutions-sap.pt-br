@@ -1,0 +1,17 @@
+---
+sidebar: sidebar 
+permalink: backup/saphana-dr-anf_data_protection_overview.html 
+keywords:  
+summary:  
+---
+= Visão geral da proteção de dados
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Esta seção apresenta uma visão geral da proteção de dados para SAP HANA em Azure NetApp Files (ANF).

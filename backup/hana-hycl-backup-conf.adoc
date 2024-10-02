@@ -1,0 +1,98 @@
+---
+sidebar: sidebar 
+permalink: backup/hana-hycl-backup-conf.html 
+keywords: BlueXP, SAP HANA, configuration 
+summary: Esta seção descreve como configurar o ambiente de trabalho, como configurar o SnapCenter e como configurar e ativar o backup do SAP HANA no BlueXP . 
+---
+= Configuração do backup e recuperação do BlueXP  para SAP HANA
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Esta seção descreve como configurar o ambiente de trabalho, como configurar o SnapCenter e como configurar e ativar o backup do SAP HANA no BlueXP .
+
+
+
+== Criar ambiente de trabalho para o BlueXP 
+
+Adicione o sistema de storage no local ao ambiente de trabalho.
+
+. No menu à esquerda, escolha *Storage* -> *Canvas* -> *My Working* Environment.
+. Clique em Adicionar ambiente de trabalho*. E image:hana-hycl-back-image2.jpeg["hana-hycl-back-image2, largura de 624 mm, altura de 316 mm"]
+. Escolha *on-premises*. E image:hana-hycl-back-image3.jpeg["EIN Bild, das Text enthält. Descrição do produto: Largura de 624mm, altura de 316mm"]
+. Escolha *Descubra o ONTAP no local*. E image:hana-hycl-back-image4.jpeg["EIN Bild, das Text enthält. Descrição do produto: Largura de 624mm, altura de 316mm"]
+. Adicione o endereço IP do cluster ONTAP e a senha e pressione *Discover*. E image:hana-hycl-back-image5.jpeg["hana-hycl-back-image5, largura de 624 mm, altura de 316 mm"]
+. O cluster ONTAP já está disponível. E image:hana-hycl-back-image6.jpeg["EIN Bild, das Diagramm enthält. Descrição do produto: Largura de 624mm, altura de 316mm"]
+
+
+
+
+== Crie uma relação entre o sistema de storage local e um bucket de storage de objetos
+
+A relação entre o armazenamento no local e o bucket do S3 é feita criando um backup para um volume ou ativando um backup de um aplicativo. Se uma VPN local a local existente for usada para transferir os dados do local para o S3, um backup de volume precisa ser usado para criar a relação entre o armazenamento local e o bucket do S3, pois os endpoints da VPC precisam ser usados. Na criação desta documentação, o fluxo de trabalho de backup do aplicativo não oferece escolher endpoints de VPC para acessar buckets do S3.  https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html["Pontos de extremidade de gateway para Amazon S3 - Amazon Virtual Private Cloud"]Consulte como configurar endpoints de VPC para S3 na VPC.
+
+Para criar um primeiro backup de volume, execute as seguintes etapas:
+
+. Navegue por *proteção* para *Backup e recuperação* e escolha *volumes*. E image:hana-hycl-back-image7.jpeg["hana-hycl-back-image7, largura de 624 mm, altura de 308 mm"]
+. Pressione o botão *Ativar Backup*. E image:hana-hycl-back-image8.jpeg["hana-hycl-back-image8, largura de 624 mm, altura de 309 mm"]
+. Escolha o sistema de armazenamento local desejado e clique em *Ativar Backup*. E image:hana-hycl-back-image9.jpeg["hana-hycl-back-image9, largura de 624 mm, altura de 304 mm"]
+. Escolha *Backup*. E image:hana-hycl-back-image10.jpeg["hana-hycl-back-image10, largura de 624 mm, altura de 307 mm"]
+. Escolha um volume que seja armazenado no mesmo SVM que seus arquivos de dados do SAP HANA e pressione *Next*. Neste exemplo, o volume para /hana/shared foi escolhido. E image:hana-hycl-back-image12.jpeg["hana-hycl-back-image12, largura de 624 mm, altura de 305 mm"]
+. *Continuar*, se existir uma política existente. E image:hana-hycl-back-image11.jpeg["hana-hycl-back-image11, largura de 624 mm, altura de 304 mm"]
+. Marque a opção *Backup* e escolha o provedor de backup desejado. Neste exemplo, AWS. Mantenha a opção marcada para políticas já existentes. Desmarque as opções que você não deseja usar. E image:hana-hycl-back-image13.jpeg["EIN Bild, das Text, Software, Computersymbol, Webseite enthält. Descrição do produto: Largura de 624mm, altura de 306mm"]
+. Crie um novo bucket ou escolha um já existente. Forneça as configurações da conta da AWS, a região, a chave de acesso e a chave secreta. Prima *seguinte*. E image:hana-hycl-back-image14.jpeg["hana-hycl-back-image14, largura de 624 mm, altura de 306 mm"]
+. Escolha o IPspace correto do seu sistema de armazenamento local, selecione *Privat Endpoint Configuration* e escolha o endpoint VPC para o S3. Prima *seguinte*. E image:hana-hycl-back-image15.jpeg["hana-hycl-back-image15, largura de 624 mm, altura de 304 mm"]
+. Revise sua configuração e pressione *Ativar Backup*. E image:hana-hycl-back-image16.jpeg["hana-hycl-back-image16, largura de 624 mm, altura de 304 mm"]
+. A cópia de segurança foi iniciada com sucesso. E image:hana-hycl-back-image17.jpeg["hana-hycl-back-image17, largura de 624 mm, altura de 304 mm"]
+
+
+
+
+== Configurar o recurso do sistema SAP HANA na SnapCenter
+
+. Verifique se o SVM (HANA neste exemplo) em que seu sistema SAP HANA está armazenado foi adicionado pelo cluster. Se apenas o SVM tiver sido adicionado, adicione o cluster. E image:hana-hycl-back-image18.png["Interface gráfica do usuário, descrição da aplicação gerada automaticamente, largura 604, altura 156"]
+. Defina uma política de agendamento com tipo de agendamento diário, semanal ou mensal. E image:hana-hycl-back-image19.png["Interface gráfica do usuário, descrição da aplicação gerada automaticamente, largura 604, altura 140"] image:hana-hycl-back-image20.jpeg["hana-hycl-back-image20, largura de 167 mm, altura de 167 mm"]
+. Adicione a nova política ao seu sistema SAP HANA e atribua uma programação diária. E image:hana-hycl-back-image21.png["Interface gráfica do usuário, descrição da aplicação gerada automaticamente, largura 604, altura 215"]
+. Uma vez configurados novos backups com esta política estarão disponíveis após a política ser executada de acordo com a programação definida. image:hana-hycl-back-image22.png["Interface gráfica do usuário, aplicação, equipes Descrição gerada automaticamente, largura 604, altura 193"]
+
+
+
+
+== Adicionando SnapCenter ao ambiente de trabalho do BlueXP 
+
+. No menu à esquerda, escolha *Protection* -> *Backup and Recovery* -> *Applications*.
+. Escolha *Hybrid* no menu suspenso. E image:hana-hycl-back-image23.jpeg["hana-hycl-back-image23, largura de 624 mm, altura de 316 mm"]
+. Escolha *servidores SnapCenter* no menu Configurações. E image:hana-hycl-back-image24.jpeg["EIN Bild, das Text enthält. Descrição do produto: Largura de 624mm, altura de 316mm"]
+. Registre o servidor SnapCenter. E image:hana-hycl-back-image25.jpeg["EIN Bild, das Text enthält. Descrição do produto: Largura de 624mm, altura de 316mm"]
+. Adicione as credenciais do servidor SnapCenter. E image:hana-hycl-back-image26.jpeg["hana-hycl-back-image26, largura de 624 mm, altura de 315 mm"]
+. Os servidores SnapCenter foram adicionados e os dados serão descobertos. E image:hana-hycl-back-image27.jpeg["hana-hycl-back-image27, largura de 624 mm, altura de 316 mm"]
+. Depois que o trabalho de descoberta tiver terminado, o sistema SAP HANA estará disponível. E image:hana-hycl-back-image28.jpeg["EIN Bild, das Text enthält. Descrição do produto: Largura de 624mm, altura de 316mm"]
+
+
+
+
+== Criando uma Política de Backup para Backup de aplicativos
+
+. Escolha *políticas* no menu de configurações. E image:hana-hycl-back-image29.jpeg["hana-hycl-back-image29, largura de 624 mm, altura de 316 mm"]
+. Crie uma nova política, se desejar, clique em *criar política*. E image:hana-hycl-back-image30.jpeg["hana-hycl-back-image30, largura de 624 mm, altura de 316 mm"]
+. Forneça o nome da política, a etiqueta SnapMirror desejada, escolha as opções desejadas e pressione *criar*. E image:hana-hycl-back-image31.jpeg["hana-hycl-back-image31, largura de 624 mm, altura de 315 mm"]
+. A nova política está disponível. E image:hana-hycl-back-image32.jpeg["hana-hycl-back-image32, largura de 624 mm, altura de 315 mm"]
+
+
+
+
+== Proteção do banco de dados SAP HANA com o Cloud Backup para aplicações
+
+. Escolha *Ativar Backup* para o sistema SAP HANA. E image:hana-hycl-back-image33.jpeg["largura: 624mm, altura: 316mm"]
+. Escolha a política criada anteriormente e clique em *Next*. E image:hana-hycl-back-image34.jpeg["largura: 624mm, altura: 316mm"]
+. À medida que o sistema de storage e o conetor tiverem configurado antecipadamente, o backup será ativado. E image:hana-hycl-back-image35.jpeg["largura: 624mm, altura: 316mm"]
+. Assim que o trabalho tiver sido concluído, o sistema será listado. E image:hana-hycl-back-image36.jpeg["largura: 624mm, altura: 337mm"]
+. Após algum tempo, os backups serão listados na visualização detalhada do sistema SAP HANA. Um backup diário será listado no dia seguinte. E image:hana-hycl-back-image37.jpeg["hana-hycl-back-image37, largura de 624 mm, altura de 316 mm"]
+
+
+Em alguns ambientes, pode ser necessário remover quaisquer configurações de programação existentes da fonte SnapMirror. Para fazer isso, execute o seguinte comando no sistema ONTAP de origem: _SnapMirror modify -destination-path <hana-cloud-svm>:<SID_data_mnt00001>_copy -schedule ""_ .

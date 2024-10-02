@@ -1,0 +1,31 @@
+---
+sidebar: sidebar 
+permalink: lifecycle/lama-ansible-sap-lama-provisioning-workflow-system-refresh.html 
+keywords: refresh, workflow, storage clone 
+summary: Durante o fluxo de trabalho de atualização, o clone de storage deve ser excluído. Você pode usar o mesmo manual de estratégia do Ansible que para o fluxo de trabalho de destruição do sistema. No entanto, o gancho personalizado é definido para uma etapa diferente, de modo que o manual de estratégia é nomeado de acordo. A etapa de processo para o clone não difere. 
+---
+= Fluxo de trabalho de provisionamento do SAP lama - atualização do sistema
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+A figura a seguir destaca as etapas principais executadas com o fluxo de trabalho de atualização do sistema.
+
+image:lama-ansible-image49.png["Esta imagem mostra uma linha do tempo das etapas no fluxo de trabalho de atualização do sistema. Ele contém configuração de exportação, sistema de parada, despreparo do sistema, exclusão do clone de armazenamento, clonagem de armazenamento, preparação do sistema, ativação do isolamento, renomeação do sistema, início do sistema, configuração de importação, automação pós-cópia e desativação do isolamento."]
+
+Durante o fluxo de trabalho de atualização, o clone de storage deve ser excluído. Você pode usar o mesmo manual de estratégia do Ansible que para o fluxo de trabalho de destruição do sistema. No entanto, o gancho personalizado é definido para uma etapa diferente, de modo que o manual de estratégia é nomeado de acordo. A etapa de processo para o clone não difere.
+
+image:lama-ansible-image50.png["Esta imagem mostra um diagrama arquitetônico que inclui as etapas contidas neste fluxo de trabalho."]
+
+O fluxo de trabalho de atualização pode ser acionado através do ecrã de aprovisionamento para um sistema copiado.
+
+image:lama-ansible-image51.png["Esta captura de tela mostra a exibição do sistema de provisionamento com o menu suspenso Atualizar sistema realçado."]
+
+Novamente, nada difere nas telas de entrada do padrão, e a execução do fluxo de trabalho pode ser iniciada a partir da tela de resumo.
+
+image:lama-ansible-image52.png["Esta captura de tela mostra a tela Atualizar sistema, incluindo dados Básicos do sistema a ser atualizado e a seleção do host do sistema de destino."]

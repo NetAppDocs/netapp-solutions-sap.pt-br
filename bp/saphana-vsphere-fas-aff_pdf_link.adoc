@@ -1,0 +1,26 @@
+---
+sidebar: sidebar 
+permalink: bp/saphana-vsphere-fas-aff_pdf_link.html 
+keywords: tr-4338, pdf, sap, hana, vmware, vsphere, aff, fas, all flash, fabric attached 
+summary: 'Este documento de arquitetura de referência ajuda os clientes a projetar e implantar soluções SAP HANA de host único e de vários hosts em sistemas de storage VMware vSphere Virtual Machines (VMs) e NetApp FAS e All Flash FAS (AFF).' 
+---
+= TR-4338: SAP HANA no VMware vSphere com NetApp - sistemas FAS e All Flash FAS
+:allow-uri-read: 
+:firstname: : hardbreaks:
+:author: : hardbreaks:
+:authorinitials: :
+:authors: : hardbreaks:
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Este documento de arquitetura de referência ajuda os clientes a projetar e implantar soluções SAP HANA de host único e de vários hosts em sistemas de storage VMware vSphere Virtual Machines (VMs) e NetApp FAS e All Flash FAS (AFF). Essa arquitetura de referência é uma solução implantada e documentada com base em experiências com clientes existentes da VMware e do NetApp, simulações do mundo real e validações do Laboratório de Engenharia da NetApp. Este documento ajuda os clientes durante todo o ciclo de vida do projeto, incluindo avaliação de requisitos, design da solução, instalação e administração.
+
+Autores:
+
+Tobias Brandl, NetApp Erik Rieger, Bhumik Patel, VMware
+
+link:https://www.netapp.com/pdf.html?item=/media/17192-tr4338pdf.pdf["https://www.netapp.com/pdf.html?item=/media/17192-tr4338pdf.pdf"]

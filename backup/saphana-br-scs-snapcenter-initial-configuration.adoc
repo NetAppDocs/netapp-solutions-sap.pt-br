@@ -1,0 +1,258 @@
+---
+sidebar: sidebar 
+permalink: backup/saphana-br-scs-snapcenter-initial-configuration.html 
+keywords: configuration, storage system, plug-in, hdbsql client 
+summary: Esta seção descreve a configuração inicial do SnapCenter, incluindo o sistema de armazenamento, credenciais, hosts, o cliente hdbsql e políticas. 
+---
+= Configuração inicial do SnapCenter
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+A configuração inicial inclui as seguintes etapas:
+
+. Configuração do sistema de storage
+. Configuração de credenciais para instalação do plug-in
+. Para um host de plug-in HANA central:
++
+.. Configuração de host e implantação de plug-in do SAP HANA
+.. Instalação e configuração do software cliente SAP HANA hdbsql
+
+
+. Configuração de políticas
+
+
+As seções a seguir descrevem as etapas iniciais de configuração.
+
+
+
+== Configuração do sistema de storage
+
+. Faça login na GUI do servidor SnapCenter.
++
+image:saphana-br-scs-image23.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Selecione sistemas de armazenamento.
++
+
+NOTE: Na tela, você pode selecionar o tipo de sistema de storage, que pode ser SVMs ONTAP ou clusters ONTAP. Se você configurar os sistemas de storage no nível da SVM, precisará ter um LIF de gerenciamento configurado para cada SVM. Como alternativa, você pode usar um acesso de gerenciamento SnapCenter no nível do cluster. O gerenciamento do SVM é usado no exemplo a seguir.
+
++
+image:saphana-br-scs-image24.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Clique em novo para adicionar um sistema de storage e fornecer o nome de host e as credenciais necessárias.
++
+
+NOTE: O usuário SVM não precisa ser o usuário vsadmin, como mostrado na captura de tela. Normalmente, um usuário é configurado no SVM e recebe as permissões necessárias para executar operações de backup e restauração. Os detalhes sobre o Required Privileges podem ser encontrados na http://docs.netapp.com/ocsc-43/index.jsp?topic=%2Fcom.netapp.doc.ocsc-isg%2Fhome.html["Guia de instalação do SnapCenter"^] seção intitulada "Minimum ONTAP Privileges Required".
+
++
+image:saphana-br-scs-image25.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Clique em mais opções para configurar a plataforma de armazenamento.
++
+A plataforma de storage pode ser FAS, AFF, ONTAP Select ou Cloud Volumes ONTAP.
+
++
+
+NOTE: Para um sistema utilizado como alvo SnapVault ou SnapMirror, selecione o ícone secundário.
+
++
+image:saphana-br-scs-image26.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Adicione sistemas de storage adicionais, conforme necessário. Em nosso exemplo, um armazenamento de backup externo adicional e um armazenamento de recuperação de desastres foram adicionados.
++
+image:saphana-br-scs-image27.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+
+
+
+
+== Configuração de credenciais
+
+. Vá para Configurações, selecione credenciais e clique em novo.
++
+image:saphana-br-scs-image28.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Forneça as credenciais para o usuário que são usadas para instalações de plug-in em sistemas Linux.
++
+image:saphana-br-scs-image29.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Forneça as credenciais para o usuário que são usadas para instalações de plug-in em sistemas Windows.
++
+image:saphana-br-scs-image30.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
++
+A figura a seguir mostra as credenciais configuradas.
+
+
+
+image:saphana-br-scs-image31.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+
+
+== Instalação do plug-in do SAP HANA em um host de plug-in central
+
+Na configuração do laboratório, o servidor SnapCenter também é usado como um host de plug-in HANA central. O host do Windows no qual o servidor SnapCenter é executado é adicionado como um host e o plug-in SAP HANA é instalado no host do Windows.
+
+
+NOTE: O plug-in SAP HANA requer Java versão 1,8 de 64 bits. O Java precisa ser instalado no host antes que o plug-in SAP HANA seja implantado.
+
+. Vá para hosts e clique em Adicionar.
++
+image:saphana-br-scs-image32.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Forneça as informações necessárias do host. Clique em Enviar.
++
+image:saphana-br-scs-image33.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
++
+A figura a seguir mostra todos os hosts configurados depois que o plug-in HANA é implantado.
+
++
+image:saphana-br-scs-image34.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+
+
+
+
+=== Instalação e configuração do software cliente SAP HANA hdbsql
+
+O software cliente SAP HANA hdbsql deve ser instalado no mesmo host no qual o plug-in SAP HANA está instalado. O software pode ser transferido a partir do https://support.sap.com/en/index.html["Portal de suporte SAP"^].
+
+O usuário do HDBSQL os configurado durante a configuração do recurso deve ser capaz de executar o executável hdbsql. O caminho para o executável hdbsql deve ser configurado no `hana.properties` arquivo.
+
+* Windows:
+
+
+....
+C:\More C:\Program Files\NetApp\SnapCenter\Snapcenter Plug-in Creator\etc\hana.properties
+HANA_HDBSQL_CMD=C:\\Program Files\\sap\\hdbclient\\hdbsql.exe
+....
+* Linux:
+
+
+....
+cat /opt/NetApp/snapcenter/scc/etc/hana.properties
+HANA_HDBSQL_CMD=/usr/sap/hdbclient/hdbsql
+....
+
+
+== Configuração da política
+
+Conforme discutido na seçãolink:saphana-br-scs-snapcenter-concepts-and-best-practices.html#data-protection-strategy[""Estratégia de proteção de dados","], as políticas geralmente são configuradas independentemente do recurso e podem ser usadas por vários bancos de dados SAP HANA.
+
+Uma configuração mínima típica consiste nas seguintes políticas:
+
+* Política para backups por hora sem replicação: `LocalSnap`
+* Política para backups diários com replicação do SnapVault: `LocalSnapAndSnapVault`
+* Política para verificação semanal de integridade de bloco usando um backup baseado em arquivo: `BlockIntegrityCheck`
+
+
+As seções a seguir descrevem a configuração dessas três políticas.
+
+
+
+=== Política para backups Snapshot por hora
+
+. Aceda a Definições > políticas e clique em novo.
++
+image:saphana-br-scs-image35.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Introduza o nome e a descrição da política. Clique em seguinte.
++
+image:saphana-br-scs-image36.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Selecione o tipo de cópia de segurança como Instantâneo e selecione hora para a frequência de programação.
++
+image:saphana-br-scs-image37.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Configure as configurações de retenção para backups sob demanda.
++
+image:saphana-br-scs-image38.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Configure as configurações de retenção para backups programados.
++
+image:saphana-br-scs-image39.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Configure as opções de replicação. Neste caso, não está selecionada nenhuma atualização do SnapVault ou do SnapMirror.
++
+image:saphana-br-scs-image40.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Na página Resumo, clique em concluir.
++
+image:saphana-br-scs-image41.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+
+
+
+
+=== Política para backups diários de Snapshot com replicação SnapVault
+
+. Aceda a Definições > políticas e clique em novo.
+. Introduza o nome e a descrição da política. Clique em seguinte.
++
+image:saphana-br-scs-image42.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Defina o tipo de cópia de segurança para Instantâneo com base e a frequência de programação para Diário.
++
+image:saphana-br-scs-image43.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Configure as configurações de retenção para backups sob demanda.
++
+image:saphana-br-scs-image44.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Configure as configurações de retenção para backups programados.
++
+image:saphana-br-scs-image45.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Selecione Atualizar SnapVault depois de criar uma cópia Snapshot local.
++
+
+NOTE: O rótulo de política secundária deve ser o mesmo que o rótulo SnapMirror na configuração de proteção de dados na camada de storage. Consulte a secção link:saphana-br-scs-snapcenter-resource-specific-configuration-for-sap-hana-database-backups.html#configuration-of-data-protection-to-off-site-backup-storage[""Configuração da proteção de dados para armazenamento de backup externo.""]
+
++
+image:saphana-br-scs-image46.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Na página Resumo, clique em concluir.
++
+image:saphana-br-scs-image47.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+
+
+
+
+=== Política para Verificação de integridade de bloco semanal
+
+. Aceda a Definições > políticas e clique em novo.
+. Introduza o nome e a descrição da política. Clique em seguinte.
++
+image:saphana-br-scs-image48.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Defina o tipo de cópia de segurança para File-Based e programe a frequência para Weekly (semanal).
++
+image:saphana-br-scs-image49.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Configure as configurações de retenção para backups sob demanda.
++
+image:saphana-br-scs-image50.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Configure as configurações de retenção para backups programados.
++
+image:saphana-br-scs-image50.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Na página Resumo, clique em concluir.
++
+image:saphana-br-scs-image51.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
++
+A figura a seguir mostra um resumo das políticas configuradas.
+
++
+image:saphana-br-scs-image52.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+

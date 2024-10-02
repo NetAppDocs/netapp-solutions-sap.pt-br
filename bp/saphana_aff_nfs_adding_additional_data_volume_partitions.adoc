@@ -1,0 +1,220 @@
+---
+sidebar: sidebar 
+permalink: bp/saphana_aff_nfs_adding_additional_data_volume_partitions.html 
+keywords: data volume, tenant database, sps4 
+summary: A partir do SAP HANA 2,0 SPS4, partições de volume de dados adicionais podem ser configuradas. Isso permite configurar dois ou mais volumes para o volume de dados de um banco de dados de locatário do SAP HANA e ser dimensionado além dos limites de tamanho e performance de um único volume. 
+---
+= Adicionando partições de volume de dados adicionais
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+A partir do SAP HANA 2,0 SPS4, partições de volume de dados adicionais podem ser configuradas. Isso permite configurar dois ou mais volumes para o volume de dados de um banco de dados de locatário do SAP HANA e ser dimensionado além dos limites de tamanho e performance de um único volume.
+
+
+NOTE: O uso de dois ou mais volumes individuais para o volume de dados está disponível para sistemas SAP HANA de host único e SAP HANA de vários hosts. Você pode adicionar partições de volume de dados adicionais a qualquer momento.
+
+
+
+== Habilitando partições adicionais de volume de dados
+
+Para ativar partições de volume de dados adicionais, adicione a seguinte entrada `global.ini` utilizando o SAP HANA Studio ou Cockpit na configuração SYSTEMDB.
+
+....
+[customizable_functionalities]
+persistence_datavolume_partition_multipath = true
+....
+
+NOTE: Adicionar o parâmetro manualmente ao `global.ini` arquivo requer a reinicialização do banco de dados.
+
+
+
+== Configuração de volume para sistemas SAP HANA de um único host
+
+O layout de volumes para um sistema SAP HANA de um único host com várias partições é como o layout de um sistema com uma partição de volume de dados, mas com um volume de dados adicional armazenado em um agregado diferente como o volume de log e o outro volume de dados. A tabela a seguir mostra um exemplo de configuração de um sistema de host único SAP HANA com duas partições de volume de dados.
+
+|===
+| Agregar 1 no controlador A | Agregar 2 no controlador A | Agregado 1 no controlador B | Agregado 2 no controlador b 
+
+
+| Volume de dados: SID_data_mnt00001 | Volume compartilhado: SID_shared | Volume de dados: SID_data2_mnt00001 | Volume de log: SID_log_mnt00001 
+|===
+A tabela a seguir mostra um exemplo da configuração do ponto de montagem para um sistema de host único com duas partições de volume de dados.
+
+|===
+| Caminho de junção | Diretório | Ponto de montagem no host HANA 
+
+
+| SID_data_mnt00001 | – | /Hana/data/SID/mnt00001 
+
+
+| SID_data2_mnt00001 | – | /Hana/data2/SID/mnt00001 
+
+
+| SID_log_mnt00001 | – | /Hana/log/SID/mnt00001 
+
+
+| SID_shared | usr-sap compartilhou | /Usr/sap/SID /hana/shared 
+|===
+Você pode criar o novo volume de dados e montá-lo no namespace usando o Gerenciador de sistemas do NetApp ONTAP ou a CLI do ONTAP.
+
+
+
+== Configuração de volume para sistemas SAP HANA de vários hosts
+
+O layout dos volumes é como o layout de um sistema SAP HANA de vários hosts com uma partição de volume de dados, mas com um volume de dados adicional armazenado em um agregado diferente como volume de log e outro volume de dados. A tabela a seguir mostra um exemplo de configuração de um sistema de vários hosts SAP HANA com duas partições de volume de dados.
+
+|===
+| Finalidade | Agregar 1 no controlador A | Agregar 2 no controlador A | Agregado 1 no controlador B | Agregado 2 no controlador B 
+
+
+| Volumes de dados e log para o nó 1 | Volume de dados: SID_data_mnt00001 | – | Volume de log: SID_log_mnt00001 | Volume Data2: SID_data2_mnt00001 
+
+
+| Volumes de dados e log para o nó 2 | Volume de log: SID_log_mnt00002 | Volume Data2: SID_data2_mnt00002 | Volume de dados: SID_data_mnt00002 | – 
+
+
+| Volumes de dados e log para o nó 3 | – | Volume de dados: SID_data_mnt00003 | Volume Data2: SID_data2_mnt00003 | Volume de log: SID_log_mnt00003 
+
+
+| Volumes de dados e log para o nó 4 | Volume Data2: SID_data2_mnt00004 | Volume de log: SID_log_mnt00004 | – | Volume de dados: SID_data_mnt00004 
+
+
+| Volume compartilhado para todos os hosts | Volume compartilhado: SID_shared | – | – | – 
+|===
+A tabela a seguir mostra um exemplo da configuração do ponto de montagem para um sistema de host único com duas partições de volume de dados.
+
+|===
+| Caminho de junção | Diretório | Ponto de montagem no host SAP HANA | Nota 
+
+
+| SID_data_mnt00001 | – | /Hana/data/SID/mnt00001 | Montado em todos os hosts 
+
+
+| SID_data2_mnt00001 | – | /Hana/data2/SID/mnt00001 | Montado em todos os hosts 
+
+
+| SID_log_mnt00001 | – | /Hana/log/SID/mnt00001 | Montado em todos os hosts 
+
+
+| SID_data_mnt00002 | – | /Hana/data/SID/mnt00002 | Montado em todos os hosts 
+
+
+| SID_data2_mnt00002 | – | /Hana/data2/SID/mnt00002 | Montado em todos os hosts 
+
+
+| SID_log_mnt00002 | – | /Hana/log/SID/mnt00002 | Montado em todos os hosts 
+
+
+| SID_data_mnt00003 | – | /Hana/data/SID/mnt00003 | Montado em todos os hosts 
+
+
+| SID_data2_mnt00003 |  | /Hana/data2/SID/mnt00003 | Montado em todos os hosts 
+
+
+| SID_log_mnt00003 |  | /Hana/log/SID/mnt00003 | Montado em todos os hosts 
+
+
+| SID_data_mnt00004 |  | /Hana/data/SID/mnt00004 | Montado em todos os hosts 
+
+
+| SID_data2_mnt00004 | – | /Hana/data2/SID/mnt00004 | Montado em todos os hosts 
+
+
+| SID_log_mnt00004 | – | /Hana/log/SID/mnt00004 | Montado em todos os hosts 
+
+
+| SID_shared | compartilhado | /Hana/shared/SID | Montado em todos os hosts 
+
+
+| SID_shared | usr-sap-host1 | /Usr/sap/SID | Montado no host 1 
+
+
+| SID_shared | usr-sap-host2 | /Usr/sap/SID | Montado no host 2 
+
+
+| SID_shared | usr-sap-host3 | /Usr/sap/SID | Montado no host 3 
+
+
+| SID_shared | usr-sap-host4 | /Usr/sap/SID | Montado no host 4 
+
+
+| SID_shared | usr-sap-host5 | /Usr/sap/SID | Montado no host 5 
+|===
+Você pode criar o novo volume de dados e montá-lo no namespace usando o Gerenciador de sistemas do ONTAP ou a CLI do ONTAP.
+
+
+
+== Configuração de host
+
+Para além das tarefas descritas na secçãolink:saphana_aff_nfs_host_setup.html["Configuração do host,"], devem ser criados pontos de montagem adicionais e `fstab` entradas para o(s) novo(s) volume(s) de dados adicionais e montados os novos volumes.
+
+. Crie pontos de montagem adicionais.
++
+** Para um sistema de host único, crie pontos de montagem e defina as permissões no host do banco de dados:
++
+....
+sapcc-hana-tst-06:/ # mkdir -p /hana/data2/SID/mnt00001
+sapcc-hana-tst-06:/ # chmod –R 777 /hana/data2/SID
+....
+** Para um sistema de vários hosts, crie pontos de montagem e defina as permissões em todos os hosts de trabalho e de espera.
++
+Os comandos de exemplo a seguir são para um sistema HANA DE vários hosts com mais de 2-1.
+
++
+*** Primeiro anfitrião do trabalhador:
++
+....
+sapcc-hana-tst-06:~ # mkdir -p /hana/data2/SID/mnt00001
+sapcc-hana-tst-06:~ # mkdir -p /hana/data2/SID/mnt00002
+sapcc-hana-tst-06:~ # chmod -R 777 /hana/data2/SID
+....
+*** Segundo anfitrião do trabalhador:
++
+....
+sapcc-hana-tst-07:~ # mkdir -p /hana/data2/SID/mnt00001
+sapcc-hana-tst-07:~ # mkdir -p /hana/data2/SID/mnt00002
+sapcc-hana-tst-07:~ # chmod -R 777 /hana/data2/SID
+....
+*** Anfitrião em espera:
++
+....
+sapcc-hana-tst-07:~ # mkdir -p /hana/data2/SID/mnt00001
+sapcc-hana-tst-07:~ # mkdir -p /hana/data2/SID/mnt00002
+sapcc-hana-tst-07:~ # chmod -R 777 /hana/data2/SID
+....
+
+
+
+
+. Adicione os sistemas de arquivos adicionais ao `/etc/fstab` arquivo de configuração em todos os hosts.
++
+Veja o exemplo a seguir para um sistema de host único usando NFSv4,1:
+
++
+....
+<storage-vif-data02>:/SID_data2_mnt00001 /hana/data2/SID/mnt00001 nfs rw, vers=4
+minorversion=1,hard,timeo=600,rsize=1048576,wsize=262144,bg,noatime,lock 0 0
+....
++
+
+NOTE: Use uma interface virtual de armazenamento diferente para conetar cada volume de dados para garantir que você esteja usando sessões TCP diferentes para cada volume ou use a opção de montagem nconnect, se disponível para o sistema operacional.
+
+. Monte os sistemas de arquivos executando o `mount –a` comando.
+
+
+
+
+== Adicionando uma partição de volume de dados adicional
+
+Execute a seguinte instrução SQL contra o banco de dados do locatário para adicionar uma partição de volume de dados adicional ao banco de dados do locatário. Use o caminho para volumes adicionais:
+
+....
+ALTER SYSTEM ALTER DATAVOLUME ADD PARTITION PATH '/hana/data2/SID/';
+....
+image:saphana_aff_nfs_image18.jpg["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]

@@ -1,0 +1,37 @@
+---
+sidebar: sidebar 
+permalink: bp/saphana_aff_fc_architecture_overview.html 
+keywords:  
+summary:  
+---
+= Visão geral
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Os hosts do SAP HANA são conectados a controladores de storage usando uma infraestrutura FCP redundante e software multipath. Uma infraestrutura de switch FCP redundante é necessária para fornecer conectividade de host para storage SAP HANA tolerante a falhas em caso de falha no switch ou no adaptador de barramento do host (HBA). O zoneamento apropriado deve ser configurado no switch para permitir que todos os hosts HANA alcancem os LUNs necessários nos controladores de storage.
+
+Diferentes modelos da família de produtos do sistema AFF podem ser combinados e combinados na camada de storage para permitir crescimento e diferentes necessidades de desempenho e capacidade. O número máximo de hosts SAP HANA que pode ser anexado ao sistema de storage é definido pelos requisitos de performance do SAP HANA e pelo modelo de controladora NetApp usado. O número de compartimentos de disco necessários só é determinado pelos requisitos de capacidade e performance dos sistemas SAP HANA.
+
+A figura a seguir mostra um exemplo de configuração com oito hosts SAP HANA conectados a um par de HA de storage.
+
+image:saphana_aff_fc_image2.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Essa arquitetura pode ser dimensionada em duas dimensões:
+
+* Anexando hosts SAP HANA e capacidade de storage adicionais ao storage existente, se os controladores de storage fornecerem performance suficiente para atender aos KPIs atuais do SAP HANA
+* Adicionando mais sistemas de storage com capacidade de storage adicional para hosts SAP HANA adicionais
+
+
+A figura a seguir mostra um exemplo de configuração no qual mais hosts SAP HANA são conectados aos controladores de storage. Neste exemplo, mais compartimentos de disco são necessários para atender aos requisitos de capacidade e desempenho dos hosts SAP HANA de 16HANA. Dependendo dos requisitos de taxa de transferência total, você precisa adicionar conexões FC adicionais às controladoras de storage.
+
+image:saphana_aff_fc_image3.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Independentemente do sistema AFF implantado, o cenário SAP HANA também pode ser dimensionado adicionando qualquer controlador de storage certificado para atender à densidade de nó desejada, como mostrado na figura a seguir.
+
+image:saphana_aff_fc_image4.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]

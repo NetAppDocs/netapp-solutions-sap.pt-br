@@ -1,0 +1,25 @@
+---
+sidebar: sidebar 
+permalink: bp/saphana-fas-nfs_sap_hana_data_volume_size.html 
+keywords: sap, hana, data, volume, size, fas, nfs 
+summary: Como padrão, o SAP HANA usa apenas um volume de dados por serviço SAP HANA. Devido à limitação máxima do tamanho do arquivo do sistema de arquivos, recomendamos limitar o tamanho máximo do volume de dados. 
+---
+= Tamanho do volume de dados do SAP HANA
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Como padrão, o SAP HANA usa apenas um volume de dados por serviço SAP HANA. Devido à limitação máxima do tamanho do arquivo do sistema de arquivos, recomendamos limitar o tamanho máximo do volume de dados.
+
+Para o fazer automaticamente, defina o seguinte parâmetro na `global.ini` `[persistence]` secção :
+
+....
+datavolume_striping = true
+datavolume_striping_size_gb = 8000
+....
+Isso cria um novo volume de dados depois que o limite de 8, 000GB é atingido. https://launchpad.support.sap.com/["SAP nota 240005 pergunta 15"^] fornece mais informações.

@@ -1,0 +1,23 @@
+---
+sidebar: sidebar 
+permalink: backup/amazon-fsx-add-a-policy-to-resource-protection.html 
+keywords: policy, resource, protection, hana, daily schedule 
+summary: Esta seção descreve como adicionar uma política à proteção de recursos. 
+---
+= Adicione uma política à proteção de recursos
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você precisa adicionar a nova política à configuração de proteção de recursos DO HANA, conforme mostrado na figura a seguir.
+
+image:amazon-fsx-image86.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Uma programação diária é definida em nossa configuração.
+
+image:amazon-fsx-image87.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]

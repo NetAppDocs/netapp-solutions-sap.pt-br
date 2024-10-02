@@ -1,0 +1,66 @@
+---
+section: lifecycle
+title: Gerenciamento de ciclo de vida
+entries:
+- title: Integração do gerenciamento de cenário do SAP NetApp com o Ansible
+  entries:
+  - title: Introdução
+    url: "/lifecycle/lama-ansible-introduction.html"
+  - title: Cenários de clone, cópia e atualização do sistema SAP
+    url: "/lifecycle/lama-ansible-sap-system-clone,-copy,-and-refresh-scenarios.html"
+  - title: Casos de uso para atualização, cópia e clonagem do sistema
+    url: "/lifecycle/lama-ansible-use-cases-for-system-refresh,-copy,-and-cloning.html"
+  - title: Integração do NetApp SAP lama com o Ansible
+    url: "/lifecycle/lama-ansible-netapp-sap-lama-integration-using-ansible.html"
+  - title: Exemplo de implementação
+    url: "/lifecycle/lama-ansible-example-implementation.html"
+  - title: Fluxo de trabalho de provisionamento do SAP lama - sistema clone
+    url: "/lifecycle/lama-ansible-sap-lama-provisioning-workflow-clone-system.html"
+  - title: Fluxo de trabalho de desprovisionamento SAP lama - destruição do sistema
+    url: "/lifecycle/lama-ansible-sap-lama-deprovisioning-workflow-system-destroy.html"
+  - title: Fluxo de trabalho de provisionamento do SAP lama - sistema de cópia
+    url: "/lifecycle/lama-ansible-sap-lama-provisioning-workflow-copy-system.html"
+  - title: Fluxo de trabalho de provisionamento do SAP lama - atualização do sistema
+    url: "/lifecycle/lama-ansible-sap-lama-provisioning-workflow-system-refresh.html"
+  - title: Configuração de script do fornecedor e manuais do Ansible
+    url: "/lifecycle/lama-ansible-appendix-provider-script-configuration-and-ansible-playbooks.html"
+  - title: Conclusão
+    url: "/lifecycle/lama-ansible-conclusion.html"
+- title: Automatizando as operações de clonagem e cópia do sistema SAP HANA com o
+    SnapCenter
+  entries:
+  - title: Introdução
+    url: "/lifecycle/sc-copy-clone-introduction.html"
+  - title: Cenários de cópia, atualização e clone do sistema SAP
+    url: "/lifecycle/sc-copy-clone-sap-system-copy-refresh-and-clone-scenarios.html"
+  - title: Casos de uso para atualização e clonagem do sistema
+    url: "/lifecycle/sc-copy-clone-use-cases-for-system-refresh-and-cloning.html"
+  - title: Infraestrutura e cenários compatíveis
+    url: "/lifecycle/sc-copy-clone-supported-infrastructure-and-scenarios.html"
+  - title: Visão geral do fluxo de trabalho de atualização do sistema SAP com o SnapCenter
+    url: "/lifecycle/sc-copy-clone-overview-of-sap-system-refresh-workflow-with-snapcenter.html"
+  - title: Visão geral do fluxo de trabalho do clone do sistema SAP com o SnapCenter
+    url: "/lifecycle/sc-copy-clone-overview-of-sap-system-clone-workflow-with-snapcenter.html"
+  - title: Considerações para operações de atualização do sistema SAP HANA usando
+      backups de snapshot de storage
+    url: "/lifecycle/sc-copy-clone-considerations-for-sap-hana-system-refresh-operations-using-snapshot-backups.html"
+  - title: Scripts de exemplo de automação
+    url: "/lifecycle/sc-copy-clone-automation-example-scripts.html"
+  - title: Atualização do sistema SAP HANA com o SnapCenter
+    url: "/lifecycle/sc-copy-clone-sap-hana-system-refresh-with-snapcenter.html"
+  - title: Clone de sistema SAP com SnapCenter
+    url: "/lifecycle/sc-copy-clone-sap-system-clone-with-snapcenter.html"
+  - title: Onde encontrar informações adicionais e histórico de versões
+    url: "/lifecycle/sc-copy-clone-where-to-find-additional-information.html"
+- title: Automatização das operações de cópia do sistema SAP com Libelle SystemCopy
+  entries:
+  - title: Visão geral
+    url: "/lifecycle/libelle-sc-overview.html"
+  - title: Atualização do sistema SAP HANA com LSC e SnapCenter
+    url: "/lifecycle/libelle-sc-sap-hana-system-refresh-with-lsc-and-snapcenter.html"
+  - title: Atualização do sistema SAP HANA com LSC, AzAcSnap e Azure NetApp Files
+    url: "/lifecycle/libelle-sc-sap-hana-system-refresh-with-lsc,-azacsnap,-and-azure-netapp-files.html"
+  - title: Onde encontrar informações adicionais e histórico de versões
+    url: "/lifecycle/libelle-sc-where-to-find-additional-information.html"
+- title: Integração do armazenamento NetApp com o gerenciamento do cenário SAP
+  url: https://www.netapp.com/pdf.html?item=/media/17195-tr4018pdf.pdf

@@ -1,0 +1,20 @@
+---
+sidebar: sidebar 
+permalink: sap-dr-tools.html 
+summary: Ferramentas e partes superiores para soluções SAP Backup, Restauração e recuperação de desastres 
+keywords: netapp, solutions, SAP, backup, restore, dr, disaster recovery, tools 
+---
+= Ferramentas para SAP Backup, Restauração e recuperação de desastres
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Visão geral das ferramentas para soluções e soluções SAP Backup, Restauração e recuperação de desastres.
+
+* link:https://automationstore.netapp.com/snap-list.shtml["Plug-ins personalizados SnapCenter para MaxDB, DB2 e ASE"]
+

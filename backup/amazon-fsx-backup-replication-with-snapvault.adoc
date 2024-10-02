@@ -1,0 +1,17 @@
+---
+sidebar: sidebar 
+permalink: backup/amazon-fsx-backup-replication-with-snapvault.html 
+keywords:  
+summary:  
+---
+= Faça backup da replicação com o SnapVault
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Este documento descreve como criar um backup usando o SnapVault.
