@@ -289,9 +289,7 @@ Você deve verificar e definir as opções de volume listadas na tabela a seguir
 | Desativar cópias Snapshot automáticas | modificar vol –vserver <vserver-name> -volume <volname> -snapshot-policy none 
 
 
-| Desative a atualização do tempo de acesso, exceto o volume SID_shared  a| 
-defina advanced vol modify -vserver <vserver-name> -volume <volname> -atime-update false set admin
-
+| Desative a atualização do tempo de acesso, exceto o volume SID_shared | defina advanced vol modify -vserver <vserver-name> -volume <volname> -atime-update false set admin 
 |===
 
 
@@ -308,15 +306,11 @@ Para alguns dos comandos apresentados, tem de mudar para o modo de privilégio a
 | Ativar NFSv3 | nfs modificar -vserver <vserver-name> v3,0 ativado 
 
 
-| ONTAP 9: Defina o tamanho máximo de transferência TCP NFS como 1MB  a| 
-defina o <vserver_name> -vserver -tcp-max-xfer-size 1048576 set admin
-
-
-
-| ONTAP 8: Defina o tamanho de leitura e gravação NFS para 64KB  a| 
-definir o nfs avançado modificar -vserver <vserver-name> -v3-tcp-max-read-size 65536 nfs modificar -vserver <vserver-name> -v3-tcp-max-write-size 65536 set admin
-
+| Defina o tamanho máximo de transferência TCP NFS como 1MB | defina o <vserver_name> -vserver -tcp-max-xfer-size 1048576 set admin 
 |===
+
+NOTE: Em ambientes compartilhados com workloads diferentes, defina o tamanho máximo de transferência NFS TCP para 262144
+
 
 
 == Configuração NFS para NFSv4
@@ -332,10 +326,7 @@ Para alguns dos comandos, tem de mudar para o modo de privilégio avançado no O
 | Ativar NFSv4 | nfs modificar -vserver <vserver-name> -v4,1 ativado 
 
 
-| ONTAP 9: Defina o tamanho máximo de transferência TCP NFS como 1MB | defina o <vserver_name> -vserver -tcp-max-xfer-size 1048576 set admin 
-
-
-| ONTAP 8: Defina o tamanho de leitura e gravação NFS para 64KB | defina o <vserver_name> -vserver -tcp-max-xfer-size 65536 set admin 
+| Defina o tamanho máximo de transferência TCP NFS como 1MB | defina o <vserver_name> -vserver -tcp-max-xfer-size 1048576 set admin 
 
 
 | Desativar listas de controle de acesso (ACLs) NFSv4 | nfs modificar -vserver <vserver_name> -v4,1-acl desativado 
@@ -356,13 +347,16 @@ Para alguns dos comandos, tem de mudar para o modo de privilégio avançado no O
 | Altere a quantidade de slots de sessão NFSv4.x opcional | definir o nfs avançado modificar -vserver hana -v4.x-session-num-slots <value> set admin 
 |===
 
+NOTE: Em ambientes compartilhados com workloads diferentes, defina o tamanho máximo de transferência NFS TCP para 262144
+
+
 NOTE: Tenha em atenção que a desativação de ids de numeração requer a gestão do utilizador, conforme descrito em link:saphana-fas-nfs_sap_hana_installation_preparations_for_nfsv4.html["Preparações da instalação do SAP HANA para NFSv4."]
 
 
 NOTE: O ID de domínio NFSv4 deve ser definido com o mesmo valor em todos os servidores Linux (/`etc/idmapd.conf` ) e SVMs, conforme descrito em link:saphana-fas-nfs_sap_hana_installation_preparations_for_nfsv4.html["Preparações da instalação do SAP HANA para NFSv4."]
 
 
-NOTE: Se você estiver usando NFSV4,1, o pNFS pode ser ativado e usado.
+NOTE: O pNFS pode ser ativado e usado.
 
 Se os sistemas de vários hosts SAP HANA com failover automático do host estiverem sendo usados, os parâmetros de failover precisarão ser ajustados `nameserver.ini` conforme mostrado na tabela a seguir. Mantenha o intervalo de repetição predefinido de 10 segundos nestas secções.
 

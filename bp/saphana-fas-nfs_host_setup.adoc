@@ -34,7 +34,7 @@ net.core.wmem_max = 16777216
 net.ipv4.tcp_rmem = 4096 131072 16777216
 net.ipv4.tcp_wmem = 4096 16384 16777216
 net.core.netdev_max_backlog = 300000
-net.ipv4.tcp_slow_start_after_idle=0
+net.ipv4.tcp_slow_start_after_idle = 0
 net.ipv4.tcp_no_metrics_save = 1
 net.ipv4.tcp_moderate_rcvbuf = 1
 net.ipv4.tcp_window_scaling = 1
@@ -59,7 +59,7 @@ net.core.wmem_max = 16777216
 net.ipv4.tcp_rmem = 4096 131072 16777216
 net.ipv4.tcp_wmem = 4096 16384  16777216
 net.core.netdev_max_backlog = 300000
-net.ipv4.tcp_slow_start_after_idle=0
+net.ipv4.tcp_slow_start_after_idle = 0
 net.ipv4.tcp_no_metrics_save = 1
 net.ipv4.tcp_moderate_rcvbuf = 1
 net.ipv4.tcp_window_scaling = 1
@@ -235,7 +235,7 @@ NOTE: A partir do ONTAP 9.8 e do SUSE SLES15SP2 ou do RedHat RHEL 8,4 ou superio
 
 
 NOTE: Se nconnect estiver sendo usado com NFSv4.x, a quantidade de slots de sessão NFSv4.x deve ser ajustada de acordo com a seguinte regra: Quantidade de slots de sessão é igual a <nconnect value> x 64. No host, isso será ajustado por
-`echo options nfs max_session_slots= <calculated value> > /etc/modprobe.d/nfsclient.conf` seguido de uma reinicialização. O valor do lado do servidor também deve ser ajustado, defina o número de slots de sessão como descrito em link:saphana-fas-nfs_storage_controller_setup.html#nfs-configuration-for-nfsv4["Configuração NFS para NFSv4."]
+`echo options nfs max_session_slots=<calculated value> > /etc/modprobe.d/nfsclient.conf` seguido de uma reinicialização. O valor do lado do servidor também deve ser ajustado, defina o número de slots de sessão como descrito em link:saphana-fas-nfs_storage_controller_setup.html#nfs-configuration-for-nfsv4["Configuração NFS para NFSv4."]
 
 Para montar os sistemas de arquivos durante a inicialização do sistema com o `/etc/fstab` arquivo de configuração, execute as seguintes etapas:
 
