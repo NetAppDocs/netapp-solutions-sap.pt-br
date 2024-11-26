@@ -20,8 +20,8 @@ Marco Schön, NetApp
 
 Esta certificação é válida para os seguintes modelos:
 
-* AFF A150, AFF A250, AFF A400, AFF A70, AFF A800, AFF A900, AFF A90, AFF A1K
-* AFF C250, AFF C400, AFF C800
+* AFF A150, AFF A20, AFF A250, AFF A30, AFF A400, AFF A50, AFF A70, AFF A1K, AFF A900, AFF A90, AFF A800
+* AFF C250, AFF C30, AFF C400, AFF C60, AFF C800, AFF C80
 +
 
 NOTE: O NetApp AFF Série C requer o NetApp ONTAP 9.13,1 ou posterior
