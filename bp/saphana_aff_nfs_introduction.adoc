@@ -93,7 +93,7 @@ Para obter mais informações sobre os pré-requisitos e recomendações para si
 
 Existem várias opções para conetar o armazenamento a máquinas virtuais (VMs). A opção preferida é conectar os volumes de storage ao NFS diretamente do sistema operacional convidado. Usando essa opção, a configuração de hosts e armazenamento não difere entre hosts físicos e VMs.
 
-Armazenamentos de dados NFS e armazenamentos de dados VVOL com NFS também são compatíveis. Para ambas as opções, apenas um volume de log ou dados do SAP HANA deve ser armazenado no armazenamento de dados para casos de uso de produção. Além disso, o backup e a recuperação baseados em Snapshot orquestrados pelo NetApp SnapCenter e as soluções baseadas nisso, como a clonagem do sistema SAP, não podem ser implementadas.
+Armazenamentos de dados NFS e armazenamentos de dados VVOL com NFS também são compatíveis. Para ambas as opções, apenas um volume de log ou dados do SAP HANA deve ser armazenado no armazenamento de dados para casos de uso de produção.
 
 Este documento descreve a configuração recomendada com montagens NFS diretas a partir do sistema operacional convidado.
 
