@@ -134,17 +134,6 @@ image:saphana_fas_fc_image15.jpeg["Figura que mostra a caixa de diálogo de entr
 
 
 
-== Conjuntos de portas FCP
-
-Um conjunto de portas FCP é usado para definir quais LIFs devem ser usados por um grupo específico. Normalmente, todos os LIFs criados para os SISTEMAS HANA são colocados no mesmo conjunto de portas. A figura a seguir mostra a configuração de um conjunto de portas chamado 32g, que inclui os quatro LIFs que já foram criados.
-
-image:saphana_fas_fc_image16.jpeg["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
-
-
-NOTE: Com o ONTAP 9.8, um conjunto de portas não é necessário, mas pode ser criado e usado através da linha de comando.
-
-
-
 == Grupos de iniciadores
 
 Um grupo de servidores pode ser configurado para cada servidor ou para um grupo de servidores que exigem acesso a um LUN. A configuração do igrupo requer os nomes de portas mundiais (WWPNs) dos servidores.

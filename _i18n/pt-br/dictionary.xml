@@ -2434,7 +2434,6 @@
   <block id="9c485d8d0a0f2d60633001b05d342eed" category="doc">SAP HANA em sistemas NetApp FAS com guia de configuração NFS</block>
   <block id="3ba2c0f2dd07fd36730e20b6bcba3d0a" category="paragraph">Atualmente, esta certificação só é válida para os seguintes modelos:</block>
   <block id="ae9c01e101eba86b0e6ff092df062fae" category="inline-link">Diretório de hardware SAP HANA certificado e compatível</block>
-  <block id="43f4de9c790b46b4e976d930374377ea" category="list-text">FAS2750, FAS2820, FAS8300, FAS8700, FAS70, FAS9500, FAS90 Uma lista completa de soluções de storage certificadas pela NetApp para SAP HANA pode ser encontrada no<block ref="b94cf00a6e18ec3712e81f808581c042" category="inline-link-rx"></block>.</block>
   <block id="45bb1f13b573370e5659e113eaa6e2a7" category="paragraph">Este documento descreve os requisitos de configuração do ONTAP para o protocolo NFS versão 3 (NFSv3) ou para o protocolo NFS versão 4 (NFSv4,1).</block>
   <block id="15a34eec6990a710b230cba1946c00f5" category="admonition">Somente as versões de NFS 3 ou 4,1 são compatíveis. As versões de NFS 1, 2, 4,0 e 4,2 não são compatíveis.</block>
   <block id="134a6ecca2c7d98e325ad00ee461d25a" category="admonition">A configuração descrita neste documento é necessária para alcançar os KPIs necessários do SAP HANA e a melhor performance para o SAP HANA. Alterar quaisquer configurações ou usar recursos não listados neste documento pode causar degradação de desempenho ou comportamento inesperado e só deve ser realizado se aconselhado pelo suporte da NetApp.</block>
@@ -2914,8 +2913,6 @@
   <block id="0f41d05d80faf4e3a75a6b4e2292f1c0" category="summary">A família de produtos NetApp AFF é certificada para uso com SAP HANA em projetos TDI. A plataforma de storage empresarial certificada é caracterizada pelo software NetApp ONTAP.</block>
   <block id="fcb7778cf38a196128c87d1b6e20281e" category="paragraph">As famílias de produtos NetApp AFF A-Series e AFF C-Series foram certificadas para uso com SAP HANA em projetos de integração de data center (TDI) personalizados.</block>
   <block id="af01ac16ca42b9b924b834a3199131e9" category="paragraph">Esta certificação é válida para os seguintes modelos:</block>
-  <block id="df23cd28bc74a571210f66246272e69f" category="list-text">ASA A250, ASA A400, ASA A70, ASA A800, ASA A900, ASA A90, ASA A1K</block>
-  <block id="7165d8e624155bf7a4889b98927f605c" category="list-text">ASA C250, ASA C400, ASA C800</block>
   <block id="ba7dc8a883957fda819c429f468dc4d0" category="admonition">O NetApp AFF e o ASA C-Series exigem o NetApp ONTAP 9.13,1 ou posterior</block>
   <block id="130c9ce9d2909449cb229a98c66f9d29" category="inline-link">Diretório de hardware SAP HANA certificado e compatível</block>
   <block id="97bfb54320c9268725cfbb374a5168fb" category="paragraph">Para obter uma lista completa de soluções de storage certificadas pela NetApp para SAP HANA, consulte<block ref="a3976abaebe3520fd66c465c4d7747d7" category="inline-link-rx"></block>.</block>
@@ -2991,10 +2988,6 @@
   <block id="98388228afa94a728226d844929284de" category="paragraph"><block ref="98388228afa94a728226d844929284de" category="inline-image-macro-rx" type="image"></block></block>
   <block id="ad0e46aa05fcef2f37453adf0ef136ec" category="paragraph">Durante a criação do SVM com o ONTAP 9.8 System Manager, você pode selecionar todas as portas FCP físicas necessárias e um LIF por porta física é criado automaticamente.</block>
   <block id="cfd97e0a15391e975214c5503e96d423" category="paragraph"><block ref="cfd97e0a15391e975214c5503e96d423" category="inline-image-macro-rx" type="image"></block></block>
-  <block id="fd32c02d4b7251741240b397ff65496a" category="section-title">Conjuntos de portas FCP</block>
-  <block id="934baa69e76d9725b7833c87e6c67cba" category="paragraph">Um conjunto de portas FCP é usado para definir quais LIFs devem ser usados por um grupo de iniciadores específico. Normalmente, todos os LIFs criados para os SISTEMAS HANA são colocados no mesmo conjunto de portas. A figura a seguir mostra a configuração de um conjunto de portas chamado 32g que inclui os quatro LIFs que já foram criados.</block>
-  <block id="03595684b4248a265a5f7e534bd92c49" category="paragraph"><block ref="03595684b4248a265a5f7e534bd92c49" category="inline-image-macro-rx" type="image"></block></block>
-  <block id="ba21da193047a8b196b8513f3735ad5c" category="admonition">Com o ONTAP 9.8, um conjunto de portas não é necessário, mas pode ser criado e usado através da linha de comando.</block>
   <block id="3dc0bb550ffeb410b2cbe908abda2020" category="section-title">Configuração de volume e LUN para sistemas SAP HANA de host único</block>
   <block id="2cd30dd459c96f8423572cfd0315dd72" category="paragraph">A figura a seguir mostra a configuração de volume de quatro sistemas SAP HANA de um único host. Os volumes de dados e log de cada sistema SAP HANA são distribuídos a diferentes controladores de storage. Por exemplo, o volume<block ref="aaef8ff6bbc08e9efaddebd078c4777c" prefix=" " category="inline-code"></block> é configurado no controlador A e o volume<block ref="eedd0dd4abbe982364bb7aa4dc29237b" prefix=" " category="inline-code"></block> é configurado no controlador B. em cada volume, um único LUN é configurado.</block>
   <block id="a2ab47e506561509501f3015dfd353bb" category="admonition">Se apenas um controlador de storage de um par de HA for usado nos sistemas SAP HANA, os volumes de dados e os volumes de log também poderão ser armazenados na mesma controladora de storage.</block>
@@ -3337,7 +3330,6 @@
   <block id="4f0141ecc04bee7dc293f8992542b4bd" category="summary">A família de produtos NetApp FAS foi certificada para uso com SAP HANA em projetos TDI. A plataforma de storage empresarial certificada é caracterizada pelo sistema operacional NetApp ONTAP.</block>
   <block id="b7bda169ccba06e8cbcf02ba0fab5928" category="doc">SAP HANA em sistemas NetApp FAS com guia de configuração de protocolo Fibre Channel</block>
   <block id="e4509a748ae3ce7cb528662f2f9f7e10" category="paragraph">A certificação é válida para os seguintes modelos:</block>
-  <block id="6b31c1796a51111b23246e86a060d273" category="list-text">FAS2750, FAS2820, FAS8300, FAS8700, FAS70, FAS9500, FAS90</block>
   <block id="42eb56ae1e83db3afce70f056a668205" category="inline-link">Diretório de hardware SAP HANA certificado e compatível</block>
   <block id="bc3bbc9b5df10cfc4c9d9747e9b15e4f" category="paragraph">Para obter uma lista completa das soluções de storage certificadas da NetApp para SAP HANA, consulte<block ref="2585df8f0f74fb3d91dc9a930fa3213b" category="inline-link-rx"></block>.</block>
   <block id="b448d121930edfc4a956027d7533c403" category="paragraph">Este documento descreve as configurações do FAS que usam o protocolo Fibre Channel (FCP).</block>
@@ -3389,9 +3381,6 @@
   <block id="34cf3cce20e89b361817cb8171e434a6" category="paragraph">Durante a criação do SVM com o ONTAP 9.8 System Manager, todas as portas FCP físicas necessárias podem ser selecionadas e um LIF por porta física é criado automaticamente.</block>
   <block id="d5b418c423bd08ad0961e2eb57962d5a" category="paragraph">A figura a seguir mostra a criação de SVM e LIFs com o ONTAP 9.8 System Manager.</block>
   <block id="9a54eb14eb1b0ca1cf8ecb90dd6622cf" category="paragraph"><block ref="9a54eb14eb1b0ca1cf8ecb90dd6622cf" category="inline-image-macro-rx" type="image"></block></block>
-  <block id="1031bd6cfd51714668c70d35fdf12489" category="paragraph">Um conjunto de portas FCP é usado para definir quais LIFs devem ser usados por um grupo específico. Normalmente, todos os LIFs criados para os SISTEMAS HANA são colocados no mesmo conjunto de portas. A figura a seguir mostra a configuração de um conjunto de portas chamado 32g, que inclui os quatro LIFs que já foram criados.</block>
-  <block id="6746b37c7a3b79f38aca9f144e491303" category="paragraph"><block ref="6746b37c7a3b79f38aca9f144e491303" category="inline-image-macro-rx" type="image"></block></block>
-  <block id="825d239e42d5cc598eb01f3b672bc521" category="admonition">Com o ONTAP 9.8, um conjunto de portas não é necessário, mas pode ser criado e usado através da linha de comando.</block>
   <block id="6651fd2f7a600a31e0103b2ff23752ca" category="section-title">Grupos de iniciadores</block>
   <block id="517f95ae0c03c21432632bd009cdff0d" category="paragraph">Um grupo de servidores pode ser configurado para cada servidor ou para um grupo de servidores que exigem acesso a um LUN. A configuração do igrupo requer os nomes de portas mundiais (WWPNs) dos servidores.</block>
   <block id="3f87e8b9731d5a43155ef27ca0b567af" category="paragraph">Usando a<block ref="3a8e4afa851609127d534b04e7d29c08" prefix=" " category="inline-code"></block> ferramenta, execute o seguinte comando para obter os WWPNs de cada host SAP HANA:</block>
@@ -4736,4 +4725,12 @@
   <block id="54652d040ebb810c360684ca8e231a52" category="paragraph">Armazenamentos de dados NFS ou armazenamentos de dados VVOL com NFS também são compatíveis. Para ambas as opções, apenas um volume de log ou dados do SAP HANA deve ser armazenado no armazenamento de dados para casos de uso de produção.</block>
   <block id="7d631f41ea82e4581ac749b6874d885a" category="paragraph">Também são suportados mapeamentos de dispositivos brutos (RDM), armazenamentos de dados FCP ou armazenamentos de dados VVOL com FCP. Para ambas as opções de armazenamento de dados, apenas um volume de log ou dados do SAP HANA deve ser armazenado no armazenamento de dados para casos de uso produtivos.</block>
   <block id="efd1d0d586a27578c98f10496d441cd4" category="paragraph">Armazenamentos de dados NFS e armazenamentos de dados VVOL com NFS também são compatíveis. Para ambas as opções, apenas um volume de log ou dados do SAP HANA deve ser armazenado no armazenamento de dados para casos de uso de produção.</block>
+  <block id="cb1774d583cd49c1e7fc03a9172f09d9" category="list-text">FAS2750, FAS2820, FAS8300, FAS50, FAS8700, FAS70, FAS9500, FAS90 Uma lista completa de soluções de storage certificadas pela NetApp para SAP HANA pode ser encontrada no<block ref="b94cf00a6e18ec3712e81f808581c042" category="inline-link-rx"></block>.</block>
+  <block id="68a4c90b9b4251c2e6c62854e0f0e383" category="cell">Novos sistemas de armazenamento e pequenas atualizações</block>
+  <block id="6cc5c9e930ea3d3b8bff4367c60ceea4" category="cell">Fevereiro de 2025</block>
+  <block id="15cd132980dad32e9c3c529955721df9" category="cell">Novo sistema de armazenamento</block>
+  <block id="4433e4b3b7ec2b20f062036b1b011af7" category="list-text">ASA A250, ASA A20, ASA A30, ASA A400, ASA A50, ASA A70, ASA A800, ASA A900, ASA A90, ASA A1K</block>
+  <block id="2134d42f2b0f54791bb238214fdc5110" category="list-text">ASA C250, ASA C30, ASA C400, ASA C60, ASA C800, ASA C80</block>
+  <block id="a10922577a9bcbf85b1a7a9d8e7de5aa" category="cell">Novembro de 2024</block>
+  <block id="53bab281b7eb6692b17a4b65d99e2188" category="list-text">FAS2750, FAS2820, FAS8300, FAS50, FAS8700, FAS70, FAS9500, FAS90</block>
 </blocks>
