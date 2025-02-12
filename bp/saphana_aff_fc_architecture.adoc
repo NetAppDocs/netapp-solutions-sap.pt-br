@@ -20,7 +20,7 @@ Diferentes modelos da família de produtos do sistema AFF podem ser combinados e
 
 A figura a seguir mostra um exemplo de configuração com oito hosts SAP HANA conectados a um par de HA de storage.
 
-image:saphana_aff_fc_image2.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+image:saphana_aff_fc_image2a.png["Oito hosts do SAP HANA conectados a um par de HA de storage"]
 
 Essa arquitetura pode ser dimensionada em duas dimensões:
 
@@ -30,11 +30,11 @@ Essa arquitetura pode ser dimensionada em duas dimensões:
 
 A figura a seguir mostra um exemplo de configuração no qual mais hosts SAP HANA são conectados aos controladores de storage. Neste exemplo, mais compartimentos de disco são necessários para atender aos requisitos de capacidade e desempenho dos hosts SAP HANA de 16HANA. Dependendo dos requisitos de taxa de transferência total, você precisa adicionar conexões FC adicionais às controladoras de storage.
 
-image:saphana_aff_fc_image3.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+image:saphana_aff_fc_image3a.png["Hosts adicionais do SAP HANA conectados a um par de HA de storage"]
 
 Independentemente do sistema AFF implantado, o cenário SAP HANA também pode ser dimensionado adicionando qualquer controlador de storage certificado para atender à densidade de nó desejada, como mostrado na figura a seguir.
 
-image:saphana_aff_fc_image4.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+image:saphana_aff_fc_image4a.png["Adição de par de HA de storage adicional"]
 
 
 

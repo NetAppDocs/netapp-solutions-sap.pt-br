@@ -27,15 +27,13 @@ Use as seguintes diretrizes ao configurar a rede:
 * Para evitar interferência entre si, use caminhos de rede/e/S separados para o log e a área de dados.
 
 
-A figura a seguir mostra um exemplo com quatro hosts SAP HANA conectados a um par de HA com controladora de storage usando uma rede 10GbEG. Cada host SAP HANA tem uma conexão ativo-passivo com a malha redundante.
+A figura a seguir mostra um exemplo com quatro hosts SAP HANA conectados a um par de HA com controladora de storage usando uma rede 10GbEG. Cada host do SAP HANA tem uma conexão ativo-ativo com a malha redundante.
 
-Na camada de storage, quatro conexões ativas são configuradas para fornecer taxa de transferência de 10Gb Gbps para cada host SAP HANA. Além disso, uma interface sobressalente é configurada em cada controlador de storage.
+Na camada de storage, quatro conexões ativas são configuradas para fornecer taxa de transferência de 10Gb Gbps para cada host SAP HANA. Na camada de storage, um domínio de broadcast com um tamanho de MTU de 9000 é configurado e todas as interfaces físicas necessárias são adicionadas a esse domínio de broadcast. Essa abordagem atribui automaticamente essas interfaces físicas ao mesmo grupo de failover. Todas as interfaces lógicas (LIFs) atribuídas a essas interfaces físicas são adicionadas a esse grupo de failover.
 
-Na camada de storage, um domínio de broadcast com um tamanho de MTU de 9000 é configurado e todas as interfaces físicas necessárias são adicionadas a esse domínio de broadcast. Essa abordagem atribui automaticamente essas interfaces físicas ao mesmo grupo de failover. Todas as interfaces lógicas (LIFs) atribuídas a essas interfaces físicas são adicionadas a esse grupo de failover.
+image:saphana_aff_nfs_image10a.png["Visão geral da rede"]
 
-image:saphana_aff_nfs_image10.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
-
-Em geral, também é possível usar grupos de interface HA nos servidores (bonds) e nos sistemas de armazenamento (por exemplo, Link Aggregation Control Protocol [LACP] e ifgroups). Com os grupos de interface de HA, verifique se a carga está distribuída igualmente entre todas as interfaces dentro do grupo. A distribuição de carga depende da funcionalidade da infra-estrutura do switch de rede.
+Em geral, recomenda-se usar grupos de interface HA nos servidores (bonds) e nos sistemas de armazenamento (por exemplo, Link Aggregation Control Protocol [LACP] e ifgroups). Com os grupos de interface de HA, verifique se a carga está distribuída igualmente entre todas as interfaces dentro do grupo. A distribuição de carga depende da funcionalidade da infra-estrutura do switch de rede.
 
 
 NOTE: Dependendo do número de hosts SAP HANA e da velocidade de conexão usada, é necessário um número diferente de portas físicas ativas. Para obter mais detalhes, consulte a secção link:saphana_aff_nfs_storage_controller_setup.html#lif-configuration["Configuração LIF"].

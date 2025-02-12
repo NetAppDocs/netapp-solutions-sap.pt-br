@@ -64,10 +64,10 @@ NOTE: Este cálculo é independente do controlador de armazenamento utilizado. A
 
 === Compartimento NVMe de NS224 TB
 
-Um SSDs NVMe (dados) dá suporte a até 5 hosts SAP HANA. Os SSDs e os hosts do SAP HANA devem ser igualmente distribuídos entre as duas controladoras de storage. O mesmo se aplica aos discos NVMe internos dos sistemas AFF A800, AFF A70 e AFF A90.
+Um SSDs NVMe (dados) dá suporte a até 2/5 hosts SAP HANA dependendo dos discos NVMe usados. Os SSDs e os hosts do SAP HANA devem ser igualmente distribuídos entre as duas controladoras de storage. O mesmo se aplica aos discos NVMe internos dos sistemas AFF.
 
 
-NOTE: A adição de mais shelfs de disco não aumenta a quantidade máxima de hosts SAP HANA que uma controladora de storage pode suportar.
+NOTE: A adição de mais compartimentos de disco não aumenta a quantidade máxima de hosts SAP HANA compatíveis com uma controladora de storage.
 
 
 
@@ -213,4 +213,4 @@ O tamanho da RAM, o tamanho líquido dos dados no disco de cada host SAP HANA e 
 
 A figura a seguir resume o processo de dimensionamento.
 
-image:saphana_aff_nfs_image9.jpg["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+image:saphana_aff_nfs_image9a.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]

@@ -88,7 +88,7 @@ A visão geral a seguir resume as etapas de configuração de armazenamento nece
 
 NOTE: Com o compartimento de disco DS224C, o cabeamento SAS de quatro caminhos também pode ser usado, mas não é necessário.
 
-image:saphana_aff_nfs_image13.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+image:saphana_aff_nfs_image13.png["Conexões de gaveta SAS"]
 
 
 
@@ -96,17 +96,17 @@ image:saphana_aff_nfs_image13.png["Figura que mostra a caixa de diálogo de entr
 
 Cada compartimento de disco NVMe de NS224 GB é conetado usando duas portas de 100GbE GbE por controladora. Os discos em cada gaveta devem ser distribuídos igualmente para as duas controladoras do par de HA. O ADPv2, como descrito no capítulo de configuração agregada, também é usado para o compartimento de disco NS224. A figura a seguir mostra a conexão do compartimento de disco com uma unidade NVMe.
 
-image:saphana_aff_nfs_image14.jpg["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+image:saphana_aff_nfs_image14a.png["Conexões do compartimento de disco MVMe"]
 
 
 
 == Configuração de agregado
 
-Em geral, você precisa configurar dois agregados por controladora, independentemente do compartimento de disco ou da tecnologia de unidade (SSDs SAS ou SSDs NVMe) que for usada. Esta etapa é necessária para que você possa usar todos os recursos disponíveis do controlador. Para sistemas da série AFF A200, um agregado de dados é suficiente.
+Em geral, você precisa configurar dois agregados por controladora, independentemente do compartimento de disco ou da tecnologia de unidade (SSDs SAS ou SSDs NVMe) que for usada.
 
 A imagem a seguir mostra uma configuração de 12 hosts SAP HANA executados em um compartimento SAS de 12GB GB configurado com ADPv2. Seis hosts SAP HANA são conectados a cada controlador de storage. Quatro agregados separados, dois em cada controlador de storage, são configurados. Cada agregado é configurado com 11 discos com nove partições de dados e duas partições de disco de paridade. Para cada controlador, duas partições de reposição estão disponíveis.
 
-image:saphana_aff_nfs_image15.jpg["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+image:saphana_aff_nfs_image15a.png["Configuração agregada"]
 
 
 
@@ -133,7 +133,7 @@ A quantidade máxima de dados e montagens de volume de log por interface física
 | Velocidade da porta Ethernet | 10GbE | 25GbE | 40GbE | 100GeE 
 
 
-| Número máximo de montagens de volumes de dados ou log por porta física | 2 | 6 | 12 | 24 
+| Número máximo de montagens de volumes de dados ou log por porta física | 3 | 8 | 12 | 30 
 |===
 
 NOTE: O compartilhamento de um LIF entre diferentes hosts do SAP HANA pode exigir uma remontagem de dados ou volumes de log para um LIF diferente. Essa alteração evita penalidades de desempenho se um volume for movido para um controlador de armazenamento diferente.
@@ -154,7 +154,7 @@ NOTE: Se apenas um controlador de storage de um par de HA for usado nos sistemas
 
 NOTE: Se os volumes de dados e de log forem armazenados no mesmo controlador, o acesso do servidor ao armazenamento deve ser realizado com duas LIFs diferentes: Uma LIF para acessar o volume de dados e a outra para acessar o volume de log.
 
-image:saphana_aff_nfs_image16.jpg["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+image:saphana_aff_nfs_image16a.png["Configuração de volume hosts únicos do SAP HANA"]
 
 Para cada host do SAP HANA, um volume de dados, um volume de log e um volume para `/hana/shared` são configurados. A tabela a seguir mostra um exemplo de configuração para sistemas SAP HANA de um único host.
 
@@ -199,7 +199,7 @@ NOTE: Se apenas um controlador de storage de um par de HA for usado no sistema S
 
 NOTE: Se os volumes de dados e de log forem armazenados no mesmo controlador, o acesso do servidor ao armazenamento deve ser realizado com duas LIFs diferentes: Uma LIF para acessar o volume de dados e outra para acessar o volume de log.
 
-image:saphana_aff_nfs_image17.jpg["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+image:saphana_aff_nfs_image17a.png["Configuração de volume vários hosts do SAP HANA"]
 
 Para cada host do SAP HANA, um volume de dados e um volume de log são criados.  `/hana/shared`O volume é usado por todos os hosts do sistema SAP HANA. A tabela a seguir mostra um exemplo de configuração para um sistema SAP HANA de vários hosts com quatro hosts ativos.
 

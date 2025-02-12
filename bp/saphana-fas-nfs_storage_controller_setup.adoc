@@ -138,7 +138,7 @@ O número máximo de montagens de dados e volume de log por interface física é
 | Velocidade da porta Ethernet | 10GbE | 25GbE | 40GbE | 100GeE 
 
 
-| Número máximo de montagens de volumes de dados ou log por porta física | 2 | 6 | 12 | 24 
+| Número máximo de montagens de volumes de dados ou log por porta física | 3 | 8 | 12 | 30 
 |===
 
 NOTE: O compartilhamento de um LIF entre diferentes hosts do SAP HANA pode exigir uma remontagem de dados ou volumes de log para um LIF diferente. Essa alteração evita penalidades de desempenho se um volume for movido para um controlador de armazenamento diferente.
