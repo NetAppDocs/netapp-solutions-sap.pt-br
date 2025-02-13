@@ -94,7 +94,7 @@ image:saphana_aff_nfs_image13.png["Conexões de gaveta SAS"]
 
 === Compartimentos de disco NVMe (100GbE)
 
-Cada compartimento de disco NVMe de NS224 GB é conetado usando duas portas de 100GbE GbE por controladora. Os discos em cada gaveta devem ser distribuídos igualmente para as duas controladoras do par de HA. O ADPv2, como descrito no capítulo de configuração agregada, também é usado para o compartimento de disco NS224. A figura a seguir mostra a conexão do compartimento de disco com uma unidade NVMe.
+Cada compartimento de disco NVMe de NS224 GB é conetado a duas portas de 100GbE GbE por controladora, conforme mostrado na figura a seguir. Os discos em cada gaveta devem ser distribuídos igualmente para as duas controladoras do par de HA. O ADPv2, como descrito no capítulo de configuração agregada, também é usado para o compartimento de disco NS224.
 
 image:saphana_aff_nfs_image14a.png["Conexões do compartimento de disco MVMe"]
 

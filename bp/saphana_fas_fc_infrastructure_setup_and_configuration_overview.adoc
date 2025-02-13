@@ -16,13 +16,13 @@ summary: As seções a seguir fornecem diretrizes de configuração e configura�
 [role="lead"]
 As seções a seguir fornecem diretrizes de configuração e configuração da infraestrutura do SAP HANA. Todas as etapas necessárias para configurar o SAP HANA estão incluídas. O SVM foi criado para hospedar os dados. Nestas seções, são usadas as seguintes configurações de exemplo:
 
-* Sistema HANA com SID-SS3 e ONTAP 9.7 ou anterior
+* Sistema HANA com SID SS3
 +
 ** SAP HANA de um e vários hosts
 ** SAP HANA único host usando várias partições do SAP HANA
 
 
-* Sistema HANA com SID-FC5 e ONTAP 9.8 usando o gerenciador de volume lógico Linux (LVM)
+* Sistema HANA com SID FC5 usando o gerenciador de volume lógico Linux (LVM)
 +
 ** SAP HANA de um e vários hosts
 

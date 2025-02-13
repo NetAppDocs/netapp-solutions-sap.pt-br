@@ -73,6 +73,12 @@ NOTE: Este cálculo é independente do controlador de armazenamento utilizado. A
 
 
 
+=== Compartimento NVMe de NS224 TB
+
+Um SSDs NVMe (dados) dá suporte a até 2 hosts SAP HANA. Os SSDs e os hosts do SAP HANA devem ser igualmente distribuídos entre as duas controladoras de storage.
+
+
+
 == Workloads mistos
 
 O SAP HANA e outros workloads de aplicações executados no mesmo controlador de storage ou no mesmo agregado de storage são compatíveis. No entanto, é uma prática recomendada da NetApp separar os workloads do SAP HANA de todos os outros workloads de aplicações.

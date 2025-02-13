@@ -91,6 +91,14 @@ image:saphana-fas-nfs_image14.png["Figura que mostra a caixa de diálogo de entr
 
 
 
+=== Compartimentos de disco NVMe (100GbE)
+
+Cada compartimento de disco NVMe de NS224 GB é conetado a duas portas de 100GbE GbE por controladora, conforme mostrado na figura a seguir. Os discos em cada gaveta devem ser distribuídos igualmente para as duas controladoras do par de HA.
+
+image:saphana_fas_ns224.png["Conexões do compartimento de disco MVMe"]
+
+
+
 == Configuração de agregado
 
 Em geral, é necessário configurar dois agregados por controladora, independentemente do compartimento de disco ou da tecnologia de unidade (SSD ou HDD) usada. Para sistemas da série FAS2000, um agregado de dados é suficiente.
