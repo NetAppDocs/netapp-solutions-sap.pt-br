@@ -2769,7 +2769,6 @@
   <block id="d63a01df24ee4ea8980a2cdd59f7e8da" category="paragraph"><block ref="d63a01df24ee4ea8980a2cdd59f7e8da" category="inline-link-rx"></block></block>
   <block id="362c26abf7af5442c5d449bb2075123f" category="inline-link"><block ref="362c26abf7af5442c5d449bb2075123f" category="inline-link-rx"></block></block>
   <block id="428b7c3b557c016c4e280ca7305fafbe" category="paragraph"><block ref="428b7c3b557c016c4e280ca7305fafbe" category="inline-link-rx"></block></block>
-  <block id="617096ec70226b1decdd03cd7aa674d4" category="list-text">TR-4667: Automatizando cópias do sistema SAP usando o plug-in SAP HANA do SnapCenter 4,0</block>
   <block id="c54847a2046020d06d345fd8b61fc169" category="list-text">Centros de Documentação da NetApp</block>
   <block id="3cd8b5fe5ca94a9fdb5caaf96875ef7e" category="inline-link"><block ref="3cd8b5fe5ca94a9fdb5caaf96875ef7e" category="inline-link-rx"></block></block>
   <block id="6bfac05f3cc2c0adace9c385ef708fd9" category="paragraph"><block ref="6bfac05f3cc2c0adace9c385ef708fd9" category="inline-link-rx"></block></block>
@@ -2781,8 +2780,6 @@
   <block id="55162df4eaa40993b4b04219f5dd5e87" category="paragraph"><block ref="55162df4eaa40993b4b04219f5dd5e87" category="inline-link-rx"></block></block>
   <block id="06ad3435fb38e020aa7a36d8924c9f5c" category="inline-link"><block ref="06ad3435fb38e020aa7a36d8924c9f5c" category="inline-link-rx"></block></block>
   <block id="3710f13cc62644ea40b0af38f0b1198e" category="paragraph"><block ref="3710f13cc62644ea40b0af38f0b1198e" category="inline-link-rx"></block></block>
-  <block id="59298016353cfaad8318719db5cd21c0" category="inline-link"><block ref="59298016353cfaad8318719db5cd21c0" category="inline-link-rx"></block></block>
-  <block id="60eff1c8782a5c7cf39a41c25435a428" category="paragraph"><block ref="60eff1c8782a5c7cf39a41c25435a428" category="inline-link-rx"></block></block>
   <block id="5176c066b53609fe56eb537ca7fcac89" category="summary">O IBM Power Systems foi desenvolvido para cargas de trabalho críticas e intensivas em dados, como o SAP HANA. O IBM Power Systems simplifica e acelera as implantações do SAP HANA fornecendo quatro recursos principais: Virtualização e flexibilidade superiores, provisionamento mais rápido, escalabilidade acessível e tempo de atividade maximizado. A família de produtos NetApp AFF é certificada para uso com SAP HANA em projetos de integração de data center (TDI) personalizados e complementa perfeitamente os sistemas IBM Power. Este documento descreve as práticas recomendadas para uma configuração de storage nas (NFS) usando o NetApp ONTAP com a família de produtos AFF e IBM Power Systems.</block>
   <block id="f20a40b88879c634d62a1183049bd409" category="doc">TR-4821: SAP HANA em sistemas IBM Power e sistemas NetApp AFF com NFS</block>
   <block id="68708a2f0db2622048ef976e3d1ceb61" category="paragraph">O IBM Power Systems foi desenvolvido para cargas de trabalho críticas e intensivas em dados, como o SAP HANA. O IBM Power Systems simplifica e acelera as implantações do SAP HANA fornecendo quatro recursos principais: Virtualização e flexibilidade superiores, provisionamento mais rápido, escalabilidade acessível e tempo de atividade maximizado. A família de produtos NetApp AFF é certificada para uso com SAP HANA em projetos de integração de data center (TDI) personalizados e complementa perfeitamente os sistemas IBM Power. Este documento descreve as práticas recomendadas para uma configuração de storage nas (NFS) usando o NetApp ONTAP com a família de produtos AFF e IBM Power Systems.</block>
@@ -4725,4 +4722,11 @@
   <block id="11f314ab4a94edb93dad0cd1712e5ea2" category="paragraph"><block ref="11f314ab4a94edb93dad0cd1712e5ea2" category="inline-image-macro-rx" type="image"></block></block>
   <block id="01a8d3d035a390b9e2f8a164a50b3d9c" category="inline-image-macro">Configuração de rede específica da VMware</block>
   <block id="0d76c6604b8441a790e29500bb1f3dbe" category="paragraph"><block ref="0d76c6604b8441a790e29500bb1f3dbe" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="d4087e3f08b7a7f8751675ca82462e2a" category="list-text">TR-4667: Automatizando cópias do sistema SAP usando o plug-in SAP HANA da SnapCenter</block>
+  <block id="6c112b2b6e22e11b65018895aa298940" category="list-text">SAP HANA no VMware vSphere Wiki</block>
+  <block id="7fd039f168758cb7fad07015245b1afa" category="inline-link"><block ref="7fd039f168758cb7fad07015245b1afa" category="inline-link-rx"></block></block>
+  <block id="c0e729cc3b2e2214e3e2d35e123b1732" category="paragraph"><block ref="c0e729cc3b2e2214e3e2d35e123b1732" category="inline-link-rx"></block></block>
+  <block id="c9f801c3b76e183b280276e75a8ebaea" category="list-text">SAP HANA no Guia de práticas recomendadas do VMware vSphere</block>
+  <block id="838491807b9e9689bc796a7e547fe188" category="inline-link"><block ref="838491807b9e9689bc796a7e547fe188" category="inline-link-rx"></block></block>
+  <block id="b61d59281011f2681050ce1756929d77" category="paragraph"><block ref="b61d59281011f2681050ce1756929d77" category="inline-link-rx"></block></block>
 </blocks>
