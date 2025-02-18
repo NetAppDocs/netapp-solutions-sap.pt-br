@@ -22,10 +22,6 @@ Diferentes modelos da família de produtos do sistema FAS podem ser combinados e
 
 image:saphana-fas-nfs_image2.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
 
-A figura a seguir mostra um exemplo de uso do VMware vSphere como camada de virtualização.
-
-image:saphana-fas-nfs_image3.jpg["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
-
 A arquitetura pode ser dimensionada em duas dimensões:
 
 * Anexando hosts SAP HANA e/ou capacidade de storage adicionais ao storage existente, se os controladores de storage fornecerem desempenho suficiente para atender aos principais indicadores de desempenho (KPIs) SAP atuais
