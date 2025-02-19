@@ -2470,8 +2470,6 @@
   <block id="5363a1e8e1763bb11c4b91b2868d5584" category="paragraph">Para obter mais informações sobre como usar o vSphere com o SAP HANA, consulte os seguintes links:</block>
   <block id="f02780ddcfc1bddf0683bf8de02155d5" category="inline-link">SAP HANA no VMware vSphere - virtualização - Community Wiki</block>
   <block id="a98079dcafc3bc09ff53c1843096b51d" category="list-text"><block ref="a98079dcafc3bc09ff53c1843096b51d" category="inline-link-rx"></block></block>
-  <block id="78439f11ea8c9762eac371e8475447aa" category="inline-link">SAP HANA no Guia de práticas recomendadas e arquitetura de referência do VMware vSphere</block>
-  <block id="52d5e1f1eef3e549b479feffef1c376c" category="list-text"><block ref="52d5e1f1eef3e549b479feffef1c376c" category="inline-link-rx"></block></block>
   <block id="ab1b1647c4e88f4d70b589d5781012ca" category="inline-link">2161991 - diretrizes de configuração do VMware vSphere - SAP ONE Support Launchpad (Login necessário)</block>
   <block id="77735103527f028107b29d19df178798" category="list-text"><block ref="77735103527f028107b29d19df178798" category="inline-link-rx"></block></block>
   <block id="fe772f1f05ae8cbd39b88886e4d0fcf5" category="summary">Use as diretrizes a seguir ao configurar a rede.</block>
@@ -3017,7 +3015,6 @@
   <block id="b9c48200eb9eba714e3c88803e97b4ce" category="section-title">Criação de LUNs, volumes e mapeamento de LUNs para grupos de iniciadores</block>
   <block id="a86be254d15f1254d56b97c8755a5b77" category="admonition">A<block ref="3a8e4afa851609127d534b04e7d29c08" prefix=" " category="inline-code"></block> ferramenta faz parte dos Utilitários de host do NetApp e deve ser instalada em cada host do SAP HANA. Para obter mais informações, consulte a seção "host_setup".</block>
   <block id="8c4751bd2d7d17062a8b536388ba69bc" category="section-title">Criação de LUNs, volumes e mapeamento de LUNs para grupos de iniciadores usando a CLI</block>
-  <block id="6204c72c80408db453e7fea0b62d2e36" category="paragraph">Esta seção mostra um exemplo de configuração usando a linha de comando com o ONTAP 9.2 1 para um sistema de vários hosts SAP HANA com SID FC5 usando LVM e dois LUNs por grupo de volume LVM:</block>
   <block id="c48caf1c739d7975abd91d926cd56982" category="list-text">Crie todos os volumes necessários.</block>
   <block id="8e5c1549db5f0e31853b6809f7049388" category="list-text">Crie todos os LUNs.</block>
   <block id="d595b9142c1fd0d3ea19c8cd10165661" category="list-text">Crie o grupo de iniciadores para todos os servidores pertencentes ao sistema FC5.</block>
@@ -3145,8 +3142,6 @@
   <block id="c0c285f4d23d22653eba8dc9a75078b0" category="paragraph"><block ref="c0c285f4d23d22653eba8dc9a75078b0" category="inline-image-macro-rx" type="image"></block></block>
   <block id="1ad4402d015b30446fdee11f5a31f55b" category="paragraph">Para obter mais informações sobre os pré-requisitos e recomendações para sistemas SAP HANA de produtividade, consulte o seguinte recurso:</block>
   <block id="4769b140b92a70ffdab406be16d30122" category="paragraph">Existem várias opções para conetar o armazenamento a máquinas virtuais (VMs). A opção preferida é conectar os volumes de storage ao NFS diretamente do sistema operacional convidado. Usando essa opção, a configuração de hosts e armazenamento não difere entre hosts físicos e VMs.</block>
-  <block id="181fc43b08ba57214c4bbd2448ec470d" category="list-text"><block ref="181fc43b08ba57214c4bbd2448ec470d" category="inline-link-macro-rx"></block></block>
-  <block id="302092b20c647fa4f675ff96913675f9" category="list-text"><block ref="302092b20c647fa4f675ff96913675f9" category="inline-link-macro-rx"></block></block>
   <block id="c51b24aaab462fd7294e78e8c4e9e241" category="summary">Esta seção descreve a configuração de rede de storage dedicada para hosts SAP HANA.</block>
   <block id="8e07acfd1437feec339a101261f3d33e" category="list-text">Em uma configuração VMware, adaptadores de rede VMXNET3 dedicados devem ser atribuídos a cada máquina virtual em execução. Consulte os artigos relevantes mencionados em "Introdução" para obter mais requisitos.</block>
   <block id="cb001cd493365720d42ec425b1721062" category="inline-link-macro">Configuração LIF</block>
@@ -4729,4 +4724,7 @@
   <block id="c9f801c3b76e183b280276e75a8ebaea" category="list-text">SAP HANA no Guia de práticas recomendadas do VMware vSphere</block>
   <block id="838491807b9e9689bc796a7e547fe188" category="inline-link"><block ref="838491807b9e9689bc796a7e547fe188" category="inline-link-rx"></block></block>
   <block id="b61d59281011f2681050ce1756929d77" category="paragraph"><block ref="b61d59281011f2681050ce1756929d77" category="inline-link-rx"></block></block>
+  <block id="22c7eb5619fc26c433125aab7cfd57af" category="list-text"><block ref="22c7eb5619fc26c433125aab7cfd57af" category="inline-link-rx"></block></block>
+  <block id="d8cb082280c9ef193a28bdb60d8e9779" category="list-text"><block ref="d8cb082280c9ef193a28bdb60d8e9779" category="inline-link-rx"></block></block>
+  <block id="147a64bd742e2d54a7d7a7f133c3561c" category="paragraph">Esta seção mostra um exemplo de configuração usando a linha de comando com o ONTAP 9 para um 2 sistema de vários hosts SAP HANA de mais de 1 TB com SID FC5 usando LVM e dois LUNs por grupo de volume LVM:</block>
 </blocks>

@@ -57,7 +57,7 @@ Também são suportados mapeamentos de dispositivos brutos (RDM), armazenamentos
 
 Para obter mais informações sobre como usar o vSphere com o SAP HANA, consulte os seguintes links:
 
-* https://wiki.scn.sap.com/wiki/display/VIRTUALIZATION/SAP+HANA+on+VMware+vSphere["SAP HANA no VMware vSphere - virtualização - Community Wiki"^]
-* https://core.vmware.com/resource/sap-hana-vmware-vsphere-best-practices-and-reference-architecture-guide#introduction["SAP HANA no Guia de práticas recomendadas e arquitetura de referência do VMware vSphere"^]
+* https://help.sap.com/docs/SUPPORT_CONTENT/virtualization/3362185751.html["SAP HANA no VMware vSphere - virtualização - Community Wiki"^]
+* https://www.vmware.com/docs/sap_hana_on_vmware_vsphere_best_practices_guide-white-paper["SAP HANA no Guia de práticas recomendadas do VMware vSphere"^]
 * https://launchpad.support.sap.com/["2161991 - diretrizes de configuração do VMware vSphere - SAP ONE Support Launchpad (Login necessário)"^]
 
