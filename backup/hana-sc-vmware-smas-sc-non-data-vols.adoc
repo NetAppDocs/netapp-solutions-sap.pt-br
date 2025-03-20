@@ -1,0 +1,38 @@
+---
+sidebar: sidebar 
+permalink: backup/hana-sc-vmware-smas-sc-non-data-vols.html 
+keywords: SAP HANA, VMware, SnapMirror active sync, SnapCenter, backup and recovery, non-data volumes 
+summary:  
+---
+= Volumes SnapCenter que não são de dados
+:allow-uri-read: 
+
+
+'''
+Quando os recursos são configurados manualmente no SnapCenter e não são detetados automaticamente, o SnapCenter não tem conhecimento da sincronização ativa do VMware e do SnapMirror. Portanto, eles não são suportados nativamente pelo SnapCenter.
+
+Para volumes que não são de dados, como HANA compartilhado, as operações de backup e restauração ainda poderiam ser feitas usando o SnapCenter ao considerar etapas manuais adicionais.
+
+
+
+== Falha do sistema de storage configurado no SnapCenter
+
+Se ocorrer uma falha do sistema de storage configurado no SnapCenter, o SnapCenter não mudará automaticamente para o outro sistema de storage. O recurso de volume não-dados deve ser adaptado manualmente para que a cópia espelhada do volume seja usada para operações de backup e restauração.
+
+image:sc-saphana-vmware-smas-image39.png[""]
+
+
+
+== Operações de backup
+
+Embora o SnapCenter não esteja ciente da configuração de sincronização ativa do SnapMirror para o volume compartilhado HANA, os snapshots são replicados para ambos os locais.
+
+image:sc-saphana-vmware-smas-image40.png[""]
+
+image:sc-saphana-vmware-smas-image41.png[""]
+
+
+
+== Operação de restauro
+
+No caso de uma restauração, o SnapCenter apenas executaria uma restauração de volume sem quaisquer etapas específicas do VMware. Normalmente, você precisaria desmontar o volume compartilhado HANA no host Linux, desconetar o datastore e, em seguida, fazer a restauração de volume, conetar o datastore novamente e montar o sistema de arquivos no host Linux. Como uma operação manual, você pode parar a VM HANA, restaurar o volume compartilhado HANA com o SnapCenter e reiniciar a VM novamente.

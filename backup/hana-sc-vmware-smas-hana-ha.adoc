@@ -1,0 +1,123 @@
+---
+sidebar: sidebar 
+permalink: backup/hana-sc-vmware-smas-hana-ha.html 
+keywords: SAP HANA, VMware, SnapMirror active sync, SnapCenter, backup and recovery 
+summary:  
+---
+= Visão geral SAP HANA de alta disponibilidade
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+:firstname: ---
+:author: ---
+:authorinitials: -
+:authors: ---
+
+
+[role="lead"]
+Este capítulo fornece uma visão geral das opções de alta disponibilidade para o SAP HANA que compara a replicação na camada de aplicação com a replicação de storage.
+
+
+
+== Replicação do sistema SAP HANA (HSR)
+
+A replicação do sistema SAP HANA oferece um modo de operação no qual os dados são replicados de forma síncrona, pré-carregados na memória e atualizados continuamente no host secundário. Este modo permite valores de rto muito baixos, aproximadamente 1 minuto ou menos, mas também requer um servidor dedicado que é usado apenas para receber os dados de replicação do sistema de origem. Devido ao baixo tempo de failover, a replicação do sistema SAP HANA também costuma ser usada para operações de manutenção de inatividade quase zero, como atualizações de software HANA. As soluções de cluster do Linux Pacemaker são normalmente usadas para automatizar operações de failover.
+
+Em caso de qualquer falha no local principal, no storage, no host ou no local completo, o sistema HANA faz failover automaticamente para o local secundário controlado pelo cluster do Linux Pacemaker.
+
+Para obter uma descrição completa de todas as opções de configuração e cenários de replicação, https://help.sap.com/docs/SAP_HANA_PLATFORM/4e9b18c116aa42fc84c7dbfd02111aba/afac7100bc6d47729ae8eae32da5fdec.html["SAP HANA System Replication e SAP Help Portal"] consulte .
+
+image:sc-saphana-vmware-smas-image2.png[""]
+
+
+
+== Sincronização ativa do NetApp SnapMirror
+
+O SnapMirror active Sync permite que os serviços empresariais continuem operando mesmo em uma falha completa do local, com suporte ao failover de aplicações de forma transparente, usando uma cópia secundária. Não há necessidade de intervenção manual ou script personalizado para acionar um failover com a sincronização ativa do SnapMirror. O SnapMirror active Sync é compatível com clusters AFF, clusters All-Flash SAN Array (ASA) e C-Series (AFF ou ASA). A sincronização ativa do SnapMirror protege aplicações com LUNs iSCSI ou FCP.
+
+A partir do ONTAP 9.15.1, o SnapMirror active Sync é compatível com uma funcionalidade ativo-ativo simétrica. Ativo-ativo simétrico habilita operações de e/S de leitura e gravação de ambas as cópias de um LUN protegido com replicação síncrona bidirecional, de modo que ambas as cópias LUN possam servir operações de e/S localmente.
+
+Mais detalhes podem ser encontrados em https://docs.netapp.com/us-en/ontap/snapmirror-active-sync/index.html["Descrição geral da sincronização ativa do SnapMirror no ONTAP"].
+
+
+
+=== HANA bare metal
+
+Ao executar o SAP HANA em um servidor bare metal, você pode usar o SnapMirror active Sync para fornecer uma solução de storage altamente disponível. Os dados são replicados de forma síncrona, fornecendo um RPO igual a 0.
+
+No caso de uma falha de storage, o SISTEMA HANA acessará de forma transparente a cópia espelhada no local secundário usando o segundo caminho FCP que fornece rto de 0.
+
+Em caso de falha de um host ou de um local completo, um novo servidor no local secundário precisa ser fornecido para acessar os dados do host com falha. Normalmente, este seria um sistema de teste ou QA do mesmo tamanho que a produção, que agora será desligado e será usado para executar o sistema de produção. Depois que os LUNs no local secundário forem conectados ao novo host, o banco de dados HANA precisa ser iniciado. Portanto, o rto total depende do tempo necessário para provisionar o host e o tempo de inicialização do banco de DADOS HANA.
+
+image:sc-saphana-vmware-smas-image3.png[""]
+
+
+
+=== VSphere Metro Storage Cluster (vMSC)
+
+Ao executar o SAP HANA em um ambiente VMware usando datastores anexados ao FCP, você pode usar a sincronização ativa do SnapMirror para criar um cluster de storage do VMware Metro. Em tal configuração, os armazenamentos de dados usados pelo sistema HANA são replicados de forma síncrona para o local secundário.
+
+Em caso de falha de storage, o host ESX acessará automaticamente a cópia espelhada no local secundário fornecendo um rto de 0.
+
+No caso de uma falha completa do host ou do local, o vSphere HA é usado para iniciar a VM HANA no host ESX secundário. Quando a VM HANA está em execução, o banco de DADOS HANA precisa ser iniciado. O rto total, portanto, depende principalmente do tempo de inicialização do banco de DADOS HANA.
+
+image:sc-saphana-vmware-smas-image4.png[""]
+
+
+
+== Comparação de soluções
+
+A tabela a seguir fornece um resumo das principais caraterísticas das soluções descritas acima.
+
+[cols="25%,^25%,^25%,^25%"]
+|===
+|  | Replicação do sistema HANA | SnapMirror ative Sync – bare metal | SnapMirror ative Sync – VMware vMSC 
+
+
+| RPO com qualquer falha | RPO igual a 0 e replicação síncrona |  |  
+
+
+| Rto com falha de storage | Rto superior a 1min | Rto superior a 0 ms com failover de storage transparente |  
+
+
+| Rto com falha do local ou do host | Rto superior a 1min | Rto: Dependendo do tempo necessário para a preparação do servidor e inicialização do banco de dados HANA. | Rto: Dependendo do tempo necessário para a inicialização do banco de dados HANA. 
+
+
+| Automação de failover  a| 
+Sim,
+
+Failover automatizado em host HSR secundário
+
+controlado pelo conjunto de pacemakers.
+ a| 
+Sim, para falha de armazenamento
+
+Não, para falha do host ou do local
+
+(Provisionamento de host, conexão de recursos de storage, início do banco de dados HANA)
+ a| 
+Sim, para falha de armazenamento
+
+Sim, para falha do host ou do local
+
+(Failover da VM para outro local automatizado com o vSphere HA, início do banco de dados HANA)
+
+
+
+| É necessário um servidor dedicado no local secundário  a| 
+Sim,
+
+necessário para pré-carregar dados na memória e habilitar failover rápido com inicialização do banco de dados.
+ a| 
+Não,
+
+o servidor só é necessário em caso de failover. Normalmente, o servidor usado para QA seria usado para produção.
+ a| 
+Não,
+
+Os recursos no host ESX são necessários apenas em caso de failover. Normalmente, os recursos de QA seriam usados para produção.
+
+|===

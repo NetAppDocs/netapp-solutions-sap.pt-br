@@ -1,0 +1,87 @@
+---
+sidebar: sidebar 
+permalink: backup/hana-sc-vmware-smas-failover-scenarios.html 
+keywords: SAP HANA, VMware, SnapMirror active sync, SnapCenter, backup and recovery 
+summary:  
+---
+= Cenários de failover
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+:firstname: ---
+:author: ---
+:authorinitials: -
+:authors: ---
+
+
+
+
+== Configuração de acesso uniforme
+
+Em uma configuração de acesso uniforme, a SAN Fibre Channel é estendida em ambos os locais. Os hosts ESX em ambos os locais poderiam acessar ambas as cópias dos conjuntos de dados. Durante a operação normal, o host ESX que executa o sistema HANA está acessando a cópia local dos dados com base nas configurações de proximidade na configuração do grupo de iniciadores. Cada host ESX tem um caminho otimizado ativo para a cópia local e um caminho não otimizado ativo para a cópia espelhada.
+
+
+
+=== Funcionamento normal
+
+Durante a operação normal, o sistema HANA lê e grava de/para a cópia local com base no caminho otimizado ativo do ESX-1 host. Em cada operação de backup, o SnapCenter detecta o local principal atual da relação de replicação e executa as operações de backup no local principal. Os instantâneos são replicados para a cópia espelhada e estão disponíveis em ambos os sites. Uma operação de restauração do SnapCenter seria executada no local principal.
+
+image:sc-saphana-vmware-smas-image42.png[""]
+
+
+
+=== Falha de storage
+
+Se o sistema de storage no local 1 falhar, os SISTEMAS HANA acessarão a cópia espelhada no local 2 e continuarão a operação. O local primário muda para o local secundário e o SnapCenter agora executa operações de backup e restauração no novo local primário.
+
+image:sc-saphana-vmware-smas-image43.png[""]
+
+
+
+=== Falha do local
+
+Em caso de falha do site, a VM HANA, bem como a VM do plug-in SnapCenter e SnapCenter for VMware, farão failover para o host ESX no site secundário usando o vSphere HA. O banco de DADOS HANA precisa começar e, em seguida, acessar a cópia espelhada no segundo local. O local primário muda para o local secundário e o SnapCenter agora executa operações de backup e restauração no novo local primário.
+
+image:sc-saphana-vmware-smas-image44.png[""]
+
+
+
+== Configuração de acesso não uniforme
+
+Em uma configuração de acesso não uniforme, a SAN Fibre Channel não é estendida em ambos os locais. Cada host ESX em cada local pode acessar apenas a cópia local dos conjuntos de dados.
+
+
+
+=== Funcionamento normal
+
+Durante a operação normal, o SISTEMA HANA lê e grava de/para a cópia local. Em cada operação de backup, o SnapCenter detecta o local principal atual da relação de replicação e executa as operações de backup no local principal. Os instantâneos são replicados para a cópia espelhada e estão disponíveis em ambos os sites. Uma operação de restauração do SnapCenter seria executada no local principal.
+
+image:sc-saphana-vmware-smas-image45.png[""]
+
+
+
+=== Falha de storage
+
+Em caso de falha de storage, a VM HANA, bem como a VM do plug-in SnapCenter e SnapCenter para VMware farão failover para o host ESX no local secundário usando o vSphere HA. O banco de DADOS HANA precisa começar e, em seguida, acessar a cópia espelhada no segundo local. O local primário muda para o local secundário e o SnapCenter agora executa operações de backup e restauração no novo local primário.
+
+image:sc-saphana-vmware-smas-image46.png[""]
+
+
+
+=== Falha do local
+
+O mesmo que falha de storage.
+
+image:sc-saphana-vmware-smas-image47.png[""]
+
+
+
+=== Realocação da VM HANA ou do local principal
+
+Se a VM HANA for realocada para o outro host ESX e o local principal do storage permanecer o mesmo, uma operação de restauração com o SnapCenter falhará. Como o SnapCenter usa o local principal para executar operações de restauração, o clone será criado no lado esquerdo, enquanto a VM HANA é executada no lado direito. Como não há caminho de dados entre os sites, o SnapCenter não será copiado os dados.
+
+Como solução alternativa, você precisa garantir que a realocação da VM e do lado primário seja feita em conjunto ou que você precise fazer o failover do local principal antes da operação de restauração com o SnapCenter.
+
+image:sc-saphana-vmware-smas-image48.png[""]

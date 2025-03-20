@@ -1,0 +1,121 @@
+---
+sidebar: sidebar 
+permalink: backup/hana-sc-vmware-smas-smas-config.html 
+keywords: SAP HANA, VMware, SnapMirror active sync, SnapCenter, backup and recovery 
+summary:  
+---
+= Configuração de sincronização ativa do SnapMirror
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+:firstname: ---
+:author: ---
+:authorinitials: -
+:authors: ---
+
+
+
+
+== Pré-requisitos
+
+Os clusters de storage e as SVMs relevantes devem ser colocados em Contato.
+
+O ONTAP Mediator precisa estar disponível e configurado em ambos os clusters de storage.
+
+image:sc-saphana-vmware-smas-image10.png[""]
+
+image:sc-saphana-vmware-smas-image11.png[""]
+
+
+
+== Layout de armazenamento e configuração de grupo de consistência
+
+Na documentação do ONTAP https://docs.netapp.com/us-en/ontap/snapmirror-active-sync/index.html#key-concepts["Descrição geral da sincronização ativa do SnapMirror no ONTAP"], o conceito de grupos de consistência com a sincronização ativa do SnapMirror é descrito da seguinte forma:
+
+Um grupo de consistência é uma coleção de volumes do FlexVol que oferece uma garantia de consistência para o workload da aplicação que precisa ser protegido para manter a continuidade dos negócios.
+
+O objetivo de um grupo de consistência é tirar imagens instantâneas simultâneas de vários volumes, garantindo assim cópias consistentes com falhas de uma coleção de volumes em um momento. Um grupo de consistência garante que todos os volumes de um conjunto de dados sejam silenciados e, em seguida, encaixados exatamente no mesmo ponto no tempo. Isso fornece um ponto de restauração consistente com dados nos volumes que dão suporte ao conjunto de dados. Um grupo de consistência mantém, assim, consistência dependente da ordem de gravação. Se você decidir proteger aplicativos para a continuidade dos negócios, o grupo de volumes correspondentes a esse aplicativo deve ser adicionado a um grupo de consistência para que um relacionamento de proteção de dados seja estabelecido entre uma origem e um grupo de consistência de destino. A consistência de origem e destino deve conter o mesmo número e tipo de volumes.
+
+Para a replicação de SISTEMAS HANA, o grupo de consistência precisa incluir todos os volumes usados pelo sistema HANA individual (dados, log e compartilhado). Os volumes que devem fazer parte de um grupo de consistência devem ser armazenados no mesmo SVM. As imagens do sistema operativo podem ser armazenadas num volume separado com o seu próprio grupo de consistência. A figura abaixo ilustra um exemplo de configuração com dois SISTEMAS HANA.
+
+image:sc-saphana-vmware-smas-image12.png[""]
+
+
+
+== Configuração do grupo de iniciadores
+
+Em nossa configuração de laboratório, criamos um grupo de iniciadores, incluindo as SVMs de storage, que são usadas para a replicação de sincronização ativa do SnapMirror. Na configuração de sincronização ativa do SnapMirror descrita posteriormente, definiremos que o grupo de iniciadores fará parte da replicação.
+
+Usando as configurações de proximidade, definimos qual host do ESX está próximo a qual cluster de armazenamento. No nosso caso, o A700 está próximo do ESX-1 e o A800 está próximo do ESX-2.
+
+image:sc-saphana-vmware-smas-image13.png[""]
+
+image:sc-saphana-vmware-smas-image14.png[""]
+
+
+NOTE: Em uma configuração de acesso não uniforme, o grupo de iniciadores no cluster de armazenamento primário (A700) deve incluir somente os iniciadores do host ESX-1, já que não há conexão SAN ao ESX-2. Além disso, você precisa configurar outro grupo de iniciadores no segundo cluster de armazenamento (A800), que inclui apenas os iniciadores do host ESX-2. A configuração de proximidade e a replicação do grupo de iniciadores não são necessárias.
+
+
+
+== Configure a proteção com o gerenciador de sistema ONTAP
+
+image:sc-saphana-vmware-smas-image15.png[""]
+
+
+
+=== Replicação do grupo de consistência e do grupo de iniciadores
+
+É necessário criar um novo grupo de consistência e adicionar todos os três LUNs do sistema HANA ao grupo de consistência.
+
+"Replicar grupo de iniciadores" foi ativado. O grupo imitator permanecerá em sincronia independente onde as alterações são feitas.
+
+
+NOTE: Em uma configuração de acesso não uniforme, o grupo de iniciadores não deve ser replicado, uma vez que um grupo de iniciadores separado deve ser configurado no segundo cluster de armazenamento.
+
+image:sc-saphana-vmware-smas-image16.png[""]
+
+Ao clicar nas definições de proximidade, pode rever a configuração efetuada antes na configuração do grupo de iniciadores.
+
+image:sc-saphana-vmware-smas-image17.png[""]
+
+O cluster de armazenamento de destino deve ser configurado e "inicializar relacionamento" deve ser ativado.
+
+
+
+=== Sincronização
+
+No cluster de armazenamento A700 (fonte), a nova relação está agora listada.
+
+image:sc-saphana-vmware-smas-image18.png[""]
+
+No cluster de armazenamento A800 (destino), a nova relação e o status da replicação são listados.
+
+image:sc-saphana-vmware-smas-image19.png[""]
+
+
+
+== Armazenamento de dados da infraestrutura
+
+O armazenamento de dados, onde as imagens do SISTEMA OPERACIONAL do HANA, do SnapCenter e do plug-in vSphere são armazenadas, é replicado da mesma forma que descrito para os datastores do banco de dados HANA.
+
+
+
+== Local principal
+
+O comportamento de sincronização ativa do SnapMirror é simétrico, com uma exceção importante - a configuração do site principal.
+
+A sincronização ativa do SnapMirror considerará um site a "fonte" e o outro o "destino". Isso implica uma relação de replicação unidirecional, mas isso não se aplica ao comportamento de IO. A replicação é bidirecional e simétrica, e os tempos de resposta de e/S são os mesmos em ambos os lados do espelho.
+
+Se o link de replicação for perdido, os caminhos de LUN na cópia de origem continuarão a servir dados enquanto os caminhos de LUN na cópia de destino ficarão indisponíveis até que a replicação seja restabelecida e o SnapMirror entre novamente em um estado síncrono. Os caminhos irão então retomar a veiculação de dados.
+
+O efeito de designar um cluster como uma fonte simplesmente controla qual cluster sobrevive como um sistema de armazenamento de leitura e gravação se o link de replicação for perdido.
+
+O local principal é detetado pelo SnapCenter e usado para executar operações de backup, restauração e clonagem.
+
+
+NOTE: Lembre-se de que a origem e o destino não estão vinculados ao SVM ou ao cluster de storage, mas podem ser diferentes para cada relacionamento de replicação.
+
+image:sc-saphana-vmware-smas-image20.png[""]

@@ -1,0 +1,23 @@
+---
+sidebar: sidebar 
+permalink: backup/hana-sc-vmware-smas-sc-system-refresh.html 
+keywords: SAP HANA, VMware, SnapMirror active sync, SnapCenter, backup and recovery 
+summary:  
+---
+= Operação de atualização do sistema SAP
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+:firstname: ---
+:author: ---
+:authorinitials: -
+:authors: ---
+
+
+As operações de clonagem podem ser executadas no local primário ou no storage secundário.
+
+O volume clonado não fará parte do grupo de CONSISTÊNCIA HANA e não será replicado com a sincronização ativa do SnapMirror.
+
+Informações detalhadas sobre os fluxos de trabalho de atualização do sistema podem ser encontradas em: https://docs.netapp.com/us-en/netapp-solutions-sap/lifecycle/sc-copy-clone-introduction.html["TR-4667: Automatizando as operações de clonagem e cópia do sistema SAP HANA com o SnapCenter"]
