@@ -38,13 +38,36 @@ O uso do NetApp volume Encryption (NVE) e do NetApp Aggregate Encryption (NAE) �
 
 == Qualidade do serviço
 
-O QoS pode ser usado para limitar a taxa de transferência de storage para sistemas SAP HANA específicos ou aplicações sem SAP em uma controladora de uso compartilhado. Um caso de uso seria limitar o rendimento dos sistemas de desenvolvimento e teste para que eles não possam influenciar os sistemas de produção em uma configuração mista.
+O QoS pode ser usado para limitar a taxa de transferência de storage para sistemas SAP HANA específicos ou aplicações que não sejam SAP em um controlador compartilhado.
 
-Durante o processo de dimensionamento, você deve determinar os requisitos de desempenho de um sistema que não seja de produção. Os sistemas de desenvolvimento e teste podem ser dimensionados com valores de desempenho mais baixos, normalmente na faixa de 20% a 50% de um KPI do sistema de produção conforme definido pelo SAP.
 
-A partir do ONTAP 9, a QoS é configurada no nível de volume de storage e usa valores máximos para taxa de transferência (Mbps) e quantidade de e/S (IOPS).
 
-A e/S de gravação grande tem o maior efeito de desempenho no sistema de storage. Portanto, o limite de taxa de transferência de QoS deve ser definido para uma porcentagem dos valores de KPI de performance de storage SAP HANA de gravação correspondentes nos volumes de dados e log.
+=== Produção e desenvolvimento/teste
+
+Um caso de uso seria limitar o rendimento dos sistemas de desenvolvimento e teste para que eles não possam influenciar os sistemas de produção em uma configuração mista. Durante o processo de dimensionamento, você deve determinar os requisitos de desempenho de um sistema que não seja de produção. Os sistemas de desenvolvimento e teste podem ser dimensionados com valores de desempenho mais baixos, normalmente na faixa de 20% a 50% de um KPI do sistema de produção conforme definido pelo SAP. A e/S de gravação grande tem o maior efeito de desempenho no sistema de storage. Portanto, o limite de taxa de transferência de QoS deve ser definido para uma porcentagem dos valores de KPI de performance de storage SAP HANA de gravação correspondentes nos volumes de dados e log.
+
+
+
+=== Ambientes compartilhados
+
+Outro caso de uso é limitar a taxa de transferência de cargas de trabalho de gravação pesadas, especialmente para evitar que essas cargas de trabalho tenham impacto em outras cargas de trabalho de gravação sensíveis à latência. Nesses ambientes, é prática recomendada aplicar uma política de grupo de QoS de teto de taxa de transferência não compartilhada a cada LUN em cada máquina virtual de storage (SVM) para restringir a taxa de transferência máxima de cada objeto de storage individual ao valor especificado. Isso reduz a possibilidade de que um único workload possa influenciar negativamente outros workloads.
+
+Para fazer isso, é necessário criar uma política de grupo com a CLI do cluster do ONTAP para cada SVM:
+
+....
+qos policy-group create -policy-group <policy-name> -vserver <vserver name> -max-throughput 1000MB/s -is-shared false
+....
+Aplicado a cada LUN no SVM. Veja a seguir um exemplo para aplicar o grupo de políticas a todas as LUNs existentes em uma SVM:
+
+....
+lun modify -vserver <vserver name>  -path * -qos-policy-group  <policy-name>
+....
+Isso precisa ser feito para cada SVM. O nome do grupo de polícia QoS para cada SVM precisa ser diferente. Para novos LUNs, a política pode ser aplicada diretamente:
+
+....
+lun create -vserver <vserver_name> -path  /vol/<volume_name>/<lun_name>   -size <size> -ostype <e.g. linux>  -qos-policy-group <policy-name>
+....
+Recomenda-se usar 1000Mb GB/s como taxa de transferência máxima para um determinado LUN. Se um aplicativo exigir mais throughput, vários LUNs com distribuição LUN devem ser usados para fornecer a largura de banda necessária. Este guia fornece um exemplo para SAP HANA com base no Linux LVM na https://docs.netapp.com/us-en/netapp-solutions-sap/bp/saphana_aff_fc_host_setup.html#create-lvm-volume-groups-and-logical-volumes["Configuração do host"] seção .
 
 
 
