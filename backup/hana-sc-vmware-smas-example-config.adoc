@@ -20,7 +20,7 @@ summary:
 [role="lead"]
 Na configuração do laboratório, estamos usando uma configuração de acesso uniforme, onde ambos os hosts ESX têm acesso a ambos os clusters de armazenamento. Nas próximas seções, descrevemos a configuração de acesso uniforme, mas também destacamos as diferenças para uma configuração não uniforme.
 
-image:sc-saphana-vmware-smas-image1.png[""]
+image:sc-saphana-vmware-smas-image1.png["Figura demonstrando o conteúdo que está sendo discutido"]
 
 
 

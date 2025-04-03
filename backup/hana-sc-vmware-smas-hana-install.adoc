@@ -26,14 +26,14 @@ Este capítulo descreve a instalação e configuração do sistema SAP HANA espe
 
 A figura abaixo mostra a configuração de storage e armazenamento de dados para o sistema HANA. Você deve configurar um volume dedicado, LUN, datastore para cada sistema de arquivos do sistema HANA. Os armazenamentos de dados não devem ser compartilhados em vários SISTEMAS HANA ou outros workloads.
 
-image:sc-saphana-vmware-smas-image5.png[""]
+image:sc-saphana-vmware-smas-image5.png["Figura demonstrando o conteúdo que está sendo discutido"]
 
 Todos os três LUNs do SISTEMA HANA (HANA e HANA), bem como o LUN para as imagens do sistema operacional e os componentes do SnapCenter, foram provisionados no cluster de storage A700.
 
 
 NOTE: Todos os volumes do SISTEMA HANA devem ser provisionados no mesmo SVM. Na configuração de sincronização ativa do SnapMirror descrita posteriormente, criaremos um grupo de consistência em todos os três VOLUMES HANA, o que exige que os volumes estejam no mesmo SVM. O volume de infraestrutura estará em um grupo de consistência diferente e, portanto, poderá estar em um SVM diferente.
 
-image:sc-saphana-vmware-smas-image6.png[""]
+image:sc-saphana-vmware-smas-image6.png["Figura demonstrando o conteúdo que está sendo discutido"]
 
 Um grupo de iniciadores deve ser configurado e os LUNs acima devem ser mapeados para o host ESX-1, que está próximo ao sistema de armazenamento A700 em nossa configuração de laboratório.
 
@@ -43,7 +43,7 @@ Um grupo de iniciadores deve ser configurado e os LUNs acima devem ser mapeados 
 
 Criamos três armazenamentos de dados para o sistema HANA usando os três LUNs provisionados anteriormente. Além disso, criamos um datastore de infraestrutura usando o LUN de infraestrutura.
 
-image:sc-saphana-vmware-smas-image7.png[""]
+image:sc-saphana-vmware-smas-image7.png["Figura demonstrando o conteúdo que está sendo discutido"]
 
 
 
@@ -57,7 +57,7 @@ Em nossa configuração de laboratório, implantamos uma nova VM e colocamos o V
 
 Três novos discos foram adicionados à VM HANA, cada disco em um dos datastores criados para o sistema HANA.
 
-image:sc-saphana-vmware-smas-image8.png[""]
+image:sc-saphana-vmware-smas-image8.png["Figura demonstrando o conteúdo que está sendo discutido"]
 
 
 
@@ -67,7 +67,7 @@ O parâmetro disk.EnableUID deve ser adicionado e definido como true . O parâme
 
 A VM deve ser parada antes que o parâmetro possa ser adicionado.
 
-image:sc-saphana-vmware-smas-image9.png[""]
+image:sc-saphana-vmware-smas-image9.png["Figura demonstrando o conteúdo que está sendo discutido"]
 
 A funcionalidade pode ser verificada com o comando abaixo.
 

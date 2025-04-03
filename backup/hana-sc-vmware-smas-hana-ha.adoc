@@ -30,7 +30,7 @@ Em caso de qualquer falha no local principal, no storage, no host ou no local co
 
 Para obter uma descrição completa de todas as opções de configuração e cenários de replicação, https://help.sap.com/docs/SAP_HANA_PLATFORM/4e9b18c116aa42fc84c7dbfd02111aba/afac7100bc6d47729ae8eae32da5fdec.html["SAP HANA System Replication e SAP Help Portal"] consulte .
 
-image:sc-saphana-vmware-smas-image2.png[""]
+image:sc-saphana-vmware-smas-image2.png["Figura demonstrando o conteúdo que está sendo discutido"]
 
 
 
@@ -52,7 +52,7 @@ No caso de uma falha de storage, o SISTEMA HANA acessará de forma transparente 
 
 Em caso de falha de um host ou de um local completo, um novo servidor no local secundário precisa ser fornecido para acessar os dados do host com falha. Normalmente, este seria um sistema de teste ou QA do mesmo tamanho que a produção, que agora será desligado e será usado para executar o sistema de produção. Depois que os LUNs no local secundário forem conectados ao novo host, o banco de dados HANA precisa ser iniciado. Portanto, o rto total depende do tempo necessário para provisionar o host e o tempo de inicialização do banco de DADOS HANA.
 
-image:sc-saphana-vmware-smas-image3.png[""]
+image:sc-saphana-vmware-smas-image3.png["Figura demonstrando o conteúdo que está sendo discutido"]
 
 
 
@@ -64,7 +64,7 @@ Em caso de falha de storage, o host ESX acessará automaticamente a cópia espel
 
 No caso de uma falha completa do host ou do local, o vSphere HA é usado para iniciar a VM HANA no host ESX secundário. Quando a VM HANA está em execução, o banco de DADOS HANA precisa ser iniciado. O rto total, portanto, depende principalmente do tempo de inicialização do banco de DADOS HANA.
 
-image:sc-saphana-vmware-smas-image4.png[""]
+image:sc-saphana-vmware-smas-image4.png["Figura demonstrando o conteúdo que está sendo discutido"]
 
 
 

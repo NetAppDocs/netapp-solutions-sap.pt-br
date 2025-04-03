@@ -11,11 +11,10 @@ summary:
 :icons: font
 :linkattrs: 
 :imagesdir: ../media/
-:firstname: ---
-:author: ---
-:authorinitials: -
-:authors: ---
 
+
+[role="lead"]
+este artigo aborda as etapas de configuração necessárias para esta solução.
 
 
 
@@ -25,9 +24,9 @@ Os clusters de storage e as SVMs relevantes devem ser colocados em Contato.
 
 O ONTAP Mediator precisa estar disponível e configurado em ambos os clusters de storage.
 
-image:sc-saphana-vmware-smas-image10.png[""]
+image:sc-saphana-vmware-smas-image10.png["Figura demonstrando o conteúdo que está sendo discutido"]
 
-image:sc-saphana-vmware-smas-image11.png[""]
+image:sc-saphana-vmware-smas-image11.png["Figura demonstrando o conteúdo que está sendo discutido"]
 
 
 
@@ -41,7 +40,7 @@ O objetivo de um grupo de consistência é tirar imagens instantâneas simultân
 
 Para a replicação de SISTEMAS HANA, o grupo de consistência precisa incluir todos os volumes usados pelo sistema HANA individual (dados, log e compartilhado). Os volumes que devem fazer parte de um grupo de consistência devem ser armazenados no mesmo SVM. As imagens do sistema operativo podem ser armazenadas num volume separado com o seu próprio grupo de consistência. A figura abaixo ilustra um exemplo de configuração com dois SISTEMAS HANA.
 
-image:sc-saphana-vmware-smas-image12.png[""]
+image:sc-saphana-vmware-smas-image12.png["Figura demonstrando o conteúdo que está sendo discutido"]
 
 
 
@@ -51,9 +50,9 @@ Em nossa configuração de laboratório, criamos um grupo de iniciadores, inclui
 
 Usando as configurações de proximidade, definimos qual host do ESX está próximo a qual cluster de armazenamento. No nosso caso, o A700 está próximo do ESX-1 e o A800 está próximo do ESX-2.
 
-image:sc-saphana-vmware-smas-image13.png[""]
+image:sc-saphana-vmware-smas-image13.png["Figura demonstrando o conteúdo que está sendo discutido"]
 
-image:sc-saphana-vmware-smas-image14.png[""]
+image:sc-saphana-vmware-smas-image14.png["Figura demonstrando o conteúdo que está sendo discutido"]
 
 
 NOTE: Em uma configuração de acesso não uniforme, o grupo de iniciadores no cluster de armazenamento primário (A700) deve incluir somente os iniciadores do host ESX-1, já que não há conexão SAN ao ESX-2. Além disso, você precisa configurar outro grupo de iniciadores no segundo cluster de armazenamento (A800), que inclui apenas os iniciadores do host ESX-2. A configuração de proximidade e a replicação do grupo de iniciadores não são necessárias.
@@ -62,7 +61,7 @@ NOTE: Em uma configuração de acesso não uniforme, o grupo de iniciadores no c
 
 == Configure a proteção com o gerenciador de sistema ONTAP
 
-image:sc-saphana-vmware-smas-image15.png[""]
+image:sc-saphana-vmware-smas-image15.png["Figura demonstrando o conteúdo que está sendo discutido"]
 
 
 
@@ -75,11 +74,11 @@ image:sc-saphana-vmware-smas-image15.png[""]
 
 NOTE: Em uma configuração de acesso não uniforme, o grupo de iniciadores não deve ser replicado, uma vez que um grupo de iniciadores separado deve ser configurado no segundo cluster de armazenamento.
 
-image:sc-saphana-vmware-smas-image16.png[""]
+image:sc-saphana-vmware-smas-image16.png["Figura demonstrando o conteúdo que está sendo discutido"]
 
 Ao clicar nas definições de proximidade, pode rever a configuração efetuada antes na configuração do grupo de iniciadores.
 
-image:sc-saphana-vmware-smas-image17.png[""]
+image:sc-saphana-vmware-smas-image17.png["Figura demonstrando o conteúdo que está sendo discutido"]
 
 O cluster de armazenamento de destino deve ser configurado e "inicializar relacionamento" deve ser ativado.
 
@@ -89,11 +88,11 @@ O cluster de armazenamento de destino deve ser configurado e "inicializar relaci
 
 No cluster de armazenamento A700 (fonte), a nova relação está agora listada.
 
-image:sc-saphana-vmware-smas-image18.png[""]
+image:sc-saphana-vmware-smas-image18.png["Figura demonstrando o conteúdo que está sendo discutido"]
 
 No cluster de armazenamento A800 (destino), a nova relação e o status da replicação são listados.
 
-image:sc-saphana-vmware-smas-image19.png[""]
+image:sc-saphana-vmware-smas-image19.png["Figura demonstrando o conteúdo que está sendo discutido"]
 
 
 
@@ -118,4 +117,4 @@ O local principal é detetado pelo SnapCenter e usado para executar operações 
 
 NOTE: Lembre-se de que a origem e o destino não estão vinculados ao SVM ou ao cluster de storage, mas podem ser diferentes para cada relacionamento de replicação.
 
-image:sc-saphana-vmware-smas-image20.png[""]
+image:sc-saphana-vmware-smas-image20.png["Figura demonstrando o conteúdo que está sendo discutido"]
