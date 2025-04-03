@@ -72,6 +72,9 @@ lun create -vserver <vserver_name> -path  /vol/<volume_name>/<lun_name>   -size 
 Recomenda-se usar 1000Mb GB/s como taxa de transferência máxima para um determinado LUN. Se um aplicativo exigir mais throughput, vários LUNs com distribuição LUN devem ser usados para fornecer a largura de banda necessária. Este guia fornece um exemplo para SAP HANA com base no Linux LVM na https://docs.netapp.com/us-en/netapp-solutions-sap/bp/saphana_fas_fc_host_setup.html#create-lvm-volume-groups-and-logical-volumes["Configuração do host"] seção .
 
 
+NOTE: O limite também se aplica a leituras. Portanto, use LUNs suficientes para cumprir os SLAs necessários para o tempo de inicialização do banco de dados SAP HANA e para backups.
+
+
 
 == NetApp FabricPool
 
