@@ -5010,4 +5010,384 @@
   <block id="ccc685f61d9aa4b750fdd8658835ff94" category="paragraph"><block ref="ccc685f61d9aa4b750fdd8658835ff94" category="inline-image-macro-rx" type="image"></block></block>
   <block id="34db90278e7f1203022d19ec5b665010" category="paragraph"><block ref="34db90278e7f1203022d19ec5b665010" category="inline-image-macro-rx" type="image"></block></block>
   <block id="5da5dde9720b315379e70b4177434a18" category="paragraph"><block ref="5da5dde9720b315379e70b4177434a18" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="27e52c3fb5eeac301ef7551fbbc844ca" category="summary">Este documento descreve as especificidades de integração do SnapCenter para o banco de dados IBM DB2 usado em um ambiente SAP.</block>
+  <block id="f2ce65fcc640e16d86d90a9043a03a3b" category="doc">Integração do SnapCenter para o banco de dados IBM DB2</block>
+  <block id="ec0faed5ff7ebe2f0706a4c39e2c4c2c" category="list-text">Esquema da amostra</block>
+  <block id="ef7b844ca6d6a2602dafe3134fb1ca72" category="list-text">Proteja o banco de dados DB2</block>
+  <block id="4e31e49d4100c6ba14450837d92d461f" category="list-text">Restaurar e recuperar banco de dados DB2</block>
+  <block id="a00f0fd59cca7f07f0cea6ac706a0e5c" category="paragraph">Autor: Michael Schlosser, NetApp</block>
+  <block id="473b1d9bd40c12221ea0f6cae1597325" category="paragraph">Exemplo de implementação para o Plugin SnapCenter DB2 para um sistema SAP em execução na Plataforma Azure.</block>
+  <block id="12b39368d55e98f888e35df7746fb72c" category="admonition">Esta implementação descreve a configuração mínima de volume necessária.</block>
+  <block id="12cd71728e50a3902fcece65460e4ebf" category="inline-link-macro">Blog da Comunidade Técnica MS</block>
+  <block id="fbcc308403cd96b6411f668e18f06800" category="paragraph">Alternativamente, a estrutura de volume descrita neste <block ref="ba61e08a88d29c2a10a488be3b39cf04" category="inline-link-macro-rx"></block> documento pode ser usada.</block>
+  <block id="da244bb6adce2e1c672dfd628fb7dd34" category="inline-image-macro">Diagrama da implementação de exemplo com o IBM DB2</block>
+  <block id="e62cf247ea7ec708a2ad9230ea442925" category="paragraph"><block ref="e62cf247ea7ec708a2ad9230ea442925" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="3b3baef4e7ae79cabecf02ebeed0c59d" category="section-title">Ambiente de demonstração</block>
+  <block id="7eef23b11d6e87eee968a9bef33fd707" category="cell">*Software*</block>
+  <block id="45cc01ab5f209e8760027e9c30097025" category="cell">*Versão*</block>
+  <block id="999bc6b18351bbe817d26f559ba408ae" category="cell">SAP</block>
+  <block id="6d249e1baba83ae640bbeec81e7c3615" category="cell">SAP NetWeaver 7,5</block>
+  <block id="c890515f1055143925ae4fb85b86ec70" category="cell">DB2</block>
+  <block id="948d557ffdaf25b2c6b7be9ddd53ec00" category="cell">10.5.0.7</block>
+  <block id="d6eb82c324cab2f36e345863fad95090" category="cell">6,1</block>
+  <block id="8cfac113a293def38718f860d9847f61" category="section-title">DB2 Design de volume</block>
+  <block id="4637ee103bf2e775e15a469132b5bb9e" category="paragraph">O layout de menor volume a seguir deve ser usado para habilitar casos de uso de backup/recuperação e clonar para o banco de dados DB2. A configuração de exemplo usa &lt;SID&gt;: D01.</block>
+  <block id="9a888b0c74b941393528812eb1316d03" category="cell">*Nome do volume*</block>
+  <block id="f899d776dc67e9dcee2f4121b4bba535" category="cell">*Diretório (qtree) no volume*</block>
+  <block id="e672228e961994874c51cca0ee312ede" category="cell">*Ponto de montagem no servidor*</block>
+  <block id="9bdc480955b350f1fe8089392ad36cbe" category="cell">*Comentário*</block>
+  <block id="31d84945c9682550a825076c467153b5" category="cell">&lt;SID&gt;-sapdb2</block>
+  <block id="ea95a7d80f83fc61f9f153f2638ea853" category="cell">db2</block>
+  <block id="7e26510de272b089b386a86ccbf587b6" category="cell">/db2</block>
+  <block id="534a3af3843cec27238cd2a795da097e" category="cell">/DB2/&lt;SID&gt;</block>
+  <block id="dd821c245ff7dc009d80ebb64af5731f" category="cell">Diretório pai para arquivos relacionados ao DB2</block>
+  <block id="8fd86b7aadd5e9b03497bf120891978b" category="cell">/db2/db2&lt;sid&gt;</block>
+  <block id="79df651c0a05c7844b2d00a3d89305ad" category="cell">Diretório base do usuário db2&lt;sid&gt; e software DB2</block>
+  <block id="15a05a936e7e6e3f58e6fbc1511a6e81" category="cell">/DB2/&lt;SID&gt;/db2dump</block>
+  <block id="b3a15b9def11128e8b2026efc6c3d072" category="cell">DB2 arquivos de log de diagnóstico e despejo</block>
+  <block id="e997b2cd0b797de69fb2c7d8ffffca3c" category="cell">/DB2/&lt;SID&gt;/backup</block>
+  <block id="64eb203ca6b490c12ed7667283c124a6" category="cell">Dlocation de backup (pode ser colocado em um volume diferente)</block>
+  <block id="7d096ea4f92dc98b3097737a8b5181a6" category="cell">/DB2/&lt;SID&gt;/log_arch</block>
+  <block id="6f492fcb3cdd8aace41d6904c24b3bc5" category="cell">Registos de remarcação offline (podem ser colocados num volume diferente – o instantâneo será acionado)</block>
+  <block id="4aea0cb6e5c006ddd53a70c12b56fdd0" category="cell">/DB2/&lt;SID&gt;/log_dir</block>
+  <block id="2270a43500f9a14bb91dab8efd360ef3" category="cell">Registos de remarcação online (podem ser colocados num volume diferente – o instantâneo será acionado)</block>
+  <block id="bbf57e51fef1ff26dad896beca3f7e87" category="cell">&lt;sid&gt;.adm</block>
+  <block id="2da342b3dda8e03159bbffaefb0d4c8b" category="cell">/home/&lt;sid&gt;adm</block>
+  <block id="698ad4b403eed82197a9bf2952ebcf6f" category="cell">Diretório base do usuário &lt;sid&gt;.adm</block>
+  <block id="25b707f15524f486786dd6cf01c22073" category="cell">sap&lt;sid&gt;</block>
+  <block id="a861d753fb632d3aa7894413728b31bc" category="cell">/home/sap&lt;sid&gt;</block>
+  <block id="96d9f98b47736d5b212d67691e5ed26f" category="cell">Diretório base do usuário sap&lt;sid&gt;</block>
+  <block id="07c219d49a1979ef373138dd06f5ad96" category="cell">usrsaptrans</block>
+  <block id="82fccaf357ca5c791314eaf3a6944474" category="cell">/usr/sap/trans</block>
+  <block id="b838e6c5bd60b36ebeaaab72caed45fa" category="cell">Diretório de transporte</block>
+  <block id="be4c2a2a5d126229964628d446efbb8f" category="cell">Usrsap&lt;SID&gt;</block>
+  <block id="c01ff4fdf7388e360b42bc0e64a0a80d" category="cell">/Usr/sap/&lt;SID&gt;</block>
+  <block id="756508efab6e0d1bc2dc4fee92cac4c5" category="cell">Usr SAP</block>
+  <block id="4a7c0df05ccef9cc1dc8697f985fd620" category="cell">Sapmnt&lt;SID&gt;</block>
+  <block id="5a098fa2529c8679c4e8fc1738f1da9d" category="cell">/Sapmnt/&lt;SID&gt;</block>
+  <block id="026549168c7a2bb8161cfb74d480263a" category="cell">SAP GlobalHost dir</block>
+  <block id="3505690b5481050b39a2b9670d03515f" category="cell">&lt;SID&gt;-data</block>
+  <block id="c787761c1a756dd43a957c5e2c583389" category="cell">sapdata1</block>
+  <block id="4f0c7b90b273f14a8619b86e13dd9ca9" category="cell">/DB2/&lt;SID&gt;/sapdata1</block>
+  <block id="483c4c7bd72d57048ff3744af95fc494" category="cell">Dados DB</block>
+  <block id="065951937bf4428ca6fb06582f598edd" category="cell">sapdata2</block>
+  <block id="0b40cbe6e00bd32ab25fa62693b43c0a" category="cell">/DB2/&lt;SID&gt;/sapdata2</block>
+  <block id="665d47691ba149a5bec2082999149594" category="cell">sapdata3</block>
+  <block id="4f7a702472576e4342b1e74200918229" category="cell">/DB2/&lt;SID&gt;/sapdata3</block>
+  <block id="8285444aa5840d99f8550da86ffa63a5" category="cell">sapdata4</block>
+  <block id="b818a2f692219a659b3df706806dbbe1" category="cell">/DB2/&lt;SID&gt;/sapdata4</block>
+  <block id="0bbf1b8adc2733d08c166b57dd640cd5" category="cell">saptmp1</block>
+  <block id="eae9762e5cfdc29394389a973ba509c7" category="cell">/DB2/&lt;SID&gt;/saptmp1</block>
+  <block id="64166c815cb9bcbf7f48c602e9e96f51" category="cell">Ficheiros Temp BD</block>
+  <block id="e20f53264436638f3fb4a5fba1747e7e" category="cell">saptmp2</block>
+  <block id="3510de8e86604adfbef947b90a1c45ee" category="cell">/DB2/&lt;SID&gt;/saptmp2</block>
+  <block id="682655157fb73f8c2be7e18600c66215" category="cell">saptmp3</block>
+  <block id="cb594ac1e19e0800c21774554c937620" category="cell">/DB2/&lt;SID&gt;/saptmp3</block>
+  <block id="11b94078dbe191b06347286767e4081a" category="cell">saptmp4</block>
+  <block id="a63099b6993198420aa5ae00b810ce02" category="cell">/DB2/&lt;SID&gt;/saptmp4</block>
+  <block id="70c057283d21e800806e65930d57dd49" category="cell">db2&lt;sid&gt;</block>
+  <block id="33661a49a40bfa2f45c04c0fb17bd4fa" category="cell">/DB2/&lt;SID&gt;/db2&lt;sid&gt;</block>
+  <block id="27913215df8cddaf9d03dc16f87f321e" category="cell">Arquivos de instância</block>
+  <block id="40cb4b2d8d5816e1f0184321618fbd12" category="paragraph">Como a descoberta automática está ativada por padrão para o plug-in DB2, um snapshot é criado para volumes que correspondem aos seguintes caminhos de arquivo.</block>
+  <block id="bd496227fb0e5b76b69f3b4e68518afe" category="inline-image-macro">Captura de tela de caminhos de arquivo de banco de dados</block>
+  <block id="5758fa0e46506a3a69a20fedf21759bf" category="paragraph"><block ref="5758fa0e46506a3a69a20fedf21759bf" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="9a81c153454f0f6f7d8579cc34ee5234" category="section-title">Passos para proteger banco de dados D01</block>
+  <block id="9a0270e05c38e9a7d1ac8d978974e340" category="list-text">Verifique a distribuição do ficheiro, de acordo com o esquema da amostra</block>
+  <block id="86c6e3d68127f421e9ef698d11cc75ed" category="list-text">Verificar pré-requisitos para o host (vm-D01)</block>
+  <block id="33f7664c941a3d9b3d28bbcb4c812758" category="list-text">Verificar pré-requisitos para a base de dados (D01)</block>
+  <block id="47fe320168def34402834656016c2220" category="list-text">Implantar / instalar o agente SnapCenter no host (vm-D01)</block>
+  <block id="ce63ea422e33d0794813d24821f1dcc3" category="list-text">Criar Configuração de recurso de instância do SnapCenter</block>
+  <block id="7559741220811236735f363b93a31049" category="section-title">Pré-requisitos no Host</block>
+  <block id="bca10cb4cf9094843c7355adeba6eac9" category="paragraph">Mais informações atuais podem estar disponíveis aqui:</block>
+  <block id="e1b0bca9c4cdbfdc55a42c6370c32016" category="list-text"><block ref="e1b0bca9c4cdbfdc55a42c6370c32016" category="inline-link-rx"></block></block>
+  <block id="286c51b67f871ee890090f0b93e51a87" category="list-text"><block ref="286c51b67f871ee890090f0b93e51a87" category="inline-link-rx"></block></block>
+  <block id="4800367b8851abf8ad87e97df37414a2" category="paragraph">Antes de adicionar um host e instalar o pacote de plug-ins para Linux, você deve completar todos os requisitos.</block>
+  <block id="8dd7d2aae8c4a449ae4eb17577d64964" category="list-text">Se estiver a utilizar iSCSI, o serviço iSCSI tem de estar em execução.</block>
+  <block id="2e1961167c1057a818d6fff279cd9778" category="list-text">Você pode usar a autenticação baseada em senha para o usuário root ou não root ou autenticação baseada em chave SSH.</block>
+  <block id="fed1505389358193273003d88a5d4e8b" category="list-text">O plug-in do SnapCenter para sistemas de arquivos Unix pode ser instalado por um usuário não-root. No entanto, você deve configurar o sudo Privileges para que o usuário não-root instale e inicie o processo de plug-in. Depois de instalar o plug-in, os processos serão executados como um usuário não-root eficaz.</block>
+  <block id="45d6e373e26981f8611297351f3acd1f" category="list-text">Crie credenciais com o modo de autenticação como Linux para o usuário de instalação.</block>
+  <block id="129fdeda5a8637916b3b579b072e4eaa" category="list-text">Você deve ter instalado o Java 11 em seu host Linux.</block>
+  <block id="d1ea7cd127db6778a24937199f9b7686" category="list-text">Certifique-se de ter instalado apenas a edição certificada DO Java 11 no host Linux</block>
+  <block id="9285703bdbff8eccacde8c66953002ab" category="list-text">Para obter informações sobre O download DO JAVA, consulte: Downloads Java para todos os sistemas operacionais</block>
+  <block id="225638f404e1ccbeb997a0f1c9c04f5c" category="list-text">Você deve ter bash como o shell padrão para instalação de plug-in.</block>
+  <block id="5bb507af45f0fd81d1f1caabc686314b" category="section-title">Pré-requisitos para a base de dados – Ativar registo e cópias de segurança</block>
+  <block id="c09daa85b259d9f7648c6fbc39ed25ca" category="admonition">para ativar os registos offline, é necessário efetuar uma cópia de segurança completa offline da base de dados. Normalmente, ele já está habilitado para sistemas produtivos.</block>
+  <block id="96789433eac5e3944ca0d800fc85486e" category="list-text">Criar diretórios para backup e log_arch (/DB2/D01/backup, /sybase/D01/log_arch)</block>
+  <block id="956d0c05682b3bc3cb93899562e10f67" category="list-text">Ativar logarchmeth1 (como os-user db2d01)</block>
+  <block id="94ef65514f807d19bdb88718b99c02fe" category="list-text">DB2 atualização dB cfg para D01 usando logarchmeth1 DISCO:/DB2/D01/log_arch/</block>
+  <block id="5e00eadfc1b5e7463a17c56b72d5f181" category="list-text">Criar cópia de segurança offline (como os-user db2d01)</block>
+  <block id="179cbd0252387fd4435d78ae06e787b2" category="list-text">db2stop força</block>
+  <block id="7ebce8853c97c81f4e553e7b1dc0ca96" category="list-text">db2start modo de administração acesso restrito</block>
+  <block id="622fcf6018c9ebf916f7c5cb383db1d7" category="list-text">DB2 backup dB D01 para /DB2/D01/backup</block>
+  <block id="132ac58d4e1fac6434f811d92132baab" category="list-text">DB2 Ativar dB D01</block>
+  <block id="9fec43604f51a0651fe36635eb132bd7" category="section-title">Implante o agente do SnapCenter no host vm-D01</block>
+  <block id="d5c9b73d439aa92ef011ebf02237c888" category="inline-link-macro">Documentação do SnapCenter</block>
+  <block id="3a633c1034368fc3855a16dd076fbf74" category="paragraph">Mais informações podem ser encontradas no <block ref="29e7bd256c94454af51a7602a8b13056" category="inline-link-macro-rx"></block>.</block>
+  <block id="b9ea14491630eed38c34384a444e82ae" category="paragraph">Selecione Plug-ins IBM DB2 e Unix File Systems.</block>
+  <block id="35b8a19cf7d821dfa7b8a737f99c48ec" category="inline-image-macro">Captura de tela da adição de plugins de sistema de arquivos IBM DB2 e Unix</block>
+  <block id="a2f6986a884997444723c59680789f03" category="paragraph"><block ref="a2f6986a884997444723c59680789f03" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="6695ed7c4dc6e7742c1d1d038a25f676" category="admonition">Após a instalação, uma descoberta dos bancos de dados no host é acionada.</block>
+  <block id="fd48bbf17291907d730e2522d1a85bc5" category="inline-image-macro">Captura de tela da descoberta de banco de dados no host</block>
+  <block id="7f069b03dc5ca3b8f62d29589f4511be" category="paragraph"><block ref="7f069b03dc5ca3b8f62d29589f4511be" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="1296bb39d2d57c6cc10bc8b7676917e8" category="section-title">Criar Configuração de recursos para Banco de dados D01</block>
+  <block id="8330f0a2b7e6f6014bf360706b2bf776" category="paragraph">Selecione recurso descoberto D01</block>
+  <block id="64cebb4358b84bfd80d6579d778f0dcc" category="paragraph"><block ref="64cebb4358b84bfd80d6579d778f0dcc" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="da91a3254aca6de315b2373021256929" category="paragraph">Configurar o Nome do Snapshot</block>
+  <block id="e84fae071a8e78d1fb7a744b24cc5570" category="inline-image-macro">Captura de tela da caixa de diálogo configurar nome do instantâneo</block>
+  <block id="3069aeaf5ccf52d1a3cda1b52aeb70d6" category="paragraph"><block ref="3069aeaf5ccf52d1a3cda1b52aeb70d6" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="486fc7232baeaac232c34da92814b735" category="paragraph">Não são necessárias definições de aplicação específicas, configure as definições de política e notificação, conforme necessário.</block>
+  <block id="b3e9c346af65ea78931895ae0ed7f82c" category="inline-image-macro">Captura de tela das configurações de política e notificação</block>
+  <block id="55274b856cef4df2e84f634090d352eb" category="paragraph"><block ref="55274b856cef4df2e84f634090d352eb" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="623c2f695c43944368233cdcd5112fa6" category="paragraph">E terminar a configuração.</block>
+  <block id="62157a3f9b3e302e2af1a8ae18fa9f72" category="section-title">Sequência para recuperar o sistema D01</block>
+  <block id="816afd57aef5575fc9bbdc88bc26ddc4" category="list-text">Parar o SAP System D01 (incluindo banco de dados)</block>
+  <block id="6786f06988fe239916a81108eb0a0c69" category="list-text">Restaurar backup do SnapCenter (volume D01-data)</block>
+  <block id="0e2495c75bf156696de96e63614ac7a7" category="list-text">Desmontar sistemas de arquivos</block>
+  <block id="ec6cf5d30900bcc6f82f3eb5c23d8c37" category="list-text">Restaurar volume</block>
+  <block id="53497eb2c626ef9f24d9de1007a5a90b" category="list-text">Montar sistemas de arquivos</block>
+  <block id="d0c9247901ac4a52c58033d856dddbff" category="list-text">Init banco de dados como espelho dB</block>
+  <block id="3291c9695e2f7dd58cdd755c2c2e393a" category="list-text">Recuperar banco de dados D01 (usando o rollforward DB2)</block>
+  <block id="91ed7fe4c36ec693747f406ea94d23af" category="list-text">Inicie o SAP System D01</block>
+  <block id="11dab2657295441ca871a59b243ec1a0" category="section-title">Recuperar Banco de dados D01</block>
+  <block id="4df9343790098c76f2411a45b066901e" category="list-text">Pare o SAP System e o DB D01 no host vm-D01</block>
+  <block id="a25c1c8c4de0276c08c8234ab3b708ce" category="list-text">Utilizador d01adm: Stopsap</block>
+  <block id="6b57c8193bf71b9818408e839220a139" category="list-text">Restaurar cópia de segurança</block>
+  <block id="1452732860e76c518c037e770ed085dd" category="list-text">SnapCenter GUI: Selecione Backup necessário para Restauração</block>
+  <block id="679f60d183f669fb2ca68c72c3316c6b" category="inline-image-macro">Captura de tela da GUI SnapCenter para selecionar backup para restauração</block>
+  <block id="1c169de9b3a145e2e063671d59b50af5" category="paragraph"><block ref="1c169de9b3a145e2e063671d59b50af5" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="ac7ddb192c30c1078e57e0342a5062fc" category="list-text">Para implantação do ANF: Somente recurso completo está disponível</block>
+  <block id="7931bab6bc0927ffc59532f7984bbd0d" category="paragraph"><block ref="7931bab6bc0927ffc59532f7984bbd0d" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="f13df4ad54f0c2b31657833f05881004" category="paragraph">O resumo seria exibido e com concluir a restauração real é iniciada.</block>
+  <block id="f8efcbfafcbabb8a7f35baf81e1a1d01" category="inline-image-macro">Captura de tela do resumo para backup para restauração</block>
+  <block id="60ca3833d5c084c52db489b55e75ce1c" category="paragraph"><block ref="60ca3833d5c084c52db489b55e75ce1c" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="2c2aadbaa97afd661ab97f8cbdd12d10" category="admonition">"db2inidb D01 como espelho" é feito como parte do fluxo de trabalho de restauração do SnapCenter.</block>
+  <block id="3924f610d9938ce01769afe331519cb3" category="list-text">Verifique recuperar status Banco de dados D01 (como usuário db2d01)</block>
+  <block id="f7d697eda5d7d5408cd061092fce3503" category="list-text">DB2 rollforward db D01 status da consulta</block>
+  <block id="26f1cfe3b5f012c83d58eb78e3dd6bab" category="list-text">Recuperar banco de dados conforme necessário – aqui uma recuperação sem perda é initada (como usuário db2d01)</block>
+  <block id="808d84098ee3a2c0ff76deab40d1c2fa" category="list-text">DB2 rollforward dB D01 para o fim dos logs</block>
+  <block id="0e7f22e930a9154acae7551b5123ad69" category="list-text">Parar recuperação de banco de dados e banco de dados online D01 (como usuário db2d01)</block>
+  <block id="3fb30e7509d0e9bbf3b116bb39f7c95c" category="list-text">DB2 dB rollforward D01 stop</block>
+  <block id="b6e8958390494acbc53d1196bd948204" category="list-text">Iniciar o sistema SAP (como usuário d01adm)</block>
+  <block id="d85cd1065b480106e7535dc478664dc7" category="list-text">startsap</block>
+  <block id="447970b435b84887a5470043a2eedc24" category="paragraph">As seguintes demonstrações recodificadas estão disponíveis para suportar a documentação.</block>
+  <block id="48acd28f9ce67afbe3fe3d84dd852d8f" category="video-title">Instalação e Configuração DB2 Plugin, cópia de segurança da base de dados DB2</block>
+  <block id="834fcc01f78a95063fed805a018f7769" category="video-title">Restauração e recuperação de banco de dados DB2</block>
+  <block id="2dcfe53d3362a6931b5721d7c46f91b4" category="inline-link-macro">SAP em DB2 Instalação Azure no ANF</block>
+  <block id="23bd21aaf1bfee84bb68aac8e897d1ec" category="list-text"><block ref="23bd21aaf1bfee84bb68aac8e897d1ec" category="inline-link-macro-rx"></block></block>
+  <block id="991cec96960ff6372703208927785cbd" category="inline-link-macro">Pré-requisitos do SnapCenter para Plugins</block>
+  <block id="6b48a347db8166414731f4502394c924" category="list-text"><block ref="6b48a347db8166414731f4502394c924" category="inline-link-macro-rx"></block></block>
+  <block id="27402574bb9402b54c301114f164ebb2" category="inline-link-macro">SnapCenter Instalar Plugins</block>
+  <block id="fe09e9c39b636255ab5de9f96a18b14b" category="list-text"><block ref="fe09e9c39b636255ab5de9f96a18b14b" category="inline-link-macro-rx"></block></block>
+  <block id="ab8523e2f3333d22d15b6d6ebf19221e" category="inline-link-macro">Documentação do plug-in do SnapCenter DB2</block>
+  <block id="32a05a4bb6b637b6299d25c7f836d5d2" category="list-text"><block ref="32a05a4bb6b637b6299d25c7f836d5d2" category="inline-link-macro-rx"></block></block>
+  <block id="916cccec2fcddffb90024152bd9a22ba" category="list-text">SAP Notes (login necessário)</block>
+  <block id="45af776ab4c832d294cff3edde6c8360" category="list-text">83000 - DB2/390: Opções de backup e recuperação:<block ref="1f0fcc94b117dadffa7a2d1ba26a8490" category="inline-link-rx"></block></block>
+  <block id="ae32a4ebf5c4235fd1aeabe2187af8fc" category="list-text">594301 - DB6: Ferramentas de administração e espelho dividido:<block ref="2312bb0b28f7812dba2cdde94e9f73c6" category="inline-link-rx"></block></block>
+  <block id="4bf308994c1ed9e12dfc8091e1be97d9" category="list-text">Documentação do produto NetApp:<block ref="9d25e96cb4da17ca8bcf663a18812ece" category="inline-link-rx"></block></block>
+  <block id="3d93f23f1857b91249aeb46281325bb9" category="list-text">Soluções SAP da NetApp – informações sobre casos de uso, práticas recomendadas e benefícios:<block ref="275e41234bd9820755d1021988b4d48e" category="inline-link-rx"></block></block>
+  <block id="5edbe8c55546db896b55871b44a39263" category="cell">*Data*</block>
+  <block id="c2259d06d49b65de5c037d65c1cc79b2" category="cell">* Histórico de versões do documento*</block>
+  <block id="42ce83dc3f5ef22d986311b267a5ac20" category="cell">Abril de 2025</block>
+  <block id="09ba040f5df18abbd4604e53ff4afd84" category="cell">Versão inicial – backup / recuperação de banco de dados DB2</block>
+  <block id="048272e99fdf9fe71a8896827dbae3c0" category="summary">Este documento descreve as especificidades de integração do SnapCenter para o banco de dados SAP ASE usado em um ambiente SAP.</block>
+  <block id="6b84a3bc8a409a71d17a2fcbad7053b8" category="doc">Integração SnapCenter para banco de dados SAP ASE</block>
+  <block id="8401e75b01ba6fa918a576426555c04a" category="list-text">Proteger a instância do SAP ASE</block>
+  <block id="90111ff53c4535a9a6b7bca16dfd2401" category="list-text">Restaurar e recuperar instância do SAP ASE</block>
+  <block id="f96ed43c45e02c1d0034d3c5c173b8e8" category="paragraph">Exemplo de implementação para o plug-in SnapCenter ASE para um sistema SAP em execução na Plataforma Azure.</block>
+  <block id="8275585a5f5a60f1cc7ed3ded973f327" category="admonition">Esta implementação descreve a configuração mínima de volume necessária. Os backups de despejo de dados e os backups de despejo de Registro são configurados de acordo com a SAP Note 1588316.</block>
+  <block id="87d0a3216ca308da450ea688cc418ff4" category="inline-link-macro">Blog da Comunidade Técnica MS</block>
+  <block id="e30d84b931733cca553a4e2b056c9718" category="paragraph">Alternativamente, a estrutura de volume descrita neste <block ref="0023ecb2db8d73de3cf4e469cdb5e1a5" category="inline-link-macro-rx"></block> documento pode ser usada.</block>
+  <block id="7db2cb298cd95506358dd06177b04700" category="inline-image-macro">Figura destacando o ambiente de demonstração que foi usado</block>
+  <block id="0f1747ea369cc4076ba2cc3993432abc" category="paragraph"><block ref="0f1747ea369cc4076ba2cc3993432abc" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="cdee3d093954e7eef1d1def2838f1f3a" category="cell">SAP ASE</block>
+  <block id="13406bf13d82eeafb3b40b18c91daece" category="cell">16,0 SP04 PL06 HF1</block>
+  <block id="bfe962199aac9ebfade24320adc2691b" category="section-title">Design de volume ASE</block>
+  <block id="000c1e0d40d661b2c06c011004e154d9" category="paragraph">O layout do menor volume a seguir deve ser usado para habilitar casos de uso de backup/recuperação e clonar para o banco de dados SAP ASE. A configuração de exemplo usa &lt;SID&gt;: A01.</block>
+  <block id="34bee2ba966455e53875dcd856764cf2" category="cell">&lt;SID&gt;-sapase</block>
+  <block id="7a0260097c41fcc0f116e761f1026332" category="cell">sybase</block>
+  <block id="2381f633e71aa671f008e66e64aa960b" category="cell">/sybase</block>
+  <block id="97d651e6d9f634c271e5557333ae8d35" category="cell">Diretório pai para arquivos relacionados ASE</block>
+  <block id="8ff4caaea7ce0dab63dd3043133f5d4d" category="cell">/Sybase/&lt;SID&gt;/backups</block>
+  <block id="67960c0ae6009f7b7bd326a083d87377" category="cell">Backups de despejo de dados (podem ser colocados em um volume diferente)</block>
+  <block id="550162b6cb14b7b942f7267b1729be29" category="cell">/Sybase/&lt;SID&gt;/log_archives</block>
+  <block id="36d391cc2500d8cc788a23d6ed534955" category="cell">Backups de despejo de log (podem ser colocados em um volume diferente)</block>
+  <block id="c6baf29718d3f6f328e1b0a8b40a37da" category="cell">&lt;SID&gt;-datalog</block>
+  <block id="95fcb1619f5e8f3197478302f5b93b87" category="cell">sapdata_1</block>
+  <block id="003b52815fdc226d19f036fa3876c8b6" category="cell">/Sybase/&lt;SID&gt;/sapdata_1</block>
+  <block id="21e459d2a210b040cccf8c6172fb2f00" category="cell">Dados BD (SID)</block>
+  <block id="92f85b1bd0a4aebea166b0d13e288f80" category="cell">saplog_1</block>
+  <block id="9cb30ddd45ecd9416a87cdc0a7908343" category="cell">/Sybase/&lt;SID&gt;/saplog_1</block>
+  <block id="a9d027f27d25721466ddf8fffd5f388c" category="cell">Registo BD (SID)</block>
+  <block id="fb04d57956c94c6ecf71bd9b53cafaae" category="cell">saptemp</block>
+  <block id="eeaa36876c33a85b0f3824abf2dbad33" category="cell">/Sybase/&lt;SID&gt;/saptemp</block>
+  <block id="392c10a58461b01912e39fb9c75ea817" category="cell">PSAPTEMP</block>
+  <block id="3ef65f7b9e51ab27fa837dba76c1f25a" category="cell">sybsecurity</block>
+  <block id="e71d86e8d3d7d02672723a43b5b947c1" category="cell">/Sybase/&lt;SID&gt;/sybsecurity</block>
+  <block id="02ad3495b1e50a5f6280ee917cc15efa" category="cell">Banco de dados de segurança Sybase</block>
+  <block id="c58a7294b002c3d6399667d55932ca93" category="cell">sistema sybsystem</block>
+  <block id="b5549becb81e070362e65d347125f3b2" category="cell">/Sybase/&lt;SID&gt;/sybsystem</block>
+  <block id="d575be3aed56fddf35af4e6dfbfafc27" category="cell">Sybase System DB</block>
+  <block id="b4399480b1acfdf1353494ce4f306568" category="cell">sybtemp</block>
+  <block id="28dbd03d200b8924a94286e818c9ea10" category="cell">/Sybase/&lt;SID&gt;/sybtemp</block>
+  <block id="93ac7fbe9004ed4ebb53ce345474ffa8" category="cell">Sistema Sybase DB - Temp</block>
+  <block id="471a9be95dfa241e5bf39e303f5a53b6" category="cell">sapdiag</block>
+  <block id="81e861c9d8739bcf1ee9590ec5c98ed6" category="cell">/Sybase/&lt;SID&gt;/sapdiag</block>
+  <block id="2ae763a05f4307578b710bd273b22ebd" category="cell">base de dados 'saptools'</block>
+  <block id="1e3359ff48a9bf93ce05e8221b5f9fc7" category="section-title">Passos para proteger banco de dados A01</block>
+  <block id="63c7c9a11cf9f3320a8b03edcd0bb3d3" category="list-text">Verificar pré-requisitos para o host (vm-A01)</block>
+  <block id="2a724788217d7e99620121403f7ec1b7" category="list-text">Verificar pré-requisitos para a base de dados (A01)</block>
+  <block id="9bf7ca2d0dda306ce7f51ca3af9d83e2" category="list-text">Implantar / instalar o agente SnapCenter no host (vm-A01)</block>
+  <block id="6c92285fa6d3e827b198d120ea3ac674" category="inline-link-macro">aqui</block>
+  <block id="422dc1c7aa9fc1d19cf44df1acbaf925" category="paragraph">Mais informações atuais podem estar disponíveis <block ref="b31005d5a625ab242194ebb7f4843882" category="inline-link-macro-rx"></block>.</block>
+  <block id="c7bbc1c3f4ce465ac86c6def6aa2e810" category="list-text">Criar diretórios para backups e log_archives (/sybase/A01/backups, /sybase/A01/log_archives)</block>
+  <block id="a7e66d589f3f50cff457fac187f177c5" category="list-text">Conetar ao banco de dados A01 (como usuário do sistema operacional syba01)</block>
+  <block id="667761e3e0d6887d2cc1bda8fa69b73f" category="list-text">Isql -S A01 -U sapsa -X -W 1024</block>
+  <block id="063d82e54f4551852204f9ad1bc5a382" category="list-text">Criar configuração de despejo para DADOS (A01DB) de acordo com a SAP Note 1588316</block>
+  <block id="13429c175e7673f5c7eda3dca112fb78" category="list-text">use o mestre</block>
+  <block id="34d1f91fb2e514b8576fab1a75a89a6b" category="list-text">vá</block>
+  <block id="c8ae55807dd7df265de61b46ba8d4dbe" category="list-text">exec SP_config_dump_config_dump_config_config_dump_config_A01DB, /stripe_dir '/sybase/A01/backups' , compressão '101' , verificação de 'header'</block>
+  <block id="e01c941839fc7d01d3a81fee8ce5c3f0" category="list-text">Criar configuração de despejo para LOG (A01LOG) de acordo com a SAP Note 1588316</block>
+  <block id="485318a14883612c2f1de46de2f487f1" category="list-text">SP_config_dump_config_dump_config_config_dump_config_config_dump_config_config_config_A01LOG, /stripe_dir '/sybase/A01/log_archives' , compressão '101' , verificação 'header'</block>
+  <block id="206731b1458254be46a024bf901e0522" category="list-text">Ative o registo completo para a base de dados A01</block>
+  <block id="39247d6e41eb100898fb3b1a2364114e" category="list-text">SP_dboption A01, 'trunc log on chkpt' , false</block>
+  <block id="96ceb753c0a377c92ad1e221d9641c1d" category="list-text">SP_dboption A01, 'Registro completo para todos', 'verdadeiro'</block>
+  <block id="c025485eae5bde859ea018121cbd62c1" category="list-text">SP_dboption A01, 'enforce dump tran sequence', 'true'</block>
+  <block id="d658901cc9e2ac30b9d89213df5ee7c5" category="list-text">Backup DE DESPEJO de banco de dados para habilitar o backup DE DESPEJO DE log</block>
+  <block id="343cf6a81ce43dd7f9f74d4528c9c339" category="list-text">Banco de dados dump A01 usando config A01DB'</block>
+  <block id="c277e3c6dfc07bd8ea02dff494a1d274" category="list-text">Registo de descarga</block>
+  <block id="b1e76779deb99368f17b934d2714f080" category="list-text">Transação de despejo A01 usando config: 'A01LOG'</block>
+  <block id="718fef5e818207fc5faf769133a9d1ac" category="list-text">Certifique-se de que os backups regulares do Log estão configurados, de acordo com a SAP Note 1588316</block>
+  <block id="5aee402eaf0a4ab653841701c52ddfa0" category="section-title">Opcional – criar usuário de banco de dados dedicado</block>
+  <block id="51e130c4750b38ec3d89d3985c597933" category="paragraph">Para ambientes SAP, o usuário sapsa pode ser usado.</block>
+  <block id="0daad5d6690de03566ec10706323e3e9" category="list-text">criar utilizador</block>
+  <block id="c7e9d1181d494814a2d110faeb190b94" category="list-text">criar backup de login com senha &lt;password&gt;</block>
+  <block id="fdbffd1a7c8cf59d0847b653982d873f" category="list-text">atribua permissons / papéis ao usuário</block>
+  <block id="b1abcb7f7c33e1a82bd2f7488e439df2" category="list-text">grant role sa_role,sso_role,oper_role,sybase_ts_role para backup</block>
+  <block id="fffdd9228fa28e3d5f0ab709f9c51c92" category="section-title">Implante o agente do SnapCenter no host vm-A01</block>
+  <block id="17bcfd0ce80849145fcae272c3073ed6" category="paragraph">Selecione Plug-ins SAP ASE e Unix File Systems.</block>
+  <block id="e53bb8d8a1e0b4b32f829be09ad36762" category="inline-image-macro">Captura de tela da caixa de diálogo Adicionar host</block>
+  <block id="acca9221dcefb315b8b1b4bf389e15b3" category="paragraph"><block ref="acca9221dcefb315b8b1b4bf389e15b3" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="2c98176d904449d2adc5d23a31a7c375" category="section-title">Criar configuração de recurso de instância do SnapCenter para banco de dados A01</block>
+  <block id="a36650e58db1b909efccef9064bdffaa" category="paragraph">Recursos -&gt; SAP ASE -&gt; Adicionar recursos</block>
+  <block id="5c9a1bdda8593f1e12622a4a40be53e2" category="inline-image-macro">Captura de tela da caixa de diálogo Adicionar detalhes do recurso do host</block>
+  <block id="5bdaba367a5127ac9faca28b92601e0e" category="paragraph"><block ref="5bdaba367a5127ac9faca28b92601e0e" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="dddc00803e5eec31fdd3e73f7b3bda63" category="admonition">Se a Senha contiver carateres especiais, eles devem ser mascarados com uma barra invertida. Por exemplo, teste!123! -&gt; Teste!123!</block>
+  <block id="0f80339fee7af36494724f100fa1b298" category="paragraph"><block ref="c70fe733883ae564246c8c95a562793a" category="inline-image-macro-rx" type="image"></block> <block ref="e4d81f8c1bad0c167b65b878413682b0" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="d522f9ffd8420f78fb398b61cfcf6b61" category="admonition">Se estiver a utilizar o design do volume a partir do <block ref="0023ecb2db8d73de3cf4e469cdb5e1a5" category="inline-link-macro-rx"></block>.</block>
+  <block id="56855831be7a1bb8c1559951423245d6" category="paragraph">Volumes /vol&lt;SID&gt;_base, /vol&lt;SID&gt;_data, /vol&lt;SID&gt;_log deve ser configurado como espaço físico de storage</block>
+  <block id="b6260cf3a73129eca5cad5d8725639ef" category="paragraph">Os pares de chave-valor personalizados devem ser feitos (pelo menos).</block>
+  <block id="11a632a5a413b2b5ea3750ad2d9d9598" category="inline-image-macro">Captura de tela da caixa de diálogo Configurações de recursos pares de chave personalizados</block>
+  <block id="0d52a1e343b85460d4430d8fe28a1b06" category="paragraph"><block ref="0d52a1e343b85460d4430d8fe28a1b06" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="f841a697ec4008a662dbd87a8f456b42" category="paragraph">A tabela a seguir lista os parâmetros do plug-in Sybase, fornece suas configurações e os descreve:</block>
+  <block id="1243bb65d9566a6d540f765e10dcd146" category="cell">*Parâmetro*</block>
+  <block id="6a9433367cb8ed2838f8d46c7dd21f11" category="cell">* Definição*</block>
+  <block id="f14c276c07197ebef1394a5a219087a1" category="cell">*Descrição*</block>
+  <block id="5b00a3c4e4d7e5113c17f1cd4ed0a251" category="cell">SYBASE_ISQL_CMD</block>
+  <block id="8df27c24b6eaf41bcf190d923045378d" category="cell">Exemplo: /Opt/sybase/OCS-15__0/bin/isql -X.</block>
+  <block id="f2f2fee1f06dd71c704fbc6000a528ab" category="cell">Define o caminho para o comando isql. Opções disponíveis:<block ref="763ff236fd49c579bfce336892c2759d" category="inline-link-rx"></block></block>
+  <block id="64351137a517d0ca934c2b86eee9675b" category="cell">SYBASE_USER</block>
+  <block id="c56f5648d4c0e137f9de3dfc7a54d55b" category="cell">nome_utilizador</block>
+  <block id="5a4a293be7914085f58e2bf2270ee0b3" category="cell">Especifica o usuário do sistema operacional que pode executar o comando isql. Este parâmetro é necessário para UNIX. Esse parâmetro é necessário se o usuário executando os comandos Snap Creator Agentstart e stop (geralmente o usuário raiz) e o usuário executando o comando isql forem diferentes.</block>
+  <block id="cbea20ef19e65a6d7816edf35c606308" category="cell">SYBASE_SERVER</block>
+  <block id="a9a2c88955eda13e180455da3b7ce94f" category="cell">data_server_name</block>
+  <block id="99023927bcfcfd9d0d7d8bc17ca5f819" category="cell">Especifica o nome do servidor de dados Sybase (-S opção no comando isql).por exemplo: A01</block>
+  <block id="f3c063a3270fe692a7554ecd77108549" category="cell">SYBASE_DATABASES</block>
+  <block id="49b805efdee9543bf933cbdaf44e88eb" category="cell">db_name:user_name/password</block>
+  <block id="1d3991a4e28c10d1e4921e9aeece15a6" category="cell">Lista os bancos de dados dentro da instância para fazer backup. O banco de dados mestre é adicionado; por exemplo: DBAtest2:sa/53616c7404351e.se um banco de dados chamado "ALL" for usado, então a descoberta automática do banco de dados é usada, e os bancos de dados sybsyntax, sybsystemprocs, e tempdb são excluídos. Por exemplo: TODAS AS senhas criptografadas:sa/53616c71a6351e são suportadas se o parâmetro NTAP_PWD_PROTECTION estiver definido.</block>
+  <block id="ea5b6b066484400736ebd6d01383ab07" category="cell">SYBASE_DATABASES_EXCLUDE</block>
+  <block id="24e8d17701309eab9a46949f1eab03b1" category="cell">db_name</block>
+  <block id="55fe692c769f13f5b6ee2dda865ad64d" category="cell">Permite que os bancos de dados sejam excluídos se o constructo "ALL" for usado. Você pode especificar vários bancos de dados usando uma lista separada por ponto-e-vírgula.por exemplo, pubs2;test_db1</block>
+  <block id="cb595d25d18096c8ff698bc74c19a106" category="cell">SYBASE_TRAN_DUMP</block>
+  <block id="5d42605e018c0a31e55f67caf36d20fd" category="cell">db_name:directory_path</block>
+  <block id="1ac0084e3e1f354250967f0f719fe341" category="cell">Permite que você execute um despejo de transação Sybase depois de criar uma cópia Snapshot.por exemplo: pubs2:/sybasedumps/pubs2 você deve especificar cada banco de dados que requer um despejo de transação.</block>
+  <block id="e48ebe9c56fd413872056d2ea877f906" category="cell">SYBASE_TRAN_DUMP_FORMAT</block>
+  <block id="313cd648590f4c79c6d1e1c10c5aef76" category="cell">%S_%D_%T.CMN</block>
+  <block id="40105874dd0b793808ef635cbddfd446" category="cell">Permite especificar a convenção de nomenclatura dump. As seguintes chaves podem ser especificadas: %S Nome da instância DO SYBASE_SERVER %D base de dados DO SYBASE_DATABASES %T carimbo de data/hora único aqui está um exemplo: %S_%D_%T.log</block>
+  <block id="1663c45679303f56792e3727ef91fb00" category="cell">SYBASE_TRAN_DUMP_COMPRESS</block>
+  <block id="dd4cc36e5ee02a7982f7c80b58ce22e3" category="cell">(Y / N)</block>
+  <block id="aa282c218f8de50d8c07e673a3efba9b" category="cell">Ativa ou desativa a compressão de despejo de transação Sybase nativa.</block>
+  <block id="2c27e6763625498e55312a132bc3d46c" category="cell">SYBASE</block>
+  <block id="ae7636891c062bb81143f59119afafb7" category="cell">Exemplo: /Sybase</block>
+  <block id="cab4531e6a5d295253641118de633747" category="cell">Especifica o local da instalação do Sybase.</block>
+  <block id="0a40e150a4b2ba86a9f227ab2e340101" category="cell">SYBASE_MANIFEST</block>
+  <block id="44b3ace265fe49c623da13fcbf3d4695" category="cell">Exemplo: A01:/sybase/A01/sapdiag</block>
+  <block id="0fee590c69692bfeabde30d46e060dfc" category="cell">Especifica os bancos de dados para os quais o arquivo de manifesto deve ser criado, juntamente com o local onde o arquivo de manifesto deve ser colocado.</block>
+  <block id="4971d917f319072c5a8c27035b04f9d1" category="cell">SYBASE_MANIFEST_FORMAT</block>
+  <block id="800c3aaa4ed5765af077a4fd281607bf" category="cell">%S__%D_.exemplo de manifesto: %S_%D_.MANIFEST</block>
+  <block id="44ad1cbfd1d8db9d47172ca1030c45fb" category="cell">Permite que você especifique a convenção de nomenclatura de arquivos MANIFEST. As seguintes chaves podem ser especificadas: %S Nome da instância DE SYBASE_SERVER %D base de dados DE SYBASE_DATABASES</block>
+  <block id="007d080f3e7133036769892befcdecbe" category="cell">SYBASE_MANIFEST_DELETE</block>
+  <block id="3e694eb78d4d924354d3003ec21b5aa1" category="cell">Permite que o manifesto seja excluído após a cópia Snapshot ter sido criada. O arquivo de manifesto deve ser capturado na cópia Snapshot para que ele esteja sempre disponível com o backup.</block>
+  <block id="76674a5c76cb1c68992f1b8b8832b7a0" category="cell">SYBASE_EXCLUDE_TEMPDB</block>
+  <block id="b6b7714b8342524ea9c1e80f43417e09" category="cell">Permite a exclusão automática de bancos de dados temporários criados pelo usuário.</block>
+  <block id="22c3e60dda32a397204c57fc27acda8e" category="section-title">Sequência para recuperar o sistema A01</block>
+  <block id="dc91cbdd99890b23cf8e77f3b523ec10" category="list-text">Pare o SAP System A01 (incluindo banco de dados), pare o sapinit</block>
+  <block id="96e0ef6bada3e35f827c28acc315e808" category="list-text">Sistemas de arquivos umount</block>
+  <block id="c60f16a72ba7cfddfac2e1dbf5f40d45" category="list-text">Restaurar volumes A01-datalog (usando SnapCenter)</block>
+  <block id="838b36bde2291fca9d871f6fcab8be44" category="list-text">Montar sistemas de arquivos</block>
+  <block id="6137e37a5885d90eb0ac7cf888a5d2c7" category="list-text">Inicie o Banco de dados A01 (com opção –q, para evitar o acesso automático online e manter o banco de dados recuperável – de acordo com a SAP Note 1887068)</block>
+  <block id="21d17a5ee18728a81aa088d18c24ee77" category="list-text">Inicie o BackupServer A01</block>
+  <block id="6c4f8619e91dbc892fe5105a556a4475" category="list-text">saptools de banco de dados on-line, sybsecurity , sybmgmtdb</block>
+  <block id="8ab35c1252ac2b355dd0075f743b23f4" category="list-text">Recuperar Banco de dados A01 (usando isql)</block>
+  <block id="f46e8f1975ffffc40f0de8dfa6a57926" category="list-text">Base de dados online A01</block>
+  <block id="9d7255aa22c8bb6c89d8a8cbe33ac4f3" category="list-text">Inicie o sapinit, SAP System A01</block>
+  <block id="c0ed127324e97f318c161cc8520a5247" category="section-title">Recuperar instância A01</block>
+  <block id="7b1e9066cef0caf29601e456f8506344" category="list-text">Pare o SAP System e o DB A01 no host vm-A01</block>
+  <block id="94388a9dd48e6d94cb7abbd8c533de13" category="list-text">Utilizador a01adm: Stopsap</block>
+  <block id="32d9da06ca252a0fdb2b6e925b5d499d" category="list-text">Root do usuário: /Etc/init.d/sapinit stop</block>
+  <block id="d4f34dfc47fb963b67ab9ed55f350447" category="list-text">Root do usuário: Umount -a -t nfs</block>
+  <block id="f01af0d16f12f2b868deef38b6209609" category="inline-image-macro">Captura de ecrã da caixa de diálogo Selecionar cópia de segurança necessária para restauro</block>
+  <block id="d49075162f901ea4622e600aa91de5a5" category="paragraph"><block ref="d49075162f901ea4622e600aa91de5a5" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="b42b7a52cff89edbddbe4be7d7205378" category="paragraph"><block ref="b42b7a52cff89edbddbe4be7d7205378" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="a423820050e5f46f36fc1327c48bb00c" category="inline-link-macro">reverter volume</block>
+  <block id="ac982be345b6d6c694cc959a3be81042" category="admonition">A seleção de recurso completo acionará uma Restauração Snap baseada em volume (VBSR). Dentro do Azure é chamado <block ref="10b20588aa12150bf8ab4282b1ad89cc" category="inline-link-macro-rx"></block>.</block>
+  <block id="ae6bfd9134039fc38306b500f181ae54" category="inline-image-macro">Captura de tela de uma mensagem importante sobre instantâneos</block>
+  <block id="09a821f7985f625502cd7570b8109c5b" category="paragraph"><block ref="09a821f7985f625502cd7570b8109c5b" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="c7e811158a8bf3a36519dfb1b03d6594" category="admonition">Para outros tipos de implantação (por exemplo, ANF no local), uma operação SFSR (Single File Snap Restore) pode ser orquestrada. Selecione File Level (nível de ficheiro) e o volume e marca de verificação "All" (todos) – consulte a seguinte captura de ecrã.</block>
+  <block id="836cd106056cddb1cb12770ce199f4bc" category="inline-image-macro">Captura de tela de seleção de instantâneos no nível do arquivo</block>
+  <block id="03ea504d9d91015356cd846a5fb336a2" category="paragraph"><block ref="03ea504d9d91015356cd846a5fb336a2" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="bfdf5efcc3e42f260229813559cf78b2" category="inline-image-macro">Captura de ecrã do resumo da restauração instantânea</block>
+  <block id="7909030f74c6404738bed90ef5312d0c" category="paragraph"><block ref="7909030f74c6404738bed90ef5312d0c" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="ddc6e4c56d490457b2807db132950771" category="list-text">Montar sistemas de arquivos (vm-A01)</block>
+  <block id="d77b57a63ab8eaff9cc1da11a538179f" category="list-text">Raiz do usuário: Mount -a -t nfs</block>
+  <block id="de7ffd3333b7854d5f5d63faebec0c7e" category="list-text">Iniciar base de dados A01 e BackupServer</block>
+  <block id="bd61ba14cc9992a52d53c1649007b50f" category="list-text">Modificar RUN_A01 e adicionar -q (de acordo com SAP Note 1887068)</block>
+  <block id="0ea31d20db4af0a1b7f55b3dfd0408a8" category="list-text">Utilizador syba01: RUN_A01 &amp;</block>
+  <block id="cfdf8709565909fee52efd2b8ada2800" category="list-text">Utilizador syba01: RUN_A01_BS&amp;</block>
+  <block id="99f2d082c49f5fd0e481706159ecfa4c" category="list-text">Bancos de dados on-line saptools, sybsecurity , sybmgmtdb</block>
+  <block id="6ef4181346562481fc58f15f50f04a08" category="list-text">Usuário syba01: Isql -S A01 -U sapsa -X -W 1024</block>
+  <block id="cc764b54b873d92b806f0639f7a3f22b" category="list-text">saptools de banco de dados on-line</block>
+  <block id="865a234c767735f76f2827c60f85abd1" category="list-text">segurança de banco de dados on-line</block>
+  <block id="902eb517c20f52988915334bc496cfc8" category="list-text">banco de dados online sybmtdb</block>
+  <block id="bc1ff6b3db2095ea203daf4929eb73a3" category="list-text">Recuperar Banco de dados A01</block>
+  <block id="bbb2920b6e94fe76efed0e4d9bb7e488" category="list-text">SP_dump_history (para mostrar os despejos de log de transações)</block>
+  <block id="2e3264bee5c3799d9908279f68b22a4a" category="list-text">Carregue despejos de log de transações de acordo com suas necessidades – para obter mais informações, consulte a documentação:<block ref="ef6cbe686159c9b75cbe40ffe259de26" category="inline-link-rx"></block></block>
+  <block id="511ea467526ed43b8ab12e89c9facbe2" category="list-text">Exemplo: CARREGUE o TRAN A01 DE '/sybase/A01/log_archives/A01.TRAN.20250207.140248.6.000'</block>
+  <block id="57685292aeeae0d936e02f3b8c79ea3e" category="list-text">Remova -q de RUN_A01</block>
+  <block id="9d2845b5f6e8a1c9185ddca9866823d6" category="list-text">Inicie o SAP System</block>
+  <block id="fd5462a5ba0a3afe8cb39f11792e6c0a" category="list-text">Root do usuário: /Etc/init.d/sapinit start</block>
+  <block id="c130926d6616542217bb82934bb3882a" category="list-text">Usuário a01adm: Startsap</block>
+  <block id="0481b5d3f8326ffcd87b030484af3d32" category="section-title">Quiesce vs. Prepare</block>
+  <block id="9bc5a761c922ebff2efbd814b1b18b65" category="paragraph">Consulte a documentação no link: Página de ajuda do https://help.sap.com/docs/SAP_ASE/4e870f06a15b4bbeb237cca890000421/d9d3ce996bdd415693cdb17663bfc0e3.html?locale=en-US&amp;version=16.0.2.0[SAP].</block>
+  <block id="16050ac4ff4ee27ec88b2273d800069d" category="inline-image-macro">Captura de tela do conteúdo da página de ajuda da SAP</block>
+  <block id="0f7c5358d5b88100058060ed5afb2ac6" category="paragraph"><block ref="0f7c5358d5b88100058060ed5afb2ac6" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="f06c8ac7e1db032e3c742c956fbdcd67" category="paragraph">O plugin SnapCenter ASE usa o comando quiesce database, no entanto, ele pode ser substituído pelo comando preparar. Se necessário, tem de ser alterado no SYBASE.pm na linha 473, 475, 479, 481, 673, 675 por exemplo</block>
+  <block id="042b389bcb10221db2bebdd7761bc4f7" category="inline-image-macro">Captura de tela do comando do banco de dados quiesce</block>
+  <block id="ef7e48da0a3de2cfd57a9a9d8786dccd" category="paragraph"><block ref="ef7e48da0a3de2cfd57a9a9d8786dccd" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="46f2faba494f69f6e11941be04d5eef3" category="section-title">Demos gravadas</block>
+  <block id="22089ff3e2f698bd47ecc1e972ed96b8" category="video-title">Instalação e Configuração ASE Plugin, Backup do banco de dados ASE</block>
+  <block id="80e1f722ca644623f0957c1529c9e936" category="video-title">Restauração e recuperação de banco de dados ASE</block>
+  <block id="802889ba8e68d06ab223337c1108b438" category="section-title">Documentação externa</block>
+  <block id="9f4daa4772f9607a111c8202ad41d9a5" category="inline-link-macro">SAP Instalação Azure no ANF</block>
+  <block id="3fa66eb74457ea2fc821f138385c7519" category="list-text"><block ref="3fa66eb74457ea2fc821f138385c7519" category="inline-link-macro-rx"></block></block>
+  <block id="811ec2a3ed919b3da3e6b8fce4d91abc" category="inline-link-macro">Sybase Infocenter - isql</block>
+  <block id="798ef01f4a0a22aa92264b8c67766d0c" category="list-text"><block ref="798ef01f4a0a22aa92264b8c67766d0c" category="inline-link-macro-rx"></block></block>
+  <block id="1ebaf9b920afffe58a30e658da6e1414" category="inline-link-macro">Sybase Infocenter - carregar despejo de log de transações</block>
+  <block id="c5f913a10f9f276b3b9c2ee2b70671ad" category="list-text"><block ref="c5f913a10f9f276b3b9c2ee2b70671ad" category="inline-link-macro-rx"></block></block>
+  <block id="0af20cbeca939760d181deee6b404c63" category="list-text">1887068 - SYB: Usando backup externo e restauração com SAP ASE:<block ref="ab4914ef849f1de520395e48bffb8b16" category="inline-link-rx"></block></block>
+  <block id="75e06b88ecfdc2f489b785e3b13d2b13" category="list-text">1618817 - SYB: Como restaurar um servidor de banco de dados SAP ASE (UNIX):<block ref="4034096a300ed131652b69eb35a0eb3e" category="inline-link-rx"></block></block>
+  <block id="64d669e71de00ac85ee378745f531872" category="list-text">1585981 - SYB: Garantindo recuperabilidade para SAP ASE:<block ref="4c89d5c78712c3629963f4741a089c28" category="inline-link-rx"></block></block>
+  <block id="5691b76e0c9ec6a7b8b2d9062ed04d20" category="list-text">1588316 - SYB: Configurar backups automáticos de banco de dados e log:<block ref="27fffb2c3ac126d513ed8eb62fc0c072" category="inline-link-rx"></block></block>
+  <block id="649c133bd78c9a4db2ae6b6cc125afc9" category="list-text">Soluções SAP da NetApp – informações sobre casos de uso, práticas recomendadas e benefícios:<block ref="275e41234bd9820755d1021988b4d48e" category="inline-link-rx"></block></block>
+  <block id="ebbef4ff98690d25d6060ddc932670b0" category="cell">Versão inicial – backup / recuperação de banco de dados ASE</block>
+  <block id="7b4b03f44ad3853577dba2a8cb0ea413" category="video-title">Instalação ASE Plugin, Configuration ASE Plugin, Backup do banco de dados ASE</block>
 </blocks>

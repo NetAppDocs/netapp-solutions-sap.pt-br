@@ -178,3 +178,7 @@ entries:
 - title: 'SAP HANA no NetApp All SAN Array: SAN moderna, proteção de dados e recuperação
     de desastres'
   url: "/backup/saphana-san_pdf_link.html"
+- title: Integração SnapCenter para banco de dados SAP ASE
+  url: "/backup/snapcenter-sap-ase.html"
+- title: Integração do SnapCenter para o banco de dados IBM DB2
+  url: "/backup/snapcenter-ibm-db2.html"

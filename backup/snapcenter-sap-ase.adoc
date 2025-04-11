@@ -1,0 +1,458 @@
+---
+sidebar: sidebar 
+permalink: backup/snapcenter-sap-ase.html 
+keywords: SAP, snapcenter, SAP ASE, database, backup, restore 
+summary: Este documento descreve as especificidades de integração do SnapCenter para o banco de dados SAP ASE usado em um ambiente SAP. 
+---
+= Integração SnapCenter para banco de dados SAP ASE
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Este documento descreve as especificidades de integração do SnapCenter para o banco de dados SAP ASE usado em um ambiente SAP.
+
+
+
+== Introdução
+
+O documento não se destina a ser uma descrição passo a passo de como configurar o ambiente completo, mas abrange conceitos e detalhes relevantes relacionados com:
+
+* Exemplo de visão geral da configuração
+* Esquema da amostra
+* Proteger a instância do SAP ASE
+* Restaurar e recuperar instância do SAP ASE
+
+
+Autor: Michael Schlosser, NetApp
+
+
+
+=== Exemplo de visão geral da configuração
+
+Exemplo de implementação para o plug-in SnapCenter ASE para um sistema SAP em execução na Plataforma Azure.
+
+
+NOTE: Esta implementação descreve a configuração mínima de volume necessária. Os backups de despejo de dados e os backups de despejo de Registro são configurados de acordo com a SAP Note 1588316.
+
+Alternativamente, a estrutura de volume descrita neste link:https://techcommunity.microsoft.com/blog/sapapplications/sap-ase-16-0-on-azure-netapp-files-for-sap-workloads-on-sles15/3729496["Blog da Comunidade Técnica MS"] documento pode ser usada.
+
+
+
+=== Ambiente de demonstração
+
+image:sc-sap-ase-image01.png["Figura destacando o ambiente de demonstração que foi usado"]
+
+
+
+=== Versões de software
+
+[cols="50%, 50%"]
+|===
+| *Software* | *Versão* 
+
+
+| OS do Linux | SLES PARA SAP 15 SP5 
+
+
+| SAP | SAP NetWeaver 7,5 
+
+
+| SAP ASE | 16,0 SP04 PL06 HF1 
+
+
+| SnapCenter | 6,1 
+|===
+
+
+=== Design de volume ASE
+
+O layout do menor volume a seguir deve ser usado para habilitar casos de uso de backup/recuperação e clonar para o banco de dados SAP ASE. A configuração de exemplo usa <SID>: A01.
+
+[cols="20%, 20%, 30%, 30%"]
+|===
+| *Nome do volume* | *Diretório (qtree) no volume* | *Ponto de montagem no servidor* | *Comentário* 
+
+
+| <SID>-sapase | sybase | /sybase | Diretório pai para arquivos relacionados ASE 
+
+
+|  |  | /Sybase/<SID>/backups | Backups de despejo de dados (podem ser colocados em um volume diferente) 
+
+
+|  |  | /Sybase/<SID>/log_archives | Backups de despejo de log (podem ser colocados em um volume diferente) 
+
+
+|  | <sid>.adm | /home/<sid>adm | Diretório base do usuário <sid>.adm 
+
+
+|  | usrsaptrans | /usr/sap/trans | Diretório de transporte 
+
+
+|  | Usrsap<SID> | /Usr/sap/<SID> | Usr SAP 
+
+
+|  | Sapmnt<SID> | /Sapmnt/<SID> | SAP GlobalHost dir 
+
+
+| <SID>-datalog | sapdata_1 | /Sybase/<SID>/sapdata_1 | Dados BD (SID) 
+
+
+|  | saplog_1 | /Sybase/<SID>/saplog_1 | Registo BD (SID) 
+
+
+|  | saptemp | /Sybase/<SID>/saptemp | PSAPTEMP 
+
+
+|  | sybsecurity | /Sybase/<SID>/sybsecurity | Banco de dados de segurança Sybase 
+
+
+|  | sistema sybsystem | /Sybase/<SID>/sybsystem | Sybase System DB 
+
+
+|  | sybtemp | /Sybase/<SID>/sybtemp | Sistema Sybase DB - Temp 
+
+
+|  | sapdiag | /Sybase/<SID>/sapdiag | base de dados 'saptools' 
+|===
+
+
+=== Passos para proteger banco de dados A01
+
+* Verifique a distribuição do ficheiro, de acordo com o esquema da amostra
+* Verificar pré-requisitos para o host (vm-A01)
+* Verificar pré-requisitos para a base de dados (A01)
+* Implantar / instalar o agente SnapCenter no host (vm-A01)
+* Criar Configuração de recurso de instância do SnapCenter
+
+
+
+
+=== Pré-requisitos no Host
+
+Mais informações atuais podem estar disponíveis link:https://docs.netapp.com/us-en/snapcenter/protect-scu/reference_prerequisites_for_adding_hosts_and_installing_snapcenter_plug_ins_package_for_linux.html["aqui"].
+
+Antes de adicionar um host e instalar o pacote de plug-ins para Linux, você deve completar todos os requisitos.
+
+* Se estiver a utilizar iSCSI, o serviço iSCSI tem de estar em execução.
+* Você pode usar a autenticação baseada em senha para o usuário root ou não root ou autenticação baseada em chave SSH.
+* O plug-in do SnapCenter para sistemas de arquivos Unix pode ser instalado por um usuário não-root. No entanto, você deve configurar o sudo Privileges para que o usuário não-root instale e inicie o processo de plug-in. Depois de instalar o plug-in, os processos serão executados como um usuário não-root eficaz.
+* Crie credenciais com o modo de autenticação como Linux para o usuário de instalação.
+* Você deve ter instalado o Java 11 em seu host Linux.
+* Certifique-se de ter instalado apenas a edição certificada DO Java 11 no host Linux
+* Para obter informações sobre O download DO JAVA, consulte: Downloads Java para todos os sistemas operacionais
+* Você deve ter bash como o shell padrão para instalação de plug-in.
+
+
+
+
+=== Pré-requisitos para a base de dados – Ativar registo e cópias de segurança
+
+* Criar diretórios para backups e log_archives (/sybase/A01/backups, /sybase/A01/log_archives)
+* Conetar ao banco de dados A01 (como usuário do sistema operacional syba01)
++
+** Isql -S A01 -U sapsa -X -W 1024
+
+
+* Criar configuração de despejo para DADOS (A01DB) de acordo com a SAP Note 1588316
++
+** use o mestre
+** vá
+** exec SP_config_dump_config_dump_config_config_dump_config_A01DB, /stripe_dir '/sybase/A01/backups' , compressão '101' , verificação de 'header'
+** vá
+
+
+* Criar configuração de despejo para LOG (A01LOG) de acordo com a SAP Note 1588316
++
+** use o mestre
+** vá
+** SP_config_dump_config_dump_config_config_dump_config_config_dump_config_config_config_A01LOG, /stripe_dir '/sybase/A01/log_archives' , compressão '101' , verificação 'header'
+** vá
+
+
+* Ative o registo completo para a base de dados A01
++
+** SP_dboption A01, 'trunc log on chkpt' , false
+** vá
+** SP_dboption A01, 'Registro completo para todos', 'verdadeiro'
+** vá
+** SP_dboption A01, 'enforce dump tran sequence', 'true'
+** vá
+
+
+* Backup DE DESPEJO de banco de dados para habilitar o backup DE DESPEJO DE log
++
+** Banco de dados dump A01 usando config A01DB'
+** vá
+** Registo de descarga
+** Transação de despejo A01 usando config: 'A01LOG'
+** vá
+
+
+* Certifique-se de que os backups regulares do Log estão configurados, de acordo com a SAP Note 1588316
+
+
+
+
+=== Opcional – criar usuário de banco de dados dedicado
+
+Para ambientes SAP, o usuário sapsa pode ser usado.
+
+* Conetar ao banco de dados A01 (como usuário do sistema operacional syba01)
++
+** Isql -S A01 -U sapsa -X -W 1024
+
+
+* criar utilizador
++
+** criar backup de login com senha <password>
+** vá
+
+
+* atribua permissons / papéis ao usuário
++
+** grant role sa_role,sso_role,oper_role,sybase_ts_role para backup
+** vá
+
+
+
+
+
+
+=== Implante o agente do SnapCenter no host vm-A01
+
+Mais informações podem ser encontradas no link:https://docs.netapp.com/us-en/snapcenter/protect-scu/task_add_hosts_and_install_the_snapcenter_plug_ins_package_for_linux.html["Documentação do SnapCenter"].
+
+Selecione Plug-ins SAP ASE e Unix File Systems.
+
+image:sc-sap-ase-image02.png["Captura de tela da caixa de diálogo Adicionar host"]
+
+
+
+=== Criar configuração de recurso de instância do SnapCenter para banco de dados A01
+
+Recursos -> SAP ASE -> Adicionar recursos
+
+image:sc-sap-ase-image03.png["Captura de tela da caixa de diálogo Adicionar detalhes do recurso do host"]
+
+
+NOTE: Se a Senha contiver carateres especiais, eles devem ser mascarados com uma barra invertida. Por exemplo, teste!123! -> Teste!123!
+
+image:sc-sap-ase-image04.png["Captura de tela da caixa de diálogo Adicionar detalhes do recurso do host"] image:sc-sap-ase-image05.png["Captura de tela da caixa de diálogo Adicionar detalhes do recurso do host"]
+
+
+NOTE: Se estiver a utilizar o design do volume a partir do link:https://techcommunity.microsoft.com/blog/sapapplications/sap-ase-16-0-on-azure-netapp-files-for-sap-workloads-on-sles15/3729496["Blog da Comunidade Técnica MS"].
+
+Volumes /vol<SID>_base, /vol<SID>_data, /vol<SID>_log deve ser configurado como espaço físico de storage
+
+Os pares de chave-valor personalizados devem ser feitos (pelo menos).
+
+image:sc-sap-ase-image06.png["Captura de tela da caixa de diálogo Configurações de recursos pares de chave personalizados"]
+
+A tabela a seguir lista os parâmetros do plug-in Sybase, fornece suas configurações e os descreve:
+
+[cols="25%, 25%, 50%"]
+|===
+| *Parâmetro* | * Definição* | *Descrição* 
+
+
+| SYBASE_ISQL_CMD | Exemplo: /Opt/sybase/OCS-15__0/bin/isql -X. | Define o caminho para o comando isql. Opções disponíveis: https://infocenter.sybase.com/help/index.jsp?topic=/com.sybase.infocenter.dc34237.1500/html/mvsinst/CIHHFDGC.htm[] 
+
+
+| SYBASE_USER | nome_utilizador | Especifica o usuário do sistema operacional que pode executar o comando isql. Este parâmetro é necessário para UNIX. Esse parâmetro é necessário se o usuário executando os comandos Snap Creator Agentstart e stop (geralmente o usuário raiz) e o usuário executando o comando isql forem diferentes. 
+
+
+| SYBASE_SERVER | data_server_name | Especifica o nome do servidor de dados Sybase (-S opção no comando isql).por exemplo: A01 
+
+
+| SYBASE_DATABASES | db_name:user_name/password | Lista os bancos de dados dentro da instância para fazer backup. O banco de dados mestre é adicionado; por exemplo: DBAtest2:sa/53616c7404351e.se um banco de dados chamado "ALL" for usado, então a descoberta automática do banco de dados é usada, e os bancos de dados sybsyntax, sybsystemprocs, e tempdb são excluídos. Por exemplo: TODAS AS senhas criptografadas:sa/53616c71a6351e são suportadas se o parâmetro NTAP_PWD_PROTECTION estiver definido. 
+
+
+| SYBASE_DATABASES_EXCLUDE | db_name | Permite que os bancos de dados sejam excluídos se o constructo "ALL" for usado. Você pode especificar vários bancos de dados usando uma lista separada por ponto-e-vírgula.por exemplo, pubs2;test_db1 
+
+
+| SYBASE_TRAN_DUMP | db_name:directory_path | Permite que você execute um despejo de transação Sybase depois de criar uma cópia Snapshot.por exemplo: pubs2:/sybasedumps/pubs2 você deve especificar cada banco de dados que requer um despejo de transação. 
+
+
+| SYBASE_TRAN_DUMP_FORMAT | %S_%D_%T.CMN | Permite especificar a convenção de nomenclatura dump. As seguintes chaves podem ser especificadas: %S Nome da instância DO SYBASE_SERVER %D base de dados DO SYBASE_DATABASES %T carimbo de data/hora único aqui está um exemplo: %S_%D_%T.log 
+
+
+| SYBASE_TRAN_DUMP_COMPRESS | (Y / N) | Ativa ou desativa a compressão de despejo de transação Sybase nativa. 
+
+
+| SYBASE | Exemplo: /Sybase | Especifica o local da instalação do Sybase. 
+
+
+| SYBASE_MANIFEST | Exemplo: A01:/sybase/A01/sapdiag | Especifica os bancos de dados para os quais o arquivo de manifesto deve ser criado, juntamente com o local onde o arquivo de manifesto deve ser colocado. 
+
+
+| SYBASE_MANIFEST_FORMAT | %S__%D_.exemplo de manifesto: %S_%D_.MANIFEST | Permite que você especifique a convenção de nomenclatura de arquivos MANIFEST. As seguintes chaves podem ser especificadas: %S Nome da instância DE SYBASE_SERVER %D base de dados DE SYBASE_DATABASES 
+
+
+| SYBASE_MANIFEST_DELETE | (Y / N) | Permite que o manifesto seja excluído após a cópia Snapshot ter sido criada. O arquivo de manifesto deve ser capturado na cópia Snapshot para que ele esteja sempre disponível com o backup. 
+
+
+| SYBASE_EXCLUDE_TEMPDB | (Y / N) | Permite a exclusão automática de bancos de dados temporários criados pelo usuário. 
+|===
+
+
+=== Sequência para recuperar o sistema A01
+
+. Pare o SAP System A01 (incluindo banco de dados), pare o sapinit
+. Sistemas de arquivos umount
+. Restaurar volumes A01-datalog (usando SnapCenter)
+. Montar sistemas de arquivos
+. Inicie o Banco de dados A01 (com opção –q, para evitar o acesso automático online e manter o banco de dados recuperável – de acordo com a SAP Note 1887068)
+. Inicie o BackupServer A01
+. saptools de banco de dados on-line, sybsecurity , sybmgmtdb
+. Recuperar Banco de dados A01 (usando isql)
+. Base de dados online A01
+. Inicie o sapinit, SAP System A01
+
+
+
+
+=== Recuperar instância A01
+
+* Pare o SAP System e o DB A01 no host vm-A01
++
+** Utilizador a01adm: Stopsap
+** Root do usuário: /Etc/init.d/sapinit stop
+** Root do usuário: Umount -a -t nfs
+
+
+* Restaurar cópia de segurança
++
+** SnapCenter GUI: Selecione Backup necessário para Restauração
++
+image:sc-sap-ase-image07.png["Captura de ecrã da caixa de diálogo Selecionar cópia de segurança necessária para restauro"]
+
+** Para implantação do ANF: Somente recurso completo está disponível
++
+image:sc-sap-ase-image08.png["Captura de ecrã da caixa de diálogo Selecionar cópia de segurança necessária para restauro"]
+
+
+
+
+
+
+NOTE: A seleção de recurso completo acionará uma Restauração Snap baseada em volume (VBSR). Dentro do Azure é chamado link:https://learn.microsoft.com/en-us/azure/azure-netapp-files/snapshots-revert-volume["reverter volume"].
+
+image:sc-sap-ase-image09.png["Captura de tela de uma mensagem importante sobre instantâneos"]
+
+
+NOTE: Para outros tipos de implantação (por exemplo, ANF no local), uma operação SFSR (Single File Snap Restore) pode ser orquestrada. Selecione File Level (nível de ficheiro) e o volume e marca de verificação "All" (todos) – consulte a seguinte captura de ecrã.
+
+image:sc-sap-ase-image10.png["Captura de tela de seleção de instantâneos no nível do arquivo"]
+
+O resumo seria exibido e com concluir a restauração real é iniciada.
+
+image:sc-sap-ase-image11.png["Captura de ecrã do resumo da restauração instantânea"]
+
+* Montar sistemas de arquivos (vm-A01)
++
+** Raiz do usuário: Mount -a -t nfs
+
+
+* Iniciar base de dados A01 e BackupServer
++
+** Modificar RUN_A01 e adicionar -q (de acordo com SAP Note 1887068)
+** Utilizador syba01: RUN_A01 &
+** Utilizador syba01: RUN_A01_BS&
+
+
+* Bancos de dados on-line saptools, sybsecurity , sybmgmtdb
++
+** Usuário syba01: Isql -S A01 -U sapsa -X -W 1024
+** saptools de banco de dados on-line
+** vá
+** segurança de banco de dados on-line
+** vá
+** banco de dados online sybmtdb
+** vá
+
+
+* Recuperar Banco de dados A01
++
+** SP_dump_history (para mostrar os despejos de log de transações)
+** vá
+** Carregue despejos de log de transações de acordo com suas necessidades – para obter mais informações, consulte a documentação: https://infocenter.sybase.com/help/index.jsp?topic=/com.sybase.infocenter.dc36272.1572/html/commands/X75212.htm[]
+** Exemplo: CARREGUE o TRAN A01 DE '/sybase/A01/log_archives/A01.TRAN.20250207.140248.6.000'
+** vá
+** Base de dados online A01
+** vá
+
+
+* Remova -q de RUN_A01
+* Inicie o SAP System
++
+** Root do usuário: /Etc/init.d/sapinit start
+** Usuário a01adm: Startsap
+
+
+
+
+
+
+== Informações adicionais e histórico de versões
+
+
+
+=== Quiesce vs. Prepare
+
+Consulte a documentação no link: Página de ajuda do https://help.sap.com/docs/SAP_ASE/4e870f06a15b4bbeb237cca890000421/d9d3ce996bdd415693cdb17663bfc0e3.html?locale=en-US&version=16.0.2.0[SAP].
+
+image:sc-sap-ase-image12.png["Captura de tela do conteúdo da página de ajuda da SAP"]
+
+O plugin SnapCenter ASE usa o comando quiesce database, no entanto, ele pode ser substituído pelo comando preparar. Se necessário, tem de ser alterado no SYBASE.pm na linha 473, 475, 479, 481, 673, 675 por exemplo
+
+image:sc-sap-ase-image13.png["Captura de tela do comando do banco de dados quiesce"]
+
+
+
+=== Demos gravadas
+
+As seguintes demonstrações recodificadas estão disponíveis para suportar a documentação.
+
+.Instalação e Configuração ASE Plugin, Backup do banco de dados ASE
+video::079554d1-452c-42e5-95f6-b2b900c1fa86[panopto,width=360]
+.Restauração e recuperação de banco de dados ASE
+video::0aba8433-e0d0-4c40-be0a-b2b900c1fb54[panopto,width=360]
+
+
+=== Documentação externa
+
+Para saber mais sobre as informações descritas neste documento, consulte os seguintes documentos e/ou sites:
+
+* link:https://techcommunity.microsoft.com/blog/sapapplications/sap-ase-16-0-on-azure-netapp-files-for-sap-workloads-on-sles15/3729496["SAP Instalação Azure no ANF"]
+* link:https://docs.netapp.com/us-en/snapcenter/protect-scu/reference_prerequisites_for_adding_hosts_and_installing_snapcenter_plug_ins_package_for_linux.html["Pré-requisitos do SnapCenter para Plugins"]
+* link:https://docs.netapp.com/us-en/snapcenter/protect-scu/task_add_hosts_and_install_the_snapcenter_plug_ins_package_for_linux.html["SnapCenter Instalar Plugins"]
+* link:https://infocenter.sybase.com/help/index.jsp?topic=/com.sybase.infocenter.dc34237.1500/html/mvsinst/CIHHFDGC.htm["Sybase Infocenter - isql"]
+* link:https://infocenter.sybase.com/help/index.jsp?topic=/com.sybase.infocenter.dc36272.1572/html/commands/X75212.htm["Sybase Infocenter - carregar despejo de log de transações"]
+* SAP Notes (login necessário)
++
+** 1887068 - SYB: Usando backup externo e restauração com SAP ASE: https://me.sap.com/notes/1887068/E[]
+** 1618817 - SYB: Como restaurar um servidor de banco de dados SAP ASE (UNIX): https://me.sap.com/notes/1618817/E[]
+** 1585981 - SYB: Garantindo recuperabilidade para SAP ASE: https://me.sap.com/notes/1585981/E[]
+** 1588316 - SYB: Configurar backups automáticos de banco de dados e log: https://me.sap.com/notes/1588316/E[]
+** Documentação do produto NetApp: https://www.netapp.com/support-and-training/documentation/[]
+** Soluções SAP da NetApp – informações sobre casos de uso, práticas recomendadas e benefícios: https://docs.netapp.com/us-en/netapp-solutions-sap[]
+
+
+
+
+
+
+=== Histórico de versões
+
+[cols="30%, 30%, 40%"]
+|===
+| *Versão* | *Data* | * Histórico de versões do documento* 
+
+
+| Versão 1,0 | Abril de 2025 | Versão inicial – backup / recuperação de banco de dados ASE 
+|===
