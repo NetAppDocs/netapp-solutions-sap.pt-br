@@ -16,7 +16,7 @@ summary: 'O NFS versão 4 e posterior requer autenticação do usuário. Essa au
 [role="lead"]
 O NFS versão 4 e posterior requer autenticação do usuário. Essa autenticação pode ser realizada usando uma ferramenta de gerenciamento de usuário central, como um servidor LDAP (Lightweight Directory Access Protocol) ou com contas de usuário locais. As seções a seguir descrevem como configurar contas de usuário locais.
 
-O usuário de administração `<sidadm>` e o `sapsys` grupo devem ser criados manualmente nos hosts do SAP HANA e nas controladoras de storage antes do início da instalação do software SAP HANA.
+Os usuários de administração `<sid>adm`,`<sid>crypt` e o `sapsys` grupo devem ser criados manualmente nos hosts do SAP HANA e nas controladoras de storage antes do início da instalação do software SAP HANA.
 
 
 
@@ -24,9 +24,9 @@ O usuário de administração `<sidadm>` e o `sapsys` grupo devem ser criados ma
 
 Se isso não existir, o `sapsys` grupo deve ser criado no host SAP HANA. Deve ser escolhido um ID de grupo exclusivo que não esteja em conflito com as IDs de grupo existentes nos controladores de armazenamento.
 
-O usuário `<sidadm>` é criado no host do SAP HANA. Deve ser escolhida uma ID exclusiva que não esteja em conflito com as IDs de usuário existentes nos controladores de armazenamento.
+Os usuários `<sid>adm` e `<sid>crypt` são criados no host do SAP HANA. Devem ser escolhidas IDs exclusivas que não entrem em conflito com IDs de usuário existentes nos controladores de armazenamento.
 
-Para um sistema SAP HANA de vários hosts, o ID do usuário e do grupo deve ser o mesmo em todos os hosts SAP HANA. O grupo e o usuário são criados nos outros hosts do SAP HANA copiando as linhas afetadas dentro `/etc/group` e `/etc/passwd` do sistema de origem para todos os outros hosts do SAP HANA.
+Para um sistema SAP HANA de vários hosts, as IDs de usuário e grupo devem ser as mesmas em todos os hosts SAP HANA. O grupo e o usuário são criados nos outros hosts do SAP HANA copiando as linhas afetadas dentro `/etc/group` e `/etc/passwd` do sistema de origem para todos os outros hosts do SAP HANA.
 
 
 NOTE: O domínio NFSv4 deve ser definido com o mesmo valor em todos os servidores Linux  `/etc/idmapd.conf`) e SVMs. Defina o parâmetro de domínio "domínio <domain-name>" no arquivo `/etc/idmapd.conf` para os hosts Linux.
@@ -44,7 +44,7 @@ NOTE: Os mais recentes kernels Linux não requerem esta etapa. As mensagens de a
 
 == Controladores de storage
 
-A ID de usuário e o ID de grupo devem ser os mesmos nos hosts SAP HANA e nas controladoras de storage. O grupo e o usuário são criados inserindo os seguintes comandos no cluster de armazenamento:
+As IDs de usuário e o ID de grupo devem ser os mesmos nos hosts SAP HANA e nas controladoras de storage. O grupo e o usuário são criados inserindo os seguintes comandos no cluster de armazenamento:
 
 ....
 vserver services unix-group create -vserver <vserver> -name <group name> -id <group id>
