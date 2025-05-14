@@ -132,9 +132,3 @@ entries:
     url: "/bp/saphana_fas_fc_where_to_find_additional_information.html"
   - title: Histórico de atualizações
     url: "/bp/saphana_fas_fc_update_history.html"
-- title: SAP HANA em sistemas IBM Power e sistemas NetApp AFF com NFS
-  url: "/bp/saphana-ibm-aff-nfs_pdf_link.html"
-- title: SAP com Oracle em UNIX e NFS com NetApp ONTAP
-  url: "/bp/sap-oracle-snapman_pdf_link.html"
-- title: Com o Microsoft SQL Server no Windows usando o ONTAP
-  url: "/bp/sap-sqls-sc_pdf_link.html"
