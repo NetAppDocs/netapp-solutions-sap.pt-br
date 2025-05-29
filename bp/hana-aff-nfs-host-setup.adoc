@@ -1,0 +1,276 @@
+---
+sidebar: sidebar 
+permalink: bp/hana-aff-nfs-host-setup.html 
+keywords: SUSE Linux Enterprise Server, configuration, mount points, LaMa 
+summary: Todas as etapas de configuração do host descritas nesta seção são válidas para ambientes SAP HANA em servidores físicos e para SAP HANA em execução no VMware vSphere. 
+---
+= Configuração do host
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Todas as etapas de configuração do host descritas nesta seção são válidas para ambientes SAP HANA em servidores físicos e para SAP HANA em execução no VMware vSphere.
+
+
+
+== Parâmetro de configuração para o SUSE Linux Enterprise Server
+
+Parâmetros adicionais de kernel e configuração em cada host SAP HANA devem ser ajustados para a carga de trabalho gerada pelo SAP HANA.
+
+
+
+=== SUSE Linux Enterprise Server 12 e 15
+
+A partir do SUSE Linux Enterprise Server 12 SP1, o parâmetro kernel deve ser definido em um arquivo de configuração no `/etc/sysctl.d` diretório. Por exemplo, você deve criar um arquivo de configuração com o `91-NetApp-HANA.conf` nome .
+
+....
+net.core.rmem_max = 16777216
+net.core.wmem_max = 16777216
+net.ipv4.tcp_rmem = 4096 131072 16777216
+net.ipv4.tcp_wmem = 4096 16384  16777216
+net.core.netdev_max_backlog = 300000
+net.ipv4.tcp_slow_start_after_idle=0
+net.ipv4.tcp_no_metrics_save = 1
+net.ipv4.tcp_moderate_rcvbuf = 1
+net.ipv4.tcp_window_scaling = 1
+net.ipv4.tcp_timestamps = 1
+net.ipv4.tcp_sack = 1
+sunrpc.tcp_max_slot_table_entries = 128
+....
+
+NOTE: O Saptune, incluído no SLES para versões do SAP os, pode ser usado para definir esses valores. Para obter mais informações, consulte https://launchpad.support.sap.com/#/notes/3024346["SAP Nota 3024346"^] (requer login SAP).
+
+....
+
+....
+
+
+== Parâmetros de configuração para Red Hat Enterprise Linux 7,2 ou posterior
+
+É necessário ajustar o kernel e os parâmetros de configuração adicionais em cada host SAP HANA para a carga de trabalho gerada pelo SAP HANA.
+
+A partir do Red Hat Enterprise Linux 7,2, você deve definir os parâmetros do kernel em um arquivo de configuração no `/etc/sysctl.d` diretório. Por exemplo, você deve criar um arquivo de configuração com o `91-NetApp-HANA.conf` nome .
+
+....
+net.core.rmem_max = 16777216
+net.core.wmem_max = 16777216
+net.ipv4.tcp_rmem = 4096 131072 16777216
+net.ipv4.tcp_wmem = 4096 16384  16777216
+net.core.netdev_max_backlog = 300000
+net.ipv4.tcp_slow_start_after_idle = 0
+net.ipv4.tcp_no_metrics_save = 1
+net.ipv4.tcp_moderate_rcvbuf = 1
+net.ipv4.tcp_window_scaling = 1
+net.ipv4.tcp_timestamps = 1
+net.ipv4.tcp_sack = 1
+sunrpc.tcp_max_slot_table_entries = 128
+....
+
+NOTE: Desde o RedHat Enterprise Linux versão 8,6, as configurações também podem ser aplicadas usando as funções do sistema RHEL para SAP (Ansible). Consulte https://launchpad.support.sap.com/#/notes/3024346["SAP Nota 3024346"^] (requer login SAP).
+
+
+
+== Crie subdiretórios em /hana/volume compartilhado
+
+
+NOTE: Os exemplos a seguir mostram um banco de dados SAP HANA com SID NF2.
+
+Para criar os subdiretórios necessários, execute uma das seguintes ações:
+
+* Para um sistema de host único, monte o `/hana/shared` volume e crie os `shared` subdiretórios e `usr-sap`.
+
+
+....
+sapcc-hana-tst-06:/mnt # mount <storage-hostname>:/NF2_shared /mnt/tmp
+sapcc-hana-tst-06:/mnt # cd /mnt/tmp
+sapcc-hana-tst-06:/mnt/tmp # mkdir shared
+sapcc-hana-tst-06:/mnt/tmp # mkdir usr-sap
+sapcc-hana-tst-06:/mnt/tmp # cd ..
+sapcc-hana-tst-06:/mnt # umount /mnt/tmp
+....
+* Para um sistema de vários hosts, monte o `/hana/shared` volume e crie os `shared` subdiretórios e `usr-sap` para cada host.
++
+Os comandos de exemplo mostram um sistema HANA de vários hosts de 2 a 1.
+
+
+
+....
+sapcc-hana-tst-06:/mnt # mount <storage-hostname>:/NF2_shared /mnt/tmp
+sapcc-hana-tst-06:/mnt # cd /mnt/tmp
+sapcc-hana-tst-06:/mnt/tmp # mkdir shared
+sapcc-hana-tst-06:/mnt/tmp # mkdir usr-sap-host1
+sapcc-hana-tst-06:/mnt/tmp # mkdir usr-sap-host2
+sapcc-hana-tst-06:/mnt/tmp # mkdir usr-sap-host3
+sapcc-hana-tst-06:/mnt/tmp # cd ..
+sapcc-hana-tst-06:/mnt # umount /mnt/tmp
+....
+
+
+== Crie pontos de montagem
+
+
+NOTE: Os exemplos a seguir mostram um banco de dados SAP HANA com SID NF2.
+
+Para criar os diretórios de ponto de montagem necessários, execute uma das seguintes ações:
+
+* Para um sistema de host único, crie pontos de montagem e defina as permissões no host do banco de dados.
+
+
+....
+sapcc-hana-tst-06:/ # mkdir -p /hana/data/NF2/mnt00001
+sapcc-hana-tst-06:/ # mkdir -p /hana/log/NF2/mnt00001
+sapcc-hana-tst-06:/ # mkdir -p /hana/shared
+sapcc-hana-tst-06:/ # mkdir -p /usr/sap/NF2
+
+sapcc-hana-tst-06:/ # chmod –R 777 /hana/log/NF2
+sapcc-hana-tst-06:/ # chmod –R 777 /hana/data/NF2
+sapcc-hana-tst-06:/ # chmod -R 777 /hana/shared
+sapcc-hana-tst-06:/ # chmod -R 777 /usr/sap/NF2
+....
+* Para um sistema de vários hosts, crie pontos de montagem e defina as permissões em todos os hosts de trabalho e de espera. Os comandos de exemplo a seguir são para um sistema HANA de vários hosts de 2 a 1.
++
+** Primeiro anfitrião do trabalhador:
+
+
+
+
+....
+sapcc-hana-tst-06:~ # mkdir -p /hana/data/NF2/mnt00001
+sapcc-hana-tst-06:~ # mkdir -p /hana/data/NF2/mnt00002
+sapcc-hana-tst-06:~ # mkdir -p /hana/log/NF2/mnt00001
+sapcc-hana-tst-06:~ # mkdir -p /hana/log/NF2/mnt00002
+sapcc-hana-tst-06:~ # mkdir -p /hana/shared
+sapcc-hana-tst-06:~ # mkdir -p /usr/sap/NF2
+
+sapcc-hana-tst-06:~ # chmod -R 777 /hana/log/NF2
+sapcc-hana-tst-06:~ # chmod -R 777 /hana/data/NF2
+sapcc-hana-tst-06:~ # chmod -R 777 /hana/shared
+sapcc-hana-tst-06:~ # chmod -R 777 /usr/sap/NF2
+....
+* Segundo anfitrião do trabalhador:
+
+
+....
+sapcc-hana-tst-07:~ # mkdir -p /hana/data/NF2/mnt00001
+sapcc-hana-tst-07:~ # mkdir -p /hana/data/NF2/mnt00002
+sapcc-hana-tst-07:~ # mkdir -p /hana/log/NF2/mnt00001
+sapcc-hana-tst-07:~ # mkdir -p /hana/log/NF2/mnt00002
+sapcc-hana-tst-07:~ # mkdir -p /hana/shared
+sapcc-hana-tst-07:~ # mkdir -p /usr/sap/NF2
+
+sapcc-hana-tst-07:~ # chmod -R 777 /hana/log/NF2
+sapcc-hana-tst-07:~ # chmod -R 777 /hana/data/NF2
+sapcc-hana-tst-07:~ # chmod -R 777 /hana/shared
+sapcc-hana-tst-07:~ # chmod -R 777 /usr/sap/NF2
+....
+* Anfitrião em espera:
+
+
+....
+sapcc-hana-tst-08:~ # mkdir -p /hana/data/NF2/mnt00001
+sapcc-hana-tst-08:~ # mkdir -p /hana/data/NF2/mnt00002
+sapcc-hana-tst-08:~ # mkdir -p /hana/log/NF2/mnt00001
+sapcc-hana-tst-08:~ # mkdir -p /hana/log/NF2/mnt00002
+sapcc-hana-tst-08:~ # mkdir -p /hana/shared
+sapcc-hana-tst-08:~ # mkdir -p /usr/sap/NF2
+
+sapcc-hana-tst-08:~ # chmod -R 777 /hana/log/NF2
+sapcc-hana-tst-08:~ # chmod -R 777 /hana/data/NF2
+sapcc-hana-tst-08:~ # chmod -R 777 /hana/shared
+sapcc-hana-tst-08:~ # chmod -R 777 /usr/sap/NF2
+....
+
+
+== Montar sistemas de arquivos
+
+Diferentes opções de montagem devem ser usadas dependendo da versão NFS e da versão ONTAP. Os seguintes sistemas de arquivos devem ser montados nos hosts:
+
+* `/hana/data/SID/mnt0000*`
+* `/hana/log/SID/mnt0000*`
+* `/hana/shared`
+* `/usr/sap/SID`
+
+
+A tabela a seguir mostra as versões NFS que você deve usar para os diferentes sistemas de arquivos para bancos de dados SAP HANA de host único e vários hosts.
+
+|===
+| Sistemas de arquivos | SAP HANA único host | Vários hosts do SAP HANA 
+
+
+| /Hana/data/SID/mnt0000* | NFSv3 ou NFSv4 | NFSv4 
+
+
+| /Hana/log/SID/mnt0000* | NFSv3 ou NFSv4 | NFSv4 
+
+
+| /hana/compartilhado | NFSv3 ou NFSv4 | NFSv3 ou NFSv4 
+
+
+| /Usr/sap/SID | NFSv3 ou NFSv4 | NFSv3 ou NFSv4 
+|===
+A tabela a seguir mostra as opções de montagem para as várias versões NFS e ONTAP. Os parâmetros comuns são independentes das versões NFS e ONTAP.
+
+
+NOTE: O SAP lama requer que o diretório /usr/sap/SID seja local. Portanto, não monte um volume NFS para /usr/sap/SID se você estiver usando o SAP lama.
+
+No NFSv3, você deve desativar o bloqueio NFS para evitar operações de limpeza do bloqueio NFS em caso de falha de software ou servidor.
+
+Com o ONTAP 9, o tamanho da transferência NFS pode ser configurado até 1MB GB. Especificamente, com conexões 40GbE ou mais rápidas ao sistema de storage, você deve definir o tamanho da transferência para 1MB para alcançar os valores de taxa de transferência esperados.
+
+|===
+| Parâmetro comum | NFSv3 | NFSv4 | Tamanho da transferência de NFS com ONTAP 9 | Tamanho da transferência de NFS com o ONTAP 8 
+
+
+| rw, bg, hard, timeo-600, noatime | 3,nolock | 4,1,bloqueio | rsize: 1048576, wsize: 262144 | rsize: 65536, wsize: 65536 
+|===
+
+NOTE: Para melhorar o desempenho de leitura com o NFSv3, a NetApp recomenda que você use a `nconnect=n` opção de montagem, que está disponível com o SUSE Linux Enterprise Server 12 SP4 ou posterior e o RedHat Enterprise Linux (RHEL) 8,3 ou posterior.
+
+
+NOTE: Testes de desempenho mostraram que `nconnect=4` fornece bons resultados de leitura para os volumes de dados. As gravações de log podem se beneficiar de um número menor de sessões, `nconnect=2` como o . Os volumes compartilhados também podem se beneficiar com o uso da opção 'nconnect'. Esteja ciente de que a primeira montagem de um servidor NFS (endereço IP) define a quantidade de sessões que estão sendo usadas. Outras montagens no mesmo endereço IP não mudam isso mesmo que um valor diferente seja usado para nconnect.
+
+
+NOTE: A partir do ONTAP 9.8 e do SUSE SLES15SP2 ou do RedHat RHEL 8,4 ou superior, o NetApp suporta a opção nconnect também para NFSv4,1. Para obter informações adicionais, consulte a documentação do fornecedor do Linux.
+
+
+NOTE: Se nconnect estiver sendo usado com NFSv4.x, a quantidade de slots de sessão NFSv4.x deve ser ajustada de acordo com a seguinte regra: Quantidade de slots de sessão é igual a <nconnect value> x 64. No host, isso será ajustado por
+`echo options nfs max_session_slots=<calculated value> > /etc/modprobe.d/nfsclient.conf` seguido de uma reinicialização. O valor do lado do servidor também deve ser ajustado, defina o número de slots de sessão como descrito em link:hana-aff-nfs-storage-controller-setup.html#nfs-configuration-for-nfsv4["Configuração NFS para NFSv4."]
+
+O exemplo a seguir mostra um único banco de dados SAP HANA de host com SID de NF2 ms usando NFSv3 GB e um tamanho de transferência NFS de 1MB GB para leituras e 256K GB para gravações. Para montar os sistemas de arquivos durante a inicialização do sistema com o `/etc/fstab` arquivo de configuração, execute as seguintes etapas:
+
+. Adicione os sistemas de arquivos necessários ao `/etc/fstab` arquivo de configuração.
++
+....
+sapcc-hana-tst-06:/ # cat /etc/fstab
+<storage-vif-data01>:/NF2_data_mnt00001 /hana/data/NF2/mnt00001 nfs rw,nfsvers=3,hard,timeo=600,nconnect=4,rsize=1048576,wsize=262144,bg,noatime,nolock 0 0
+<storage-vif-log01>:/NF2_log_mnt00001 /hana/log/NF2/mnt00001 nfs rw,nfsvers=3,hard,timeo=600,nconnect=2,rsize=1048576,wsize=262144,bg,noatime,nolock 0 0
+<storage-vif-data01>:/NF2_shared/usr-sap /usr/sap/NF2 nfs rw,nfsvers=3,hard,timeo=600,nconnect=4,rsize=1048576,wsize=262144,bg,noatime,nolock 0 0
+<storage-vif-data01>:/NF2_shared/shared /hana/shared nfs rw,nfsvers=3,hard,timeo=600,nconnect=4,rsize=1048576,wsize=262144,bg,noatime,nolock 0 0
+....
+. Execute `mount –a` para montar os sistemas de arquivos em todos os hosts.
+
+
+O próximo exemplo mostra um banco de dados SAP HANA de vários hosts com SID NF2 usando NFSv4,1 para sistemas de arquivos de dados e log e NFSv3 para `/hana/shared` os sistemas de arquivos e. `/usr/sap/NF2` É usado um tamanho de transferência NFS de 1MB GB para leituras e 256K GB para gravações.
+
+. Adicione os sistemas de arquivos necessários ao `/etc/fstab` arquivo de configuração em todos os hosts.
++
+
+NOTE: O `/usr/sap/NF2` sistema de arquivos é diferente para cada host de banco de dados. O exemplo a seguir `/NF2_shared/usr-sap-host1` mostra .
+
++
+....
+stlrx300s8-5:/ # cat /etc/fstab
+<storage-vif-data01>:/NF2_data_mnt00001 /hana/data/NF2/mnt00001 nfs  rw,nfsvers=4.1,hard,timeo=600,nconnect=4,rsize=1048576,wsize=262144,bg,noatime,lock 0 0
+<storage-vif-data02>:/NF2_data_mnt00002 /hana/data/NF2/mnt00002 nfs rw,nfsvers=4.1,hard,timeo=600,nconnect=4,rsize=1048576,wsize=262144,bg,noatime,lock 0 0
+<storage-vif-log01>:/NF2_log_mnt00001 /hana/log/NF2/mnt00001 nfs rw,nfsvers=4.1,hard,timeo=600,nconnect=2,rsize=1048576,wsize=262144,bg,noatime,lock 0 0
+<storage-vif-log02>:/NF2_log_mnt00002 /hana/log/NF2/mnt00002 nfs rw,nfsvers=4.1,hard,timeo=600,nconnect=2,rsize=1048576,wsize=262144,bg,noatime,lock 0 0
+<storage-vif-data02>:/NF2_shared/usr-sap-host1 /usr/sap/NF2 nfs rw,nfsvers=3,hard,timeo=600,nconnect=4,rsize=1048576,wsize=262144,bg,noatime,nolock 0 0
+<storage-vif-data02>:/NF2_shared/shared /hana/shared nfs rw,nfsvers=3,hard,timeo=600,nconnect=4,rsize=1048576,wsize=262144,bg,noatime,nolock 0 0
+....
+. Execute `mount –a` para montar os sistemas de arquivos em todos os hosts.
+

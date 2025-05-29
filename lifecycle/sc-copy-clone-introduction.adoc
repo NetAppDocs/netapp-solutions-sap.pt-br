@@ -65,10 +65,10 @@ O NetApp SnapCenter com o plug-in para SAP HANA é usado para provisionar os vol
 
 Um fornecimento completo e totalmente automatizado de sistemas de teste SAP pode ser realizado usando ferramentas de terceiros e integração de recursos do NetApp. Mais detalhes estão disponíveis em:
 
-https://docs.netapp.com/us-en/netapp-solutions-sap/lifecycle/lama-ansible-introduction.html["TR-4953: Integração de gerenciamento de cenários SAP da NetApp com Ansible"]
+link:lama-ansible-introduction.html["TR-4953: Integração de gerenciamento de cenários SAP da NetApp com Ansible"]
 
-https://docs.netapp.com/us-en/netapp-solutions-sap/lifecycle/libelle-sc-overview.html["TR-4929: Automatizando as operações de cópia do sistema SAP com o Libelle SystemCopy (NetApp.com)"]
+link:libelle-sc-overview.html["TR-4929: Automatizando as operações de cópia do sistema SAP com o Libelle SystemCopy (NetApp.com)"]
 
-https://docs.netapp.com/us-en/netapp-solutions-sap/briefs/sap-alpaca-automation.html#solution-overview["Automação da cópia e amp do sistema SAP; nº 44; Refresh nº 44; e clonar fluxos de trabalho com ALPACA e NetApp SnapCenter"]
+link:../briefs/sap-alpaca-automation.html#solution-overview["Automação da cópia e amp do sistema SAP; nº 44; Refresh nº 44; e clonar fluxos de trabalho com ALPACA e NetApp SnapCenter"]
 
-https://docs.netapp.com/us-en/netapp-solutions-sap/briefs/sap-avantra-automation.html#solution-overview["Automatizar a cópia e o amp do sistema SAP; n.o 44; Refresh n.o 44; e clonar fluxos de trabalho com Avantra e NetApp SnapCenter"]
+link:../briefs/sap-avantra-automation.html#solution-overview["Automatizar a cópia e o amp do sistema SAP; n.o 44; Refresh n.o 44; e clonar fluxos de trabalho com Avantra e NetApp SnapCenter"]

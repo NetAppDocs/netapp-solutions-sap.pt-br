@@ -1,0 +1,70 @@
+---
+sidebar: sidebar 
+permalink: bp/hana-aff-fc-update-history.html 
+keywords:  
+summary:  
+---
+= Histórico de atualizações
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+As seguintes alterações técnicas foram feitas a esta solução desde a sua publicação original.
+
+[cols="25,50"]
+|===
+| Data | Atualizar resumo 
+
+
+| Outubro de 2015 | Versão inicial 
+
+
+| Março de 2016 | Dimensionamento da capacidade atualizado 
+
+
+| Fevereiro de 2017 | Novos sistemas de storage e compartimentos de disco NetApp novos recursos das versões do ONTAP 9 os novos (SLES12 SP1 e RHEL 7,2) novo lançamento do SAP HANA 
+
+
+| Julho de 2017 | Pequenas atualizações 
+
+
+| Setembro de 2018 | Novos sistemas de storage da NetApp novas versões do sistema operacional (SLES12 SP3 e RHEL 7,4) atualizações menores adicionais do SAP HANA 2,0 SPS3 
+
+
+| Novembro de 2019 | Novos sistemas de storage NetApp e gaveta NVMe novas versões do sistema operacional (SLES12 SP4, SLES 15 e RHEL 7,6) atualizações secundárias adicionais 
+
+
+| Abril de 2020 | Os novos sistemas de storage da série AFF ASA introduziram vários recursos de partição de dados disponíveis desde o SAP HANA 2,0 SPS4 
+
+
+| Junho de 2020 | Informações adicionais sobre as funcionalidades opcionais 
+
+
+| Fevereiro de 2021 | Suporte a LVM Linux novos sistemas de armazenamento NetApp novas versões do os (SLES15SP2, RHEL 8) 
+
+
+| Abril de 2021 | Informações específicas do VMware vSphere adicionadas 
+
+
+| Setembro de 2022 | Novas versões do SO 
+
+
+| Agosto de 2023 | Novos sistemas de storage (AFF C-Series) 
+
+
+| Maio de 2024 | Novos sistemas de storage (AFF A-Series) 
+
+
+| Setembro de 2024 | Novos sistemas de storage (ASA A-Series) 
+
+
+| Novembro de 2024 | Novos sistemas de storage 
+
+
+| Fevereiro de 2025 | Novos sistemas de storage 
+|===

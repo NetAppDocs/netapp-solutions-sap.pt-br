@@ -121,7 +121,7 @@ Como as atualizações do sistema, as cópias, os clones e os testes de recupera
 Para saber mais sobre as informações contidas neste documento, consulte os seguintes documentos e sites:
 
 * link:https://pcg.io/de/sap/alpaca/["ALPACA"]
-* link:https://docs.netapp.com/us-en/netapp-solutions-sap/lifecycle/sc-copy-clone-introduction.html["Automatizando as operações de clonagem e cópia do sistema SAP HANA com o SnapCenter"]
+* link:../lifecycle/sc-copy-clone-introduction.html["Automatizando as operações de clonagem e cópia do sistema SAP HANA com o SnapCenter"]
 * link:https://docs.netapp.com/us-en/snapcenter/sc-automation/reference_supported_rest_apis.html["APIs REST compatíveis com servidor SnapCenter e plug-ins"]
 
 

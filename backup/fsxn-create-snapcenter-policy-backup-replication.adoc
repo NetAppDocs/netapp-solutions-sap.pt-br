@@ -1,0 +1,51 @@
+---
+sidebar: sidebar 
+permalink: backup/fsxn-create-snapcenter-policy-backup-replication.html 
+keywords: policy, backup, replication, snapshot 
+summary: Esta seção descreve como configurar uma política para replicação de backup. 
+---
+= Crie uma nova política do SnapCenter para replicação de backup
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você deve configurar uma política para a replicação de backup da seguinte forma:
+
+. Forneça um nome para a política.
++
+image:amazon-fsx-image79.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Selecione cópia de segurança instantânea e uma frequência de programação. Diariamente é normalmente usado para replicação de backup.
++
+image:amazon-fsx-image80.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Selecione a retenção para os backups Snapshot.
++
+image:amazon-fsx-image81.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
++
+Essa é a retenção dos backups diários do Snapshot feitos no storage primário. A retenção para backups secundários no destino SnapVault já foi configurada anteriormente usando o comando add rule no nível ONTAP. Consulte "Configurar relações de replicação no FSX para sistemas de arquivos ONTAP" (xref).
+
++
+image:amazon-fsx-image82.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Selecione o campo Atualizar SnapVault e forneça uma etiqueta personalizada.
++
+Esse rótulo deve corresponder ao rótulo SnapMirror fornecido no `add rule` comando no nível ONTAP.
+
++
+image:amazon-fsx-image83.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
++
+image:amazon-fsx-image84.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+
+
+A nova política SnapCenter está agora configurada.
+
+image:amazon-fsx-image85.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]

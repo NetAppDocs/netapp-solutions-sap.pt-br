@@ -1,0 +1,242 @@
+---
+sidebar: sidebar 
+permalink: lifecycle/libelle-sc-hana-sys-refresh-lsc-azacsnap-anf.html 
+keywords: prerequisites, limitations, AzAcSnap, systemcopy, sc-system-refresh.sh, configuration, ZSCCOPYSHUTDOWN, ZSCCOPYUMOUNT, ZAZACSNAPRESTORE, ZSCCOPYRECOVER 
+summary: O uso do Azure NetApp Files para SAP HANA, Oracle e DB2 no Azure fornece aos clientes os recursos avançados de gerenciamento de dados e proteção de dados do NetApp ONTAP com o serviço nativo Microsoft Azure NetApp Files. 
+---
+= Atualização do sistema SAP HANA com LSC, AzAcSnap e Azure NetApp Files
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+O uso https://docs.microsoft.com/en-us/azure/azure-netapp-files/azure-netapp-files-solution-architectures["Azure NetApp Files para SAP HANA"^]do , Oracle e do DB2 no Azure fornece aos clientes os recursos avançados de gerenciamento de dados e proteção de dados do NetApp ONTAP com o serviço nativo Microsoft Azure NetApp Files. https://docs.microsoft.com/en-us/azure/azure-netapp-files/azacsnap-introduction["AzAcSnap"^] É a base para operações de atualização do sistema SAP muito rápidas para criar cópias Snapshot do NetApp consistentes com aplicações de sistemas SAP HANA e Oracle (DB2 não é atualmente compatível com AzAcSnap).
+
+Os backups de cópias snapshot, que são criados sob demanda ou regularmente como parte da estratégia de backup, podem ser clonados com eficiência para novos volumes e usados para atualizar rapidamente os sistemas de destino. O AzAcSnap fornece os fluxos de trabalho necessários para criar backups e cloná-los para novos volumes, enquanto o Libelle SystemCopy executa as etapas de pré e pós-processamento necessárias para uma atualização completa do sistema de ponta a ponta.
+
+Neste capítulo, descrevemos uma atualização automatizada do sistema SAP usando AzAcSnap e Libelle SystemCopy usando SAP HANA como o banco de dados subjacente. Como o AzAcSnap também está disponível para Oracle, o mesmo procedimento também pode ser implementado usando o AzAcSnap para Oracle. Outros bancos de dados podem ser suportados pelo AzAcSnap no futuro, o que permitiria operações de cópia do sistema para esses bancos de dados com LSC e AzAcSnap.
+
+A figura a seguir mostra um fluxo de trabalho típico de alto nível de um ciclo de vida de atualização do sistema SAP com AzAcSnap e LSC:
+
+* Uma instalação única e inicial e preparação do sistema de destino.
+* Operações de pré-processamento SAP realizadas pelo LSC.
+* Restaurar (ou clonar) uma cópia Snapshot existente do sistema de origem para o sistema de destino executado pelo AzAcSnap.
+* Operações de pós-processamento SAP realizadas pelo LSC.
+
+
+O sistema pode então ser usado como um sistema de teste ou QA. Quando uma nova atualização do sistema é solicitada, o fluxo de trabalho é reiniciado com a etapa 2. Todos os volumes clonados restantes devem ser eliminados manualmente.
+
+image:libelle-sc-image23.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+
+
+== Pré-requisitos e limitações
+
+Os seguintes pré-requisitos devem ser cumpridos.
+
+
+
+=== AzAcSnap instalado e configurado para o banco de dados de origem
+
+Em geral, existem duas opções de implantações para o AzAcSnap, como é mostrado na imagem a seguir.
+
+image:libelle-sc-image24.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+O AzAcSnap pode ser instalado e executado em uma VM Linux central para a qual todos os arquivos de configuração de banco de dados são armazenados centralmente e o AzAcSnap tem acesso a todos os bancos de dados (através do cliente hdbsql) e as chaves de armazenamento de usuário HANA configuradas para todos esses bancos de dados. Com uma implantação descentralizada, o AzAcSnap é instalado individualmente em cada host de banco de dados onde normalmente apenas a configuração de banco de dados local é armazenada. Ambas as opções de implantação são suportadas para integração LSC. No entanto, seguimos uma abordagem híbrida na configuração do laboratório para este documento. O AzAcSnap foi instalado em um compartilhamento NFS central, juntamente com todos os arquivos de configuração de banco de dados. Este compartilhamento de instalação central foi montado em todas as VMs em `/mnt/software/AZACSNAP/snapshot-tool`. A execução da ferramenta foi então realizada localmente nas VMs de banco de dados.
+
+
+
+=== Libelle SystemCopy instalado e configurado para o sistema SAP de origem e destino
+
+As implantações do Libelle SystemCopy consistem nos seguintes componentes:
+
+image:libelle-sc-image25.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+* *Mestre LSC.* Como o nome sugere, este é o componente mestre que controla o fluxo de trabalho automático de uma cópia do sistema baseada em Libelle.
+* *Trabalhador LSC.* Um trabalhador LSC geralmente é executado no sistema SAP de destino e executa os scripts necessários para a cópia automatizada do sistema.
+* *Satélite LSC.* Um satélite LSC é executado em um sistema de terceiros no qual scripts adicionais devem ser executados. O mestre LSC também pode desempenhar o papel de um sistema de satélite LSC.
+
+
+A GUI do Libelle SystemCopy (LSC) deve ser instalada em uma VM adequada. Nesta configuração de laboratório, a GUI LSC foi instalada em uma VM Windows separada, mas também pode ser executada no host de banco de dados juntamente com o trabalhador LSC. O trabalhador LSC deve ser instalado pelo menos na VM do banco de dados de destino. Dependendo da opção de implantação do AzAcSnap escolhida, poderão ser necessárias instalações adicionais de trabalho do LSC. Você deve ter uma instalação de trabalho LSC na VM onde o AzAcSnap é executado.
+
+Após a instalação do LSC, a configuração básica para a base de dados de origem e destino deve ser executada de acordo com as diretrizes do LSC. As imagens a seguir mostram a configuração do ambiente de laboratório para este documento. Consulte a próxima seção para obter detalhes sobre os sistemas e bancos de dados SAP de origem e destino.
+
+image:libelle-sc-image26.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Você também deve configurar uma lista de tarefas padrão adequada para os sistemas SAP. Para obter mais detalhes sobre a instalação e configuração do LSC, consulte o manual do utilizador do LSC que faz parte do pacote de instalação do LSC.
+
+
+
+=== Limitações conhecidas
+
+A integração AzAcSnap e LSC descrita aqui só funciona para bancos de dados de host único SAP HANA. Implantações de vários hosts (ou escalabilidade horizontal) do SAP HANA também podem ser compatíveis, mas essas implantações exigem alguns ajustes ou aprimoramentos nas tarefas personalizadas do LSC para a fase de cópia e os scripts de implementação. Tais melhorias não são cobertas neste documento.
+
+A integração de atualização do sistema SAP sempre usa a cópia Snapshot bem-sucedida mais recente do sistema de origem para executar a atualização do sistema de destino. Se você quiser usar outras cópias Snapshot mais antigas, a lógica correspondente na <<ZAZACSNAPRESTORE>>tarefa personalizada deve ser ajustada. Este processo está fora do escopo deste documento.
+
+
+
+== Configuração do laboratório
+
+A configuração de laboratório consiste em um sistema SAP de origem e um sistema SAP de destino, ambos executados em bancos de dados SAP HANA de host único.
+
+A imagem a seguir mostra a configuração do laboratório.
+
+image:libelle-sc-image27.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Ele contém os seguintes sistemas, versões de software e volumes Azure NetApp Files:
+
+* *P01.* BANCO DE DADOS SAP HANA 2,0 SP5. Banco de dados de origem, host único, locatário de usuário único.
+* *PN1.* SAP NetWeaver ABAP 7,51. Origem do sistema SAP.
+* *vm-p01.* SLES 15 SP2 com AzAcSnap instalado. Fonte VM hospedando P01 e PN1.
+* *QL1.* BANCO DE DADOS SAP HANA 2,0 SP5. Banco de dados de destino de atualização do sistema, host único, locatário de usuário único.
+* *QN1.* SAP NetWeaver ABAP 7,51. Sistema SAP de destino de atualização do sistema.
+* *vm-ql1.* SLES 15 SP2 com trabalhador LSC instalado. Target VM hosting QL1 e QN1.
+* LSC Master versão 9,0.0,0.052.
+* *vm- lsc-master.* Windows Server 2016. Hosts LSC master e LSC GUI.
+* Volumes Azure NetApp Files para dados, log e compartilhados para P01 e QL1 montados nos hosts de banco de dados dedicados.
+* Volume Azure NetApp Files central para scripts, instalação AzAcSnap e arquivos de configuração montados em todas as VMs.
+
+
+
+
+== Etapas iniciais de preparação única
+
+Antes que a primeira atualização do sistema SAP possa ser executada, você precisa integrar operações de storage baseadas em clonagem e cópia do Azure NetApp Files Snapshot executadas pelo AzAcSnap. Você também deve executar um script auxiliar para iniciar e parar o banco de dados e montar ou desmontar os volumes Azure NetApp Files. Todas as tarefas necessárias são executadas como tarefas personalizadas no LSC como parte da fase de cópia. A imagem a seguir mostra as tarefas personalizadas na lista de tarefas LSC.
+
+image:libelle-sc-image28.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Todas as cinco tarefas de cópia são descritas aqui com mais detalhes. Em algumas dessas tarefas, um script de exemplo `sc-system-refresh.sh` é usado para automatizar ainda mais a operação de recuperação de banco de dados SAP HANA necessária e a montagem e desmontagem dos volumes de dados. O script usa uma `LSC: success` mensagem na saída do sistema para indicar uma execução bem-sucedida para o LSC. Detalhes sobre tarefas personalizadas e parâmetros disponíveis podem ser encontrados no manual do usuário do LSC e no guia do desenvolvedor do LSC. Todas as tarefas neste ambiente de laboratório são executadas na VM de banco de dados de destino.
+
+
+NOTE: O script de exemplo é fornecido como está e não é suportado pelo NetApp. Você pode solicitar o script por e-mail para mailto:ng-sapcc em NetApp.com[ng-sapcc em NetApp.com].
+
+
+
+=== Ficheiro de configuração Sc-system-refresh.sh
+
+Como mencionado anteriormente, um script auxiliar é usado para iniciar e parar o banco de dados, montar e desmontar os volumes do Azure NetApp Files e recuperar o banco de dados SAP HANA de uma cópia Snapshot. O script `sc-system-refresh.sh` é armazenado no compartilhamento NFS central. O script requer um arquivo de configuração para cada banco de dados de destino que deve ser armazenado na mesma pasta que o próprio script. O arquivo de configuração deve ter o seguinte nome: `sc-system-refresh-<target DB SID>.cfg` (Por exemplo `sc-system-refresh-QL1.cfg`, neste ambiente de laboratório). O arquivo de configuração usado aqui usa um SID de banco de dados de código fixo/codificado. Com algumas alterações, o script e o arquivo de configuração podem ser aprimorados para tomar o SID do banco de dados de origem como um parâmetro de entrada.
+
+Os seguintes parâmetros devem ser ajustados de acordo com o ambiente específico:
+
+....
+# hdbuserstore key, which should be used to connect to the target database
+KEY=”QL1SYSTEM”
+# single container or MDC
+export P01_HANA_DATABASE_TYPE=MULTIPLE_CONTAINERS
+# source tenant names { TENANT_SID [, TENANT_SID]* }
+export P01_TENANT_DATABASE_NAMES=P01
+# cloned vol mount path
+export CLONED_VOLUMES_MOUNT_PATH=`tail -2 /mnt/software/AZACSNAP/snapshot_tool/logs/azacsnap-restore-azacsnap-P01.log | grep -oe “[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*:/.* “`
+....
+
+
+=== ZSCCOPYSHUTDOWN
+
+Essa tarefa interrompe o banco de dados SAP HANA de destino. A seção Código desta tarefa contém o seguinte texto:
+
+....
+$_include_tool(unix_header.sh)_$
+sudo /mnt/software/scripts/sc-system-refresh/sc-system-refresh.sh shutdown $_system(target_db, id)_$ > $_logfile_$
+....
+O script `sc-system-refresh.sh` usa dois parâmetros, o `shutdown` comando e o SID do DB, para parar o banco de dados SAP HANA usando o sapcontrol. A saída do sistema é redirecionada para o ficheiro de registo LSC padrão. Como mencionado anteriormente, uma `LSC: success` mensagem é usada para indicar a execução bem-sucedida.
+
+image:libelle-sc-image29.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+
+
+=== ZSCCOPYUMOUNT
+
+Esta tarefa desmonta o volume de dados Azure NetApp Files antigo do sistema operacional de banco de dados (SO) de destino. A seção de código desta tarefa contém o seguinte texto:
+
+....
+$_include_tool(unix_header.sh)_$
+sudo /mnt/software/scripts/sc-system-refresh/sc-system-refresh.sh umount $_system(target_db, id)_$ > $_logfile_$
+....
+Os mesmos scripts que na tarefa anterior são usados. Os dois parâmetros passados são o `umount` comando e o SID DB.
+
+
+
+=== ZAZACSNAPRESTORE
+
+Essa tarefa executa o AzAcSnap para clonar a mais recente cópia Snapshot bem-sucedida do banco de dados de origem para um novo volume para o banco de dados de destino. Essa operação equivale a uma restauração redirecionada do backup em ambientes de backup tradicionais. No entanto, a funcionalidade de clonagem e cópia Snapshot permite que você execute essa tarefa em segundos, mesmo para os maiores bancos de dados. Já, com backups tradicionais, essa tarefa pode levar várias horas com facilidade. A seção de código desta tarefa contém o seguinte texto:
+
+....
+$_include_tool(unix_header.sh)_$
+sudo /mnt/software/AZACSNAP/snapshot_tool/azacsnap -c restore --restore snaptovol --hanasid $_system(source_db, id)_$ --configfile=/mnt/software/AZACSNAP/snapshot_tool/azacsnap-$_system(source_db, id)_$.json > $_logfile_$
+....
+A documentação completa para as opções da linha de comando AzAcSnap para o `restore` comando pode ser encontrada na documentação do Azure aqui: https://docs.microsoft.com/en-us/azure/azure-netapp-files/azacsnap-cmd-ref-restore["Restauração usando a ferramenta Snapshot consistente de aplicativos do Azure"^]. A chamada assume que o arquivo de configuração json DB para o banco de dados de origem pode ser encontrado no compartilhamento NFS central com a seguinte convenção de nomenclatura: `azacsnap-<source DB SID>. json`, (Por exemplo, `azacsnap-P01.json` neste ambiente de laboratório).
+
+
+NOTE: Como a saída do comando AzAcSnap não pode ser alterada, a mensagem padrão `LSC: success` não pode ser usada para essa tarefa. Portanto, a cadeia de carateres `Example mount instructions` da saída AzAcSnap é usada como um código de retorno bem-sucedido. Na versão 5,0 GA do AzAcSnap, esta saída só é gerada se o processo de clonagem tiver sido bem-sucedido.
+
+A figura a seguir mostra a mensagem de restauração AzAcSnap para novo volume de sucesso.
+
+image:libelle-sc-image30.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+
+
+=== ZSCCOPYMOUNT
+
+Esta tarefa monta o novo volume de dados Azure NetApp Files no SO do banco de dados de destino. A seção de código desta tarefa contém o seguinte texto:
+
+....
+$_include_tool(unix_header.sh)_$
+sudo /mnt/software/scripts/sc-system-refresh/sc-system-refresh.sh mount $_system(target_db, id)_$ > $_logfile_$
+....
+O script sc-system-refresh.sh é usado novamente, passando o `mount` comando e o SID do banco de dados de destino.
+
+
+
+=== ZSCCOPYRECOVER
+
+Essa tarefa executa uma recuperação de banco de dados SAP HANA do banco de dados do sistema e do banco de dados do locatário com base na cópia Snapshot restaurada (clonada). A opção de recuperação usada aqui é para backup de banco de dados específico, como nenhum log adicional, são aplicados para recuperação avançada. Portanto, o tempo de recuperação é muito curto (no máximo alguns minutos). O tempo de execução dessa operação é determinado pela inicialização do banco de dados SAP HANA que acontece automaticamente após o processo de recuperação. Para acelerar o tempo de inicialização, a taxa de transferência do volume de dados do Azure NetApp Files pode ser aumentada temporariamente, se necessário, conforme descrito nesta documentação do Azure: https://docs.microsoft.com/en-us/azure/azure-netapp-files/azure-netapp-files-performance-considerations["Aumentando ou diminuindo dinamicamente a cota de volume"^]. A seção de código desta tarefa contém o seguinte texto:
+
+....
+$_include_tool(unix_header.sh)_$
+sudo /mnt/software/scripts/sc-system-refresh/sc-system-refresh.sh recover $_system(target_db, id)_$ > $_logfile_$
+....
+Este script é usado novamente com o `recover` comando e o SID do banco de dados de destino.
+
+
+
+== Operação de atualização do sistema SAP HANA
+
+Nesta seção, uma operação de atualização de amostra de sistemas de laboratório mostra as etapas principais deste fluxo de trabalho.
+
+Cópias Snapshot regulares e sob demanda foram criadas para o banco de dados de origem P01, conforme listado no catálogo de backup.
+
+image:libelle-sc-image31.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Para a operação de atualização, foi utilizado o último backup a partir de março de 12th. Na secção de detalhes da cópia de segurança, a ID de cópia de segurança externa (EBID) para esta cópia de segurança está listada. Este é o nome da cópia Snapshot do backup correspondente da cópia Snapshot no volume de dados Azure NetApp Files, conforme mostrado na imagem a seguir.
+
+image:libelle-sc-image32.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Para iniciar a operação de atualização, selecione a configuração correta na GUI LSC e clique em Iniciar execução.
+
+image:libelle-sc-image33.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+O LSC começa a executar as tarefas da fase verificar, seguidas das tarefas configuradas da fase Pré.
+
+image:libelle-sc-image34.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Como o último passo da fase Pré, o sistema SAP de destino é interrompido. Na fase cópia seguinte, as etapas descritas na seção anterior são executadas. Primeiro, o banco de dados SAP HANA de destino é interrompido e o volume Azure NetApp Files antigo é desmontado do sistema operacional.
+
+image:libelle-sc-image35.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+A tarefa ZAZACSNAPRESTORE cria um novo volume como um clone da cópia Snapshot existente do sistema P01. As duas imagens a seguir mostram os logs da tarefa na GUI do LSC e o volume clonado do Azure NetApp Files no portal do Azure.
+
+image:libelle-sc-image36.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+image:libelle-sc-image37.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Esse novo volume é então montado no host de banco de dados de destino e o banco de dados do sistema e o banco de dados de locatário são recuperados usando a cópia Snapshot que contém. Após a recuperação bem-sucedida, o banco de dados SAP HANA é iniciado automaticamente. Essa inicialização do banco de dados SAP HANA ocupa a maior parte do tempo da fase Copiar. As etapas restantes geralmente terminam em alguns segundos a alguns minutos, independentemente do tamanho do banco de dados. A imagem a seguir mostra como o banco de dados do sistema é recuperado usando scripts de recuperação Python fornecidos pelo SAP.
+
+image:libelle-sc-image38.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Após a fase Copiar, o LSC continua com todas as etapas definidas da fase Post. Quando o processo de atualização do sistema terminar completamente, o sistema de destino estará funcionando novamente e totalmente utilizável. Com este sistema de laboratório, o tempo de execução total para a atualização do sistema SAP foi de aproximadamente 25 minutos, dos quais a fase Copy consumiu pouco menos de 5 minutos.
+
+image:libelle-sc-image39.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]

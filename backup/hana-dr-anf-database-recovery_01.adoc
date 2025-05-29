@@ -1,0 +1,199 @@
+---
+sidebar: sidebar 
+permalink: backup/hana-dr-anf-database-recovery_01.html 
+keywords: recovery, forward, log, backups, system, tenant, database, log, backups, check, consistency, hana, azure 
+summary: A seguir mostra as etapas para a recuperação do banco de dados HANA 
+---
+= Recuperação de banco de DADOS HANA
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+A seguir mostra as etapas para a recuperação do banco de dados HANA
+
+Inicie os serviços SAP necessários.
+
+....
+vm-pr1:~ # systemctl start sapinit
+....
+A saída a seguir mostra os processos necessários.
+
+....
+vm-pr1:/ # ps -ef | grep sap
+root     23101     1  0 11:29 ?        00:00:00 /usr/sap/hostctrl/exe/saphostexec pf=/usr/sap/hostctrl/exe/host_profile
+pr1adm   23191     1  3 11:29 ?        00:00:00 /usr/sap/PR1/HDB01/exe/sapstartsrv pf=/usr/sap/PR1/SYS/profile/PR1_HDB01_vm-pr1 -D -u pr1adm
+sapadm   23202     1  5 11:29 ?        00:00:00 /usr/sap/hostctrl/exe/sapstartsrv pf=/usr/sap/hostctrl/exe/host_profile -D
+root     23292     1  0 11:29 ?        00:00:00 /usr/sap/hostctrl/exe/saposcol -l -w60 pf=/usr/sap/hostctrl/exe/host_profile
+root     23359  2597  0 11:29 pts/1    00:00:00 grep --color=auto sap
+....
+As subseções a seguir descrevem o processo de recuperação com e sem recuperação avançada usando os backups de log replicados. A recuperação é executada usando o script de recuperação HANA para o banco de dados do sistema e os comandos hdbsql para o banco de dados do locatário.
+
+
+
+== Recuperação para o ponto de salvamento mais recente DO backup de volume de DADOS HANA
+
+A recuperação para o mais recente backup savepoint é executada com os seguintes comandos como usuário pr1adm:
+
+* Base de dados do sistema
+
+
+....
+recoverSys.py --command "RECOVER DATA USING SNAPSHOT CLEAR LOG”
+....
+* Banco de dados do locatário
+
+
+....
+Within hdbsql: RECOVER DATA FOR PR1 USING SNAPSHOT CLEAR LOG
+....
+Você também pode usar O HANA Studio ou o Cockpit para executar a recuperação do sistema e do banco de dados do locatário.
+
+A saída do comando a seguir mostra a execução da recuperação.
+
+
+
+=== Recuperação de banco de dados do sistema
+
+....
+pr1adm@vm-pr1:/usr/sap/PR1/HDB01> HDBSettings.sh recoverSys.py --command="RECOVER DATA USING SNAPSHOT CLEAR LOG"
+[139702869464896, 0.008] >> starting recoverSys (at Fri Feb 19 14:32:16 2021)
+[139702869464896, 0.008] args: ()
+[139702869464896, 0.009] keys: {'command': 'RECOVER DATA USING SNAPSHOT CLEAR LOG'}
+using logfile /usr/sap/PR1/HDB01/vm-pr1/trace/backup.log
+recoverSys started: ============2021-02-19 14:32:16 ============
+testing master: vm-pr1
+vm-pr1 is master
+shutdown database, timeout is 120
+stop system
+stop system on: vm-pr1
+stopping system: 2021-02-19 14:32:16
+stopped system: 2021-02-19 14:32:16
+creating file recoverInstance.sql
+restart database
+restart master nameserver: 2021-02-19 14:32:21
+start system: vm-pr1
+sapcontrol parameter: ['-function', 'Start']
+sapcontrol returned successfully:
+2021-02-19T14:32:56+00:00  P0027646      177bab4d610 INFO    RECOVERY RECOVER DATA finished successfully
+recoverSys finished successfully: 2021-02-19 14:32:58
+[139702869464896, 42.017] 0
+[139702869464896, 42.017] << ending recoverSys, rc = 0 (RC_TEST_OK), after 42.009 secs
+pr1adm@vm-pr1:/usr/sap/PR1/HDB01>
+....
+
+
+=== Recuperação de banco de dados do locatário
+
+Se uma chave de armazenamento de usuário não tiver sido criada para o usuário pr1adm no sistema de origem, uma chave deve ser criada no sistema de destino. O usuário do banco de dados configurado na chave deve ter Privileges para executar operações de recuperação de locatário.
+
+....
+pr1adm@vm-pr1:/usr/sap/PR1/HDB01> hdbuserstore set PR1KEY vm-pr1:30113 <backup-user> <password>
+....
+A recuperação do locatário é agora executada com hdbsql.
+
+....
+pr1adm@vm-pr1:/usr/sap/PR1/HDB01> hdbsql -U PR1KEY
+Welcome to the SAP HANA Database interactive terminal.
+Type:  \h for help with commands
+       \q to quit
+hdbsql SYSTEMDB=> RECOVER DATA FOR PR1 USING SNAPSHOT CLEAR LOG
+0 rows affected (overall time 66.973089 sec; server time 66.970736 sec)
+hdbsql SYSTEMDB=>
+....
+O banco de DADOS HANA agora está ativo e o fluxo de trabalho de recuperação de desastres do banco de DADOS HANA foi testado.
+
+
+
+== Recuperação com recuperação avançada usando backups de log/catálogo
+
+Os backups de log e o catálogo de BACKUP HANA estão sendo replicados a partir do sistema de origem.
+
+A recuperação usando todos os backups de log disponíveis é executada com os seguintes comandos como usuário pr1adm:
+
+* Base de dados do sistema
+
+
+....
+recoverSys.py --command "RECOVER DATABASE UNTIL TIMESTAMP '2021-02-20 00:00:00' CLEAR LOG USING SNAPSHOT"
+....
+* Banco de dados do locatário
+
+
+....
+Within hdbsql: RECOVER DATABASE FOR PR1 UNTIL TIMESTAMP '2021-02-20 00:00:00' CLEAR LOG USING SNAPSHOT
+....
+
+NOTE: Para recuperar usando todos os logs disponíveis, você pode usar a qualquer momento no futuro como o carimbo de data/hora na instrução de recuperação.
+
+Você também pode usar O HANA Studio ou o Cockpit para executar a recuperação do sistema e do banco de dados do locatário.
+
+A saída do comando a seguir mostra a execução da recuperação.
+
+
+
+=== Recuperação de banco de dados do sistema
+
+....
+pr1adm@vm-pr1:/usr/sap/PR1/HDB01> HDBSettings.sh recoverSys.py --command "RECOVER DATABASE UNTIL TIMESTAMP '2021-02-20 00:00:00' CLEAR LOG USING SNAPSHOT"
+[140404915394368, 0.008] >> starting recoverSys (at Fri Feb 19 16:06:40 2021)
+[140404915394368, 0.008] args: ()
+[140404915394368, 0.008] keys: {'command': "RECOVER DATABASE UNTIL TIMESTAMP '2021-02-20 00:00:00' CLEAR LOG USING SNAPSHOT"}
+using logfile /usr/sap/PR1/HDB01/vm-pr1/trace/backup.log
+recoverSys started: ============2021-02-19 16:06:40 ============
+testing master: vm-pr1
+vm-pr1 is master
+shutdown database, timeout is 120
+stop system
+stop system on: vm-pr1
+stopping system: 2021-02-19 16:06:40
+stopped system: 2021-02-19 16:06:41
+creating file recoverInstance.sql
+restart database
+restart master nameserver: 2021-02-19 16:06:46
+start system: vm-pr1
+sapcontrol parameter: ['-function', 'Start']
+sapcontrol returned successfully:
+2021-02-19T16:07:19+00:00  P0009897      177bb0b4416 INFO    RECOVERY RECOVER DATA finished successfully, reached timestamp 2021-02-19T15:17:33+00:00, reached log position 38272960
+recoverSys finished successfully: 2021-02-19 16:07:20
+[140404915394368, 39.757] 0
+[140404915394368, 39.758] << ending recoverSys, rc = 0 (RC_TEST_OK), after 39.749 secs
+....
+
+
+=== Recuperação de banco de dados do locatário
+
+....
+pr1adm@vm-pr1:/usr/sap/PR1/HDB01> hdbsql -U PR1KEY
+Welcome to the SAP HANA Database interactive terminal.
+Type:  \h for help with commands
+       \q to quit
+
+hdbsql SYSTEMDB=> RECOVER DATABASE FOR PR1 UNTIL TIMESTAMP '2021-02-20 00:00:00' CLEAR LOG USING SNAPSHOT
+0 rows affected (overall time 63.791121 sec; server time 63.788754 sec)
+
+hdbsql SYSTEMDB=>
+....
+O banco de DADOS HANA agora está ativo e o fluxo de trabalho de recuperação de desastres do banco de DADOS HANA foi testado.
+
+
+
+== Verifique a consistência dos backups de log mais recentes
+
+Como a replicação do volume de backup de log é realizada independentemente do processo de backup de log executado pelo banco de dados SAP HANA, pode haver arquivos de backup de log abertos e inconsistentes no local de recuperação de desastres. Somente os arquivos de backup de log mais recentes podem ser inconsistentes, e esses arquivos devem ser verificados antes que uma recuperação avançada seja executada no site de recuperação de desastres usando a `hdbbackupcheck` ferramenta.
+
+Se a `hdbbackupcheck` ferramenta relatar um erro para os backups de log mais recentes, o conjunto mais recente de backups de log deve ser removido ou excluído.
+
+....
+pr1adm@hana-10: > hdbbackupcheck /hanabackup/PR1/log/SYSTEMDB/log_backup_0_0_0_0.1589289811148
+Loaded library 'libhdbcsaccessor'
+Loaded library 'libhdblivecache'
+Backup '/mnt/log-backup/SYSTEMDB/log_backup_0_0_0_0.1589289811148' successfully checked.
+....
+A verificação deve ser executada para os arquivos de backup de log mais recentes do sistema e do banco de dados do locatário.
+
+Se a `hdbbackupcheck` ferramenta relatar um erro para os backups de log mais recentes, o conjunto mais recente de backups de log deve ser removido ou excluído.

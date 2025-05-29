@@ -325,7 +325,7 @@ Para saber mais sobre as informações descritas neste documento, consulte os se
 
 
 * Documentação do produto NetApp: https://www.netapp.com/support-and-training/documentation/[]
-* Soluções SAP da NetApp – informações sobre casos de uso, práticas recomendadas e benefícios: https://docs.netapp.com/us-en/netapp-solutions-sap[]
+* link:../index.html["Soluções SAP da NetApp – informações sobre casos de uso, práticas recomendadas e benefícios"]
 
 
 

@@ -23,7 +23,7 @@ Esta seção lista onde encontrar informações adicionais e mostra o histórico
 Para saber mais sobre as informações descritas neste documento, consulte os seguintes documentos e/ou sites:
 
 * Documentação do produto de backup e recuperação do NetApp BlueXP  https://docs.netapp.com/us-en/bluexp-backup-recovery/concept-protect-app-data-to-cloud.html["Proteja seus dados de aplicativos locais | Documentação da NetApp"]
-* Backup e recuperação do SAP HANA com o SnapCenter https://docs.netapp.com/us-en/netapp-solutions-sap/backup/saphana-br-scs-overview.html#the-netapp-solution[]
+* link:hana-br-scs-overview.html#the-netapp-solution["Backup e recuperação do SAP HANA com o SnapCenter"]
 
 
 

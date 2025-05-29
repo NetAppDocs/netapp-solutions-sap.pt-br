@@ -1,0 +1,40 @@
+---
+sidebar: sidebar 
+permalink: backup/hana-dr-anf-testing-overview.html 
+keywords: disaster, recovery, strategy, workflow, testing, internal, documentation 
+summary: Para implementar uma estratégia eficaz de recuperação de desastres, você deve testar o fluxo de trabalho necessário. O teste demonstra se a estratégia funciona e se a documentação interna é suficiente e também permite que os administradores treinem sobre os procedimentos necessários. 
+---
+= Teste de recuperação de desastres
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Para implementar uma estratégia eficaz de recuperação de desastres, você deve testar o fluxo de trabalho necessário. O teste demonstra se a estratégia funciona e se a documentação interna é suficiente e também permite que os administradores treinem sobre os procedimentos necessários.
+
+A replicação entre regiões do ANF permite testes de recuperação de desastres sem colocar o rto e o RPO em risco. Os testes de recuperação de desastres podem ser feitos sem interromper a replicação de dados.
+
+O workflow de teste de recuperação de desastres utiliza o recurso ANF para criar novos volumes com base nos backups atuais do Snapshot no destino de recuperação de desastres.  https://docs.microsoft.com/en-us/azure/azure-netapp-files/snapshots-introduction["Como funcionam os snapshots do Azure NetApp Files | Microsoft Docs"^]Consulte .
+
+Dependendo se a replicação de backup de log faz parte da configuração de recuperação de desastres ou não, as etapas para recuperação de desastres são ligeiramente diferentes. Esta seção descreve os testes de recuperação de desastres para replicação somente de backup de dados, bem como para replicação de volume de dados combinada com replicação de volume de backup de log.
+
+Para executar o teste de recuperação de desastres, execute as seguintes etapas:
+
+. Prepare o host de destino.
+. Criar novos volumes com base nos backups Snapshot no local de recuperação de desastre.
+. Monte os novos volumes no host de destino.
+. Recuperar o banco de DADOS HANA.
++
+** Apenas recuperação de volume de dados.
+** Encaminhar a recuperação usando backups de log replicados.
+
+
+
+
+As subseções a seguir descrevem esses passos em detalhes.
+
+image:saphana-dr-anf_image18.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]

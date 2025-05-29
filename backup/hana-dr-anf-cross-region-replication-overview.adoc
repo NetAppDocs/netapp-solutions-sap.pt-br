@@ -1,0 +1,19 @@
+---
+sidebar: sidebar 
+permalink: backup/hana-dr-anf-cross-region-replication-overview.html 
+keywords: application, agnostic, information, azure, sap, hana 
+summary: As informações agnósticas de aplicativos na replicação entre regiões podem ser encontradas no seguinte local. 
+---
+= Replicação entre regiões do ANF com SAP HANA
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Informações agnósticas de aplicativos sobre replicação entre regiões podem ser encontradas no seguinte local.
+
+link:https://docs.microsoft.com/en-us/azure/azure-netapp-files/["Documentação do Azure NetApp Files | Microsoft Docs"^] nas seções conceitos e instruções.

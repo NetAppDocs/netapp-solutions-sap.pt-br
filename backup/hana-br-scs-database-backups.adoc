@@ -1,0 +1,116 @@
+---
+sidebar: sidebar 
+permalink: backup/hana-br-scs-database-backups.html 
+keywords: sap hana studio, on-demand backup, replication 
+summary: No SnapCenter, os backups de bancos de dados geralmente são executados usando as programações definidas na configuração de proteção de recursos de cada banco de DADOS HANA. O backup do banco de dados sob demanda pode ser feito usando a GUI do SnapCenter, uma linha de comando do PowerShell ou APIS REST. 
+---
+= Backups de bancos de dados
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+No SnapCenter, os backups de bancos de dados geralmente são executados usando as programações definidas na configuração de proteção de recursos de cada banco de DADOS HANA.
+
+O backup do banco de dados sob demanda pode ser feito usando a GUI do SnapCenter, uma linha de comando do PowerShell ou APIS REST.
+
+
+
+== Identificação de backups do SnapCenter no SAP HANA Studio
+
+A topologia de recursos do SnapCenter mostra uma lista de backups criados usando o SnapCenter. A figura a seguir mostra os backups disponíveis no storage primário e destaca o backup mais recente.
+
+image:saphana-br-scs-image82.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Ao executar um backup usando cópias Snapshot de storage para um sistema SAP HANA MDC, é criada uma cópia Snapshot do volume de dados. Esse volume de dados contém os dados do banco de dados do sistema, bem como os dados de todos os bancos de dados de locatários. Para refletir essa arquitetura física, o SAP HANA realiza internamente um backup combinado do banco de dados do sistema, bem como todos os bancos de dados de locatários sempre que o SnapCenter acionar um backup Snapshot. Isso resulta em várias entradas de backup separadas no catálogo de backup do SAP HANA: Uma para o banco de dados do sistema e outra para cada banco de dados de locatário.
+
+
+NOTE: Para sistemas de contêiner único SAP HANA, o volume do banco de dados contém apenas um banco de dados e só há uma entrada no catálogo de backup do SAP HANA.
+
+No catálogo de backup do SAP HANA, o nome do backup do SnapCenter é armazenado como um `Comment` campo e `External Backup ID (EBID)` também . Isso é mostrado na captura de tela a seguir para o banco de dados do sistema e na captura de tela depois disso para o banco de dados de locatário SS1. Ambas as figuras destacam o nome de backup do SnapCenter armazenado no campo de comentário e EBID.
+
+
+NOTE: A versão DO HANA 2,0 SPS4 (revisão 40 e 41) sempre mostra um tamanho de backup zero para backups baseados em Snapshot. Isso foi corrigido com a revisão 42. Para obter mais informações, consulte a Nota SAP https://launchpad.support.sap.com/["https://launchpad.support.sap.com/#/notes/2795010"^] .
+
+image:saphana-br-scs-image83.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+image:saphana-br-scs-image84.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+
+NOTE: A SnapCenter só está ciente de seus próprios backups. Backups adicionais criados, por exemplo, com o SAP HANA Studio, são visíveis no catálogo do SAP HANA, mas não no SnapCenter.
+
+
+
+== Identificação de backups do SnapCenter nos sistemas de storage
+
+Para exibir os backups na camada de storage, use o NetApp OnCommand System Manager e selecione o volume do banco de dados na exibição SVM – volume. A guia cópias Snapshot inferiores exibe as cópias Snapshot do volume. A captura de tela a seguir mostra os backups disponíveis para o volume do banco de dados `SS1_data_mnt00001` no armazenamento primário. O backup destacado é o backup mostrado no SnapCenter e no SAP HANA Studio nas imagens anteriores e tem a mesma convenção de nomenclatura.
+
+image:saphana-br-scs-image85.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+A captura de tela a seguir mostra os backups disponíveis para o volume de destino de replicação `hana_SA1_data_mnt00001_dest` no sistema de armazenamento secundário.
+
+image:saphana-br-scs-image86.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+
+
+== Backup de banco de dados sob demanda no storage primário
+
+. Na visualização de recursos, selecione o recurso e clique duas vezes na linha para alternar para a visualização de topologia.
++
+A visualização de topologia de recursos fornece uma visão geral de todos os backups disponíveis que foram criados usando o SnapCenter. A área superior dessa visualização exibe a topologia de backup, mostrando os backups no storage primário (cópias locais) e, se disponível, no storage de backup externo (cópias do Vault).
+
++
+image:saphana-br-scs-image86.5.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Na linha superior, selecione o ícone fazer backup agora para iniciar um backup sob demanda. Na lista suspensa, selecione a política de backup `LocalSnap` e clique em Backup para iniciar o backup sob demanda.
++
+image:saphana-br-scs-image87.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
++
+Isto inicia o trabalho de cópia de segurança. É apresentado um registo dos cinco trabalhos anteriores na área atividade abaixo da vista de topologia. Quando o backup for concluído, uma nova entrada é mostrada na visualização de topologia. Os nomes de backup seguem a mesma convenção de nomenclatura que o nome de captura instantânea definido na seção link:hana-br-scs-resource-config-hana-database-backups.html#resource-protection[""Configuração de proteção de recursos.""]
+
++
+
+NOTE: Você deve fechar e reabrir a exibição de topologia para ver a lista de backup atualizada.
+
++
+image:saphana-br-scs-image88.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Os detalhes do trabalho são apresentados ao clicar na linha de atividade do trabalho na área atividade. Você pode abrir um log de trabalho detalhado clicando em Exibir logs.
++
+image:saphana-br-scs-image89.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. No SAP HANA Studio, o novo backup fica visível no catálogo de backup. O mesmo nome de backup no SnapCenter também é usado no campo de comentário e EBID no catálogo de backup.
+
+
+
+
+== Backups de bancos de dados sob demanda com replicação SnapVault
+
+. Na visualização de recursos, selecione o recurso e clique duas vezes na linha para alternar para a visualização de topologia.
+. Na linha superior, selecione o ícone fazer backup agora para iniciar um backup sob demanda. Na lista suspensa, selecione a política de backup `LocalSnapAndSnapVault` e clique em Backup para iniciar o backup sob demanda.
++
+image:saphana-br-scs-image90.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Os detalhes do trabalho são apresentados ao clicar na linha de atividade do trabalho na área atividade.
++
+image:saphana-br-scs-image91.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Quando o backup for concluído, uma nova entrada é mostrada na visualização de topologia. Os nomes de backup seguem a mesma convenção de nomenclatura que o nome de captura instantânea definido na seção link:hana-br-scs-resource-config-hana-database-backups.html#resource-protection[""Configuração de proteção de recursos.""]
++
+
+NOTE: Você deve fechar e reabrir a exibição de topologia para ver a lista de backup atualizada.
+
++
+image:saphana-br-scs-image92.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. Ao selecionar cópias do Vault, os backups no storage secundário são exibidos. O nome do backup replicado é idêntico ao nome do backup no armazenamento primário.
++
+image:saphana-br-scs-image93.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+. No SAP HANA Studio, o novo backup fica visível no catálogo de backup. O mesmo nome de backup no SnapCenter também é usado no campo de comentário e EBID no catálogo de backup.
+

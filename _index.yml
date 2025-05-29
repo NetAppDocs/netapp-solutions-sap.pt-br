@@ -6,35 +6,64 @@ indexpage:
   lead: A NetApp tem uma extensa coleção de relatórios técnicos, designs validados,
     vídeos, blogs e briefs de soluções para SAP e SAP HANA.
   tiles:
-  - title: Práticas recomendadas de configuração
+  - title: SAP HANA on-premises (suporte ao protocolo)
     links:
-    - title: Vídeos e demos
-      url: sap-bp-videos.html
-    - title: Blogs
-      url: sap-bp-blogs.html
-    - title: Ferramentas
-      url: sap-bp-tools.html
-  - title: Backup, restauração e recuperação de desastres
+    - title: SAP HANA em sistemas NetApp AFF com protocolo Fibre Channel
+      url: bp/hana-aff-fc-introduction.html
+    - title: SAP HANA em sistemas NetApp AFF com Guia de configuração NFS
+      url: bp/hana-aff-nfs-introduction.html
+    - title: SAP HANA em sistemas NetApp FAS com guia de configuração NFS
+      url: bp/hana-fas-nfs-introduction.html
+    - title: SAP HANA em sistemas NetApp FAS com guia de configuração de protocolo
+        Fibre Channel
+      url: bp/hana-fas-fc-introduction.html
+  - title: SAP HANA no local
     links:
-    - title: Vídeos e demos
-      url: sap-dr-videos.html
-    - title: Blogs
-      url: sap-dr-blogs.html
-    - title: Ferramentas
-      url: sap-dr-tools.html
-  - title: Gerenciamento de ciclo de vida
+    - title: Proteção de dados do SAP HANA e alta disponibilidade com o SnapCenter,
+        o SnapMirror active Sync e o cluster de storage VMware Metro
+      url: backup/hana-sc-vmware-smas-scope.html
+    - title: 'Backup e recuperação do BlueXP  para SAP HANA: Storage de objetos na
+        nuvem como destino de backup'
+      url: backup/hana-hycl-backup-overview.html
+    - title: Recuperação de desastres do SAP HANA com replicação de storage
+      url: backup/hana-dr-sr-pdf-link.html
+    - title: Atualização do sistema SAP HANA com LSC e SnapCenter
+      url: lifecycle/libelle-sc-hana-sys-refresh-lsc-sc.html
+    - title: Integração do gerenciamento de cenário do SAP NetApp com o Ansible
+      url: lifecycle/lama-ansible-introduction.html
+  - title: SAP HANA no Azure NetApp Files
     links:
-    - title: Vídeos e demos
-      url: sap-lcm-videos.html
-    - title: Blogs
-      url: sap-lcm-blogs.html
-    - title: Ferramentas
-      url: sap-lcm-tools.html
-  - title: Todas as soluções SAP
+    - title: Recuperação de desastres do SAP HANA com o Azure NetApp Files
+      url: backup/hana-dr-anf-data-protection-overview.html
+    - title: Atualização do sistema SAP HANA com LSC, AzAcSnap e Azure NetApp Files
+      url: lifecycle/libelle-sc-hana-sys-refresh-lsc-azacsnap-anf.html
+    - title: Proteção de dados SAP HANA no Azure NetApp Files com SnapCenter (blog
+        e vídeo)
+      url: https://techcommunity.microsoft.com/blog/sapapplications/sap-hana-data-protection-on-azure-netapp-files-with-snapcenter/3510031
+    - title: Operações de clonagem e atualização do sistema SAP no Azure NetApp Files
+        com o SnapCenter (blog e vídeo)
+      url: https://techcommunity.microsoft.com/blog/sapapplications/sap-system-refresh-and-cloning-operations-on-azure-netapp-files-with-snapcenter/4356389
+    - title: SAP na ferramenta de dimensionamento Azure NetApp Files
+      url: https://azure.github.io/azure-netapp-files/sap-calc
+  - title: SAP HANA no FSX for ONTAP
     links:
-    - title: Novidades
-      url: sap-whatsnew.html
-    - title: Vídeos e demos
-      url: sap-videos.html
-    - title: Blogs
-      url: sap-blogs.html
+    - title: SAP HANA no Amazon FSX for NetApp ONTAP - Backup e recuperação com o
+        SnapCenter
+      url: backup/fsxn-overview.html
+    - title: SAP no FSX for ONTAP ferramenta de dimensionamento
+      url: https://tco.solutions.netapp.com/sapfsxtco/
+  - title: SnapCenter (independente da plataforma)
+    links:
+    - title: Backup e recuperação do SAP HANA com o SnapCenter
+      url: backup/hana-br-scs-overview.html
+    - title: 'Replicação do sistema SAP HANA: Backup e recuperação com o SnapCenter'
+      url: backup/hana-sr-scs-system-replication-overview.html
+    - title: Automatizando as operações de clonagem e cópia do sistema SAP HANA com
+        o SnapCenter
+      url: lifecycle/sc-copy-clone-introduction.html
+    - title: Integração SnapCenter para banco de dados SAP ASE
+      url: backup/snapcenter-sap-ase.html
+    - title: Integração do SnapCenter para o banco de dados IBM DB2
+      url: backup/snapcenter-ibm-db2.html
+    - title: Integração SnapCenter para o banco de dados SAP MaxDB
+      url: backup/snapcenter-sap-maxdb.html

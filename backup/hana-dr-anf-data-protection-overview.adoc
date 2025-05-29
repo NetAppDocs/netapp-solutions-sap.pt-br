@@ -1,0 +1,85 @@
+---
+sidebar: sidebar 
+permalink: backup/hana-dr-anf-data-protection-overview.html 
+keywords:  
+summary:  
+---
+= TR-4891: Recuperação de desastres do SAP HANA com o Azure NetApp Files
+:allow-uri-read: 
+
+
+[role="lead"]
+Estudos mostraram que o tempo de inatividade de aplicativos de negócios tem um impactos negativo significativo nos negócios das empresas.
+
+Autores: Nils Bauer, NetApp Rallf Klahr, Microsoft
+
+Além do impactos financeiro, o tempo de inatividade também pode prejudicar a reputação da empresa, o moral da equipe e a fidelidade do cliente. Surpreendentemente, nem todas as empresas têm uma política abrangente de recuperação de desastres.
+
+Executar o SAP HANA no Azure NetApp Files (ANF) oferece aos clientes acesso a recursos adicionais que ampliam e aprimoram os recursos integrados de proteção de dados e recuperação de desastres do SAP HANA. Esta seção de visão geral explica essas opções para ajudar os clientes a selecionar opções que atendam às suas necessidades de negócios.
+
+Para desenvolver uma política abrangente de recuperação de desastres, os clientes precisam entender os requisitos de aplicações empresariais e os recursos técnicos de que precisam para proteção de dados e recuperação de desastres. A figura a seguir fornece uma visão geral da proteção de dados.
+
+image:saphana-dr-anf_image2.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+
+
+== Requisitos de aplicação empresarial
+
+Existem dois indicadores-chave para aplicações empresariais:
+
+* O objetivo do ponto de restauração (RPO) ou a perda de dados máxima tolerável
+* O objetivo de tempo de recuperação (rto) ou o tempo de inatividade máximo tolerável da aplicação empresarial
+
+
+Esses requisitos são definidos pelo tipo de aplicativo usado e pela natureza dos seus dados de negócios. O RPO e o rto podem ser diferentes se você estiver protegendo contra falhas em uma única região do Azure. Eles também podem ser diferentes se você estiver se preparando para desastres catastróficos, como a perda de uma região completa do Azure. É importante avaliar os requisitos de negócios que definem o RPO e o rto, porque esses requisitos têm um impacto significativo nas opções técnicas disponíveis.
+
+
+
+== Alta disponibilidade
+
+A infraestrutura para SAP HANA, como máquinas virtuais, rede e storage, precisa ter componentes redundantes para garantir que não haja um único ponto de falha. O MS Azure fornece redundância para os diferentes componentes de infraestrutura.
+
+Para fornecer alta disponibilidade no lado da computação e da aplicação, os hosts SAP HANA de reserva podem ser configurados para alta disponibilidade integrada com um sistema SAP HANA de vários hosts. Se um servidor ou um serviço SAP HANA falhar, o serviço SAP HANA fará failover para o host de reserva, o que causa inatividade do aplicativo.
+
+Se o tempo de inatividade do aplicativo não for aceitável em caso de falha do servidor ou do aplicativo, você também poderá usar a replicação do sistema SAP HANA como uma solução de alta disponibilidade que habilita o failover em um período de tempo muito curto. Os clientes da SAP usam a replicação do SISTEMA HANA não apenas para solucionar a alta disponibilidade de falhas não planejadas, mas também para minimizar o tempo de inatividade para operações planejadas, como atualizações de SOFTWARE HANA.
+
+
+
+== Corrupção lógica
+
+A corrupção lógica pode ser causada por erros de software, erros humanos ou sabotagem. Infelizmente, a corrupção lógica muitas vezes não pode ser tratada com soluções padrão de alta disponibilidade e recuperação de desastres. Como resultado, dependendo da camada, aplicativo, sistema de arquivos ou storage em que ocorreu a corrupção lógica, os requisitos de rto e RPO às vezes não podem ser atendidos.
+
+O pior caso é uma corrupção lógica em um aplicativo SAP. Os aplicativos SAP geralmente operam em um cenário em que diferentes aplicativos se comunicam entre si e trocam dados. Portanto, restaurar e recuperar um sistema SAP no qual ocorreu uma corrupção lógica não é a abordagem recomendada. Restaurar o sistema a um ponto no tempo antes que a corrupção ocorra resulta na perda de dados, de modo que o RPO se torne maior que zero. Além disso, o cenário SAP não estaria mais em sincronia e exigiria pós-processamento adicional.
+
+Em vez de restaurar o sistema SAP, a melhor abordagem é tentar corrigir o erro lógico dentro do sistema, analisando o problema em um sistema de reparo separado. A análise de causa raiz requer o envolvimento do processo de negócios e do proprietário do aplicativo. Para esse cenário, você cria um sistema de reparo (um clone do sistema de produção) com base nos dados armazenados antes da corrupção lógica ocorrer. Dentro do sistema de reparo, os dados necessários podem ser exportados e importados para o sistema de produção. Com essa abordagem, o sistema produtivo não precisa ser interrompido e, no melhor cenário, nenhum dado ou apenas uma pequena fração de dados é perdido.
+
+
+NOTE: As etapas necessárias para configurar um sistema de reparo são idênticas a um cenário de teste de recuperação de desastres descrito neste documento. A solução de recuperação de desastres descrita pode, portanto, ser facilmente estendida para lidar com a corrupção lógica também.
+
+
+
+== Backups
+
+Os backups são criados para permitir a restauração e a recuperação de diferentes conjuntos de dados pontuais. Normalmente, esses backups são mantidos por alguns dias a algumas semanas.
+
+Dependendo do tipo de corrupção, a restauração e a recuperação podem ser realizadas com ou sem perda de dados. Se o RPO precisar ser zero, mesmo quando o storage primário e de backup for perdido, o backup deve ser combinado com a replicação de dados síncrona.
+
+O rto para restauração e recuperação é definido pelo tempo de restauração necessário, pelo tempo de recuperação (incluindo o início do banco de dados) e pelo carregamento de dados na memória. Para bancos de dados grandes e abordagens tradicionais de backup, o rto pode ser facilmente várias horas, o que pode não ser aceitável. Para alcançar valores de rto muito baixos, um backup deve ser combinado com uma solução de espera quente, que inclui pré-carregamento de dados na memória.
+
+Em contraste, uma solução de backup deve resolver a corrupção lógica, porque as soluções de replicação de dados não podem cobrir todos os tipos de corrupção lógica.
+
+
+
+== Replicação de dados síncrona ou assíncrona
+
+O RPO determina principalmente qual método de replicação de dados você deve usar. Se o RPO precisar ser zero, mesmo quando o storage primário e de backup forem perdidos, os dados precisam ser replicados de forma síncrona. No entanto, existem limitações técnicas para replicação síncrona, como a distância entre duas regiões do Azure. Na maioria dos casos, a replicação síncrona não é apropriada para distâncias maiores que 100km devido à latência e, portanto, essa não é uma opção para replicação de dados entre regiões do Azure.
+
+Se um RPO maior for aceitável, a replicação assíncrona poderá ser usada em grandes distâncias. O RPO, neste caso, é definido pela frequência de replicação.
+
+
+
+== Replicação do SISTEMA HANA com ou sem pré-carga dos dados
+
+O tempo de inicialização de um banco de dados SAP HANA é muito mais longo do que o dos bancos de dados tradicionais, porque uma grande quantidade de dados precisa ser carregada na memória antes que o banco de dados possa fornecer a performance esperada. Portanto, uma parte significativa do rto é o tempo necessário para iniciar o banco de dados. Com qualquer replicação baseada em storage e com O HANA System Replication sem pré-carga dos dados, o banco de dados SAP HANA precisa ser iniciado em caso de failover para o local de recuperação de desastre.
+
+A replicação do sistema SAP HANA oferece um modo de operação no qual os dados são pré-carregados e atualizados continuamente no host secundário. Este modo permite valores de rto muito baixos, mas também requer um servidor dedicado que é usado apenas para receber os dados de replicação do sistema de origem.

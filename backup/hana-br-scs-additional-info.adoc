@@ -1,0 +1,108 @@
+---
+sidebar: sidebar 
+permalink: backup/hana-br-scs-additional-info.html 
+keywords:  
+summary:  
+---
+= Onde encontrar informações adicionais e histórico de versões
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Para saber mais sobre as informações descritas neste documento, consulte os seguintes documentos e/ou sites:
+
+* Página de recursos do SnapCenter
++
+https://www.netapp.com/us/documentation/snapcenter-software.aspx["https://www.netapp.com/us/documentation/snapcenter-software.aspx"^]
+
+* Documentação do software SnapCenter
++
+https://docs.netapp.com/us-en/snapcenter/index.html["https://docs.netapp.com/us-en/snapcenter/index.html"^]
+
+* TR-4667: Automatizando cópias do sistema SAP usando o SnapCenter
++
+link:../lifecycle/sc-copy-clone-introduction.html["Automatizando cópias do sistema SAP usando o SnapCenter"]
+
+* TR-4719: Replicação, backup e recuperação do sistema SAP HANA com o SnapCenter
++
+link:hana-sr-scs-system-replication-overview.html["Replicação, backup e recuperação do sistema SAP HANA com o SnapCenter"]
+
+* TR-4018: Integração de sistemas NetApp ONTAP com o SAP Landscape Management
++
+https://www.netapp.com/pdf.html?item=/media/17195-tr4018pdf.pdf["https://www.netapp.com/pdf.html?item=/media/17195-tr4018pdf.pdf"^]
+
+* TR-4646: Recuperação de desastres do SAP HANA com replicação de storage
++
+https://www.netapp.com/pdf.html?item=/media/8584-tr4646pdf.pdf["https://www.netapp.com/pdf.html?item=/media/8584-tr4646pdf.pdf"^]
+
+
+
+
+
+== Histórico de versões
+
+|===
+| Versão | Data | Histórico de versões do documento 
+
+
+| Versão 1,0 | Julho de 2017  a| 
+* Lançamento inicial.
+
+
+
+
+| Versão 1,1 | Setembro de 2017  a| 
+* Adicionada a seção "Configuração Avançada e Ajuste".
+* Pequenas correções.
+
+
+
+
+| Versão 2,0 | Março de 2018  a| 
+* Atualizações para cobrir o SnapCenter 4,0: Novo recurso de volume de dados melhorado operação de SnapRestore de Arquivo único
+
+
+
+
+| Versão 3,0 | Janeiro de 2020  a| 
+* Adicionada a seção "conceitos e melhores práticas do SnapCenter".
+* Atualizações para cobertura do SnapCenter 4,3: Detecção automática restauração e recuperação automatizada suporte a operações de restauração de locatário único
+
+
+
+
+| Versão 3,1 | Julho de 2020  a| 
+* Pequenas atualizações e correções: Suporte NFSv4 com SnapCenter 4.3.1 Configuração de comunicação SSL implantação central de plug-in para Linux no IBM Power
+
+
+
+
+| Versão 3,2 | Novembro de 2020  a| 
+* Adicionado o usuário de banco de dados necessário Privileges para HANA 2,0 SPS5.
+
+
+
+
+| Versão 3,3 | Maio de 2021  a| 
+* Atualizada a seção de configuração SSL hdbsql.
+* Adicionado suporte a LVM Linux.
+
+
+
+
+| Versão 3,4 | Agosto de 2021  a| 
+* Adicionada a descrição de configuração de desativação da deteção automática.
+
+
+
+
+| Versão 3,5 | Fevereiro de 2022  a| 
+* Pequenas atualizações para cobrir o SnapCenter 4,6 e o suporte de descoberta automática para sistemas HANA habilitados para replicação do sistema HANA.
+
+
+|===

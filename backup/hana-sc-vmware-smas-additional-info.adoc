@@ -17,11 +17,11 @@ este artigo fornece links para recursos adicionais relevantes para esta soluçã
 
 SnapCenter -
 
-https://docs.netapp.com/us-en/netapp-solutions-sap/backup/saphana-br-scs-overview.html["TR-4614: Backup e recuperação do SAP HANA com o SnapCenter"]
+link:hana-br-scs-overview.html["TR-4614: Backup e recuperação do SAP HANA com o SnapCenter"]
 
-https://docs.netapp.com/us-en/netapp-solutions-sap/backup/saphana-sr-scs-sap-hana-system-replication-overview.html["TR-4719: Replicação do sistema SAP HANA - backup e recuperação com o SnapCenter"]
+link:hana-sr-scs-system-replication-overview.html["TR-4719: Replicação do sistema SAP HANA - backup e recuperação com o SnapCenter"]
 
-https://docs.netapp.com/us-en/netapp-solutions-sap/lifecycle/sc-copy-clone-introduction.html["TR-4667: Automatizando as operações de clonagem e cópia do sistema SAP HANA com o SnapCenter"]
+link:../lifecycle/sc-copy-clone-introduction.html["TR-4667: Automatizando as operações de clonagem e cópia do sistema SAP HANA com o SnapCenter"]
 
 https://docs.netapp.com/us-en/snapcenter/index.html["Documentação do software SnapCenter"]
 

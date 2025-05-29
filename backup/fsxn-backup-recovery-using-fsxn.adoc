@@ -1,0 +1,97 @@
+---
+sidebar: sidebar 
+permalink: backup/fsxn-backup-recovery-using-fsxn.html 
+keywords: runtime, snapshot backup, restore operations, rto, recovery time objective 
+summary: Você pode usar a tecnologia Snapshot do NetApp para criar backups de bancos de dados em minutos. O tempo necessário para criar uma cópia Snapshot não depende do tamanho do banco de dados, pois a cópia Snapshot não move blocos de dados físicos na plataforma de storage. 
+---
+= Backup e recuperação usando o Amazon FSX for ONTAP
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Você pode usar a tecnologia Snapshot do NetApp para criar backups de bancos de dados em minutos.
+
+O tempo necessário para criar uma cópia Snapshot não depende do tamanho do banco de dados, pois a cópia Snapshot não move blocos de dados físicos na plataforma de storage. Além disso, o uso da tecnologia Snapshot não afeta a performance do sistema SAP ao vivo. Portanto, você pode agendar a criação de cópias Snapshot sem considerar períodos de atividade em lote ou diálogos de pico. Em geral, os clientes da SAP e da NetApp agendam vários backups de Snapshot on-line durante o dia; por exemplo, a cada seis horas é comum. Esses backups Snapshot costumam ser mantidos por três a cinco dias no sistema de storage primário antes de serem removidos ou dispostos em camadas em um storage mais barato para retenção a longo prazo.
+
+As cópias Snapshot também oferecem vantagens importantes para operações de restauração e recuperação. A tecnologia NetApp SnapRestore permite a restauração de um banco de dados inteiro ou, como alternativa, apenas uma parte de um banco de dados a qualquer momento, com base nas cópias Snapshot disponíveis atualmente. Esses processos de restauração são concluídos em poucos segundos, independentemente do tamanho do banco de dados. Como vários backups Snapshot online podem ser criados durante o dia, o tempo necessário para o processo de recuperação é significativamente reduzido em relação a uma abordagem tradicional de backup uma vez por dia. Como você pode executar uma restauração com uma cópia Snapshot que tenha no máximo apenas algumas horas (em vez de até 24 horas), menos logs de transações devem ser aplicados durante a recuperação avançada. Portanto, o rto é reduzido para vários minutos, em vez das várias horas necessárias para backups de streaming convencionais.
+
+Os backups de cópias snapshot são armazenados no mesmo sistema de disco que os dados on-line ativos. Portanto, a NetApp recomenda o uso de backups de cópias Snapshot como um suplemento, em vez de um substituto para backups em um local secundário. A maioria das ações de restauração e recuperação é gerenciada usando o SnapRestore no sistema de storage primário. As restaurações de um local secundário só serão necessárias se o sistema de storage primário que contém as cópias Snapshot estiver danificado. Você também pode usar o local secundário se for necessário restaurar um backup que não esteja mais disponível no local principal.
+
+Um backup em um local secundário é baseado nas cópias Snapshot criadas no storage primário. Portanto, os dados são lidos diretamente do sistema de armazenamento primário sem gerar carga no servidor de banco de dados SAP. O storage primário se comunica diretamente com o storage secundário e replica os dados de backup para o destino usando o recurso NetApp SnapVault.
+
+O SnapVault oferece vantagens significativas em comparação com os backups tradicionais. Após uma transferência inicial de dados, na qual todos os dados foram transferidos da origem para o destino, todos os backups subsequentes só migram os blocos alterados para o armazenamento secundário. Portanto, a carga no sistema de storage primário e o tempo necessário para um backup completo são reduzidos significativamente. Como o SnapVault armazena apenas os blocos alterados no destino, todos os backups completos adicionais do banco de dados consomem muito menos espaço em disco.
+
+
+
+== Tempo de execução das operações de backup e restauração do Snapshot
+
+A figura a seguir mostra o HANA Studio de um cliente usando operações de backup Snapshot. A imagem mostra que o backup do banco de DADOS HANA (de tamanho aproximado de 4TB TB) é feito em 1 minuto e 20 segundos usando a tecnologia de backup Snapshot e mais de 4 horas com uma operação de backup baseada em arquivo.
+
+A maior parte do tempo de execução geral do fluxo de trabalho de backup é o tempo necessário para executar a operação de ponto de salvamento DO BACKUP HANA, e essa etapa depende da carga no banco de DADOS HANA. O backup do Snapshot de armazenamento em si sempre termina em alguns segundos.
+
+image:amazon-fsx-image1.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+
+
+== Comparação do objetivo de tempo de recuperação
+
+Esta seção fornece uma comparação entre o objetivo de tempo de recuperação (rto) de backups Snapshot baseados em arquivo e baseados em storage. O rto é definido pela soma do tempo necessário para restaurar, recuperar e, em seguida, iniciar o banco de dados.
+
+
+
+=== Tempo necessário para restaurar o banco de dados
+
+Com um backup baseado em arquivo, o tempo de restauração depende do tamanho do banco de dados e da infraestrutura de backup, que define a velocidade de restauração em megabytes por segundo. Por exemplo, se a infraestrutura oferecer suporte a uma operação de restauração a uma velocidade de 250MBps Gbps, levará aproximadamente 4,5 horas para restaurar um banco de dados de tamanho 4TB na persistência.
+
+Com os backups de cópia Snapshot do storage, o tempo de restauração é independente do tamanho do banco de dados e está sempre dentro de alguns segundos.
+
+
+
+=== Tempo necessário para iniciar o banco de dados
+
+A hora de início do banco de dados depende do tamanho do banco de dados e do tempo necessário para carregar os dados na memória. Nos exemplos a seguir, presume-se que os dados podem ser carregados com 1000Mbps. Carregar 4TB GB na memória demora cerca de 1hour e 10 minutos. O horário de início é o mesmo para operações de restauração e recuperação baseadas em Snapshot e arquivo.
+
+
+
+=== Tempo necessário para recuperar o banco de dados
+
+O tempo de recuperação depende do número de logs que devem ser aplicados após a restauração. Este número é determinado pela frequência em que os backups de dados são feitos.
+
+Com backups de dados baseados em arquivos, o agendamento de backup geralmente é uma vez por dia. Uma frequência de backup maior normalmente não é possível, porque o backup degrada o desempenho de produção. Portanto, no pior dos casos, todos os logs que foram escritos durante o dia devem ser aplicados durante a recuperação futura.
+
+Os backups de snapshot geralmente são programados com uma frequência maior, porque não influenciam o desempenho do banco de dados SAP HANA. Por exemplo, se os backups Snapshot forem agendados a cada seis horas, o tempo de recuperação seria, no pior dos casos, um quarto do tempo de recuperação para um backup baseado em arquivo (6 horas / 24 horas, ou seja, 25).
+
+A figura a seguir mostra uma comparação das operações de restauração e recuperação com um backup diário baseado em arquivos e backups Snapshot com diferentes programações.
+
+As duas primeiras barras mostram que, mesmo com um único backup de Snapshot por dia, a restauração e a recuperação são reduzidas para 43% devido à velocidade da operação de restauração a partir de um backup de Snapshot. Se forem criados vários backups Snapshot por dia, o tempo de execução poderá ser reduzido ainda mais, pois menos logs precisam ser aplicados durante a recuperação avançada.
+
+A figura a seguir também mostra que quatro a seis backups Snapshot por dia faz mais sentido, porque uma frequência mais alta não tem mais uma grande influência no tempo de execução geral.
+
+image:amazon-fsx-image2.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+
+
+== Casos de uso e valores de operações de clonagem e backup acelerados
+
+A execução de backups é uma parte essencial de qualquer estratégia de proteção de dados. Os backups são programados regularmente para garantir que você possa se recuperar de falhas do sistema. Esse é o caso de uso mais óbvio, mas também há outras tarefas de gerenciamento de ciclo de vida do SAP, onde acelerar as operações de backup e recuperação é crucial.
+
+A atualização do sistema do SAP HANA é um exemplo de onde um backup sob demanda antes da atualização e uma possível operação de restauração se a atualização falhar tem um impactos significativo sobre o tempo de inatividade planejado geral. Com o exemplo de um banco de dados 4TB, você pode reduzir o tempo de inatividade planejado em 8 horas usando as operações de backup e restauração baseadas no Snapshot.
+
+Outro exemplo de caso de uso seria um ciclo de teste típico, em que o teste deve ser feito em várias iterações com diferentes conjuntos de dados ou parâmetros. Ao aproveitar as operações rápidas de backup e restauração, você pode facilmente criar pontos de salvamento dentro do seu ciclo de teste e redefinir o sistema para qualquer um desses pontos de salvamento anteriores se um teste falhar ou precisar ser repetido. Isso permite que o teste termine mais cedo ou permite mais testes ao mesmo tempo e melhora os resultados do teste.
+
+image:amazon-fsx-image3.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Quando os backups Snapshot são implementados, eles podem ser usados para lidar com vários outros casos de uso, o que exige cópias de um banco de DADOS HANA. Com o FSX for ONTAP, você pode criar um novo volume com base no conteúdo de qualquer backup instantâneo disponível. O tempo de execução desta operação é de alguns segundos, independente do tamanho do volume.
+
+O caso de uso mais popular é o SAP System Refresh, onde os dados do sistema de produção precisam ser copiados para o sistema de teste ou QA. Ao aproveitar o recurso de clonagem do FSX for ONTAP, você pode provisionar o volume do sistema de teste a partir de qualquer cópia Snapshot do sistema de produção em questão de segundos. Então, o novo volume precisa ser anexado ao sistema de teste e o banco de dados HANA será recuperado.
+
+O segundo caso de uso é a criação de um sistema de reparo, que é usado para resolver uma corrupção lógica no sistema de produção. Nesse caso, um backup Snapshot mais antigo do sistema de produção é usado para iniciar um sistema de reparo, que é um clone idêntico do sistema de produção com os dados antes que a corrupção ocorra. O sistema de reparação é então utilizado para analisar o problema e exportar os dados necessários antes de ser corrompido.
+
+O último caso de uso é a capacidade de executar um teste de failover de recuperação de desastres sem interromper a replicação e, portanto, sem influenciar o rto e o objetivo do ponto de recuperação (RPO) da configuração de recuperação de desastres. Quando a replicação do FSX for ONTAP NetApp SnapMirror é usada para replicar os dados para o local de recuperação de desastres, os backups do Snapshot de produção também estão disponíveis no local de recuperação de desastres e podem ser usados para criar um novo volume para testes de recuperação de desastres.
+
+image:amazon-fsx-image4.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]

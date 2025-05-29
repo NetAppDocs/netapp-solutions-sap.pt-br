@@ -1,0 +1,92 @@
+---
+sidebar: sidebar 
+permalink: backup/hana-dr-anf-config-steps-cross-region-replication.html 
+keywords: configuration, steps, anf, cross, region, replication, preparation, 
+summary: Algumas etapas de preparação devem ser executadas no local de recuperação de desastres antes que a replicação de volume possa ser configurada. 
+---
+= Etapas de configuração para replicação entre regiões do ANF
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Algumas etapas de preparação devem ser executadas no local de recuperação de desastres antes que a replicação de volume possa ser configurada.
+
+* Uma conta do NetApp deve estar disponível e configurada com a mesma assinatura do Azure que a origem.
+* Um pool de capacidade deve estar disponível e configurado usando a conta NetApp acima.
+* Uma rede virtual deve estar disponível e configurada.
+* Na rede virtual, uma sub-rede delegada deve estar disponível e configurada para uso com o ANF.
+
+
+Agora é possível criar volumes de proteção para os DADOS HANA, o HANA compartilhado e o volume de backup de log DO HANA. A tabela a seguir mostra os volumes de destino configurados em nossa configuração de laboratório.
+
+
+NOTE: Para obter a melhor latência, os volumes precisam estar próximos das VMs que executam o SAP HANA em caso de failover. Portanto, o mesmo processo de fixação é necessário para os volumes de DR que para qualquer outro sistema de produção SAP HANA.
+
+|===
+| VOLUME HANA | Fonte | Destino | Agendamento de replicação 
+
+
+| Volume de DADOS HANA | PR1-data-mnt00001 | PR1-data-mnt00001-sm-dest | Diariamente 
+
+
+| Volume compartilhado HANA | PR1-compartilhado | PR1-shared-sm-dest | Por hora 
+
+
+| Volume de backup de catálogo/log DO HANA | hanabackup | mais fácil | Por hora 
+|===
+Para cada volume, os seguintes passos devem ser executados:
+
+. Crie um novo volume de proteção no local de recuperação de desastres:
++
+.. Forneça o nome do volume, o pool de capacidade, a cota e as informações da rede.
+.. Forneça as informações de acesso ao protocolo e ao volume.
+.. Forneça a ID do volume de origem e uma programação de replicação.
+.. Crie um volume de destino.
+
+
+. Autorizar replicação no volume de origem.
++
+** Forneça a ID do volume alvo.
+
+
+
+
+As capturas de tela a seguir mostram os passos de configuração em detalhes.
+
+No local de recuperação de desastres, um novo volume de proteção é criado selecionando volumes e clicando em Adicionar replicação de dados. Na guia Noções básicas, você deve fornecer o nome do volume, o pool de capacidade e as informações da rede.
+
+
+NOTE: A cota do volume pode ser definida com base nos requisitos de capacidade, porque o desempenho do volume não tem efeito no processo de replicação. No caso de um failover de recuperação de desastres, a cota deve ser ajustada para atender aos requisitos reais de desempenho.
+
+
+NOTE: Se o pool de capacidade tiver sido configurado com QoS manual, você poderá configurar a taxa de transferência além dos requisitos de capacidade. Da mesma forma que acima, você pode configurar a taxa de transferência com um valor baixo durante a operação normal e aumentá-la em caso de failover de recuperação de desastres.
+
+image:saphana-dr-anf_image10.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+No separador Protocolo, tem de fornecer o protocolo de rede, o caminho de rede e a política de exportação.
+
+
+NOTE: O protocolo tem de ser o mesmo que o protocolo utilizado para o volume de origem.
+
+image:saphana-dr-anf_image11.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Na guia replicação, você deve configurar o ID do volume de origem e o agendamento de replicação. Para replicação de volume de dados, configuramos um cronograma de replicação diário para nossa configuração de laboratório.
+
+
+NOTE: A ID do volume de origem pode ser copiada a partir do ecrã Propriedades do volume de origem.
+
+image:saphana-dr-anf_image12.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Como etapa final, você deve autorizar a replicação no volume de origem fornecendo a ID do volume de destino.
+
+
+NOTE: Pode copiar a ID do volume de destino a partir do ecrã Propriedades do volume de destino.
+
+image:saphana-dr-anf_image13.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+As mesmas etapas devem ser executadas para o HANA compartilhado e o volume de backup de log.

@@ -1,0 +1,49 @@
+---
+sidebar: sidebar 
+permalink: backup/fsxn-backup-replication-with-snapvault-overview.html 
+keywords: overview, configuration, 
+summary: Em nossa configuração de laboratório, usamos um segundo sistema de arquivos FSX for ONTAP em uma segunda zona de disponibilidade da AWS para mostrar a replicação de backup para o volume de dados HANA. 
+---
+= Visão geral - Backup de replicação com o SnapVault
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Em nossa configuração de laboratório, usamos um segundo sistema de arquivos FSX for ONTAP em uma segunda zona de disponibilidade da AWS para mostrar a replicação de backup para o volume de dados HANA.
+
+Como discutido no link:fsxn-snapcenter-architecture.html#data-protection-strategy[""Estratégia de proteção de dados""]capítulo , o destino de replicação deve ser um segundo sistema de arquivos FSX for ONTAP em outra zona de disponibilidade para ser protegido contra uma falha do sistema de arquivos FSX for ONTAP primário. Além disso, o volume compartilhado HANA deve ser replicado para o sistema de arquivos FSX for ONTAP secundário.
+
+image:amazon-fsx-image8.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+
+
+=== Visão geral das etapas de configuração
+
+Existem algumas etapas de configuração que você deve executar na camada FSX for ONTAP. Você pode fazer isso com o Gerenciador de nuvem do NetApp ou a linha de comando FSX for ONTAP.
+
+. Peer FSX para sistemas de arquivos ONTAP. Os sistemas de arquivos FSX para ONTAP devem ser peered para permitir replicação entre si.
+. SVMs pares. Os SVMs devem ser peered para permitir a replicação entre si.
+. Crie um volume de destino. Crie um volume no SVM de destino com tipo de volume `DP` . O tipo `DP` é necessário para ser usado como um volume de destino de replicação.
+. Crie uma política do SnapMirror. Isso é usado para criar uma diretiva para replicação com o tipo `vault`.
++
+.. Adicione uma regra à política. A regra contém o rótulo SnapMirror e a retenção de backups no local secundário. Você deve configurar o mesmo rótulo do SnapMirror posteriormente na política do SnapCenter para que o SnapCenter crie backups do Snapshot no volume de origem que contém esse rótulo.
+
+
+. Crie uma relação SnapMirror. Define a relação de replicação entre o volume de origem e destino e anexa uma política.
+. Inicialize o SnapMirror. Isso inicia a replicação inicial na qual os dados de origem completos são transferidos para o volume de destino.
+
+
+Quando a configuração de replicação de volume estiver concluída, você deverá configurar a replicação de backup no SnapCenter da seguinte forma:
+
+. Adicione o SVM de destino ao SnapCenter.
+. Criar uma nova política do SnapCenter para backup instantâneo e replicação do SnapVault.
+. Adicionar a política à proteção de recursos DO HANA.
+. Agora você pode executar backups com a nova política.
+
+
+Os capítulos a seguir descrevem os passos individuais com mais detalhes.

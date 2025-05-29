@@ -1,0 +1,57 @@
+---
+sidebar: sidebar 
+permalink: bp/hana-aff-nfs.html 
+keywords:  
+summary:  
+---
+= 
+:allow-uri-read: 
+
+
+: hardbreaks: :nofooter: :icons: font :linkattrs: :imagesdir: ../media/
+
+[role="lead"]
+SAP HANA no NetApp AFF com protocolo NFS.
+
+|===
+|  |  |  
+
+
+|  |  |  
+
+
+|  |  |  
+
+
+|  |  |  
+
+
+|  |  |  
+
+
+|  |  |  
+
+
+|  |  |  
+
+
+|  |  |  
+
+
+|  |  |  
+
+
+|  |  |  
+
+
+|  |  |  
+
+
+|  |  |  
+
+
+|  |  |  
+
+
+|  |  |  
+|===

@@ -1,0 +1,52 @@
+---
+sidebar: sidebar 
+permalink: backup/hana-dr-anf-config-cross-region-replication.html 
+keywords: configuration, options, cross, region, replication, sap, hana, azure 
+summary: A figura a seguir mostra as relações de replicação de volume para um sistema SAP HANA que usa a replicação entre regiões do ANF. 
+---
+= Opções de configuração para replicação entre regiões com SAP HANA
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+A figura a seguir mostra as relações de replicação de volume para um sistema SAP HANA que usa a replicação entre regiões do ANF. Com a replicação entre regiões do ANF, os DADOS HANA e o volume compartilhado HANA precisam ser replicados. Se apenas o volume de DADOS HANA for replicado, os valores típicos de RPO estarão na faixa de um dia. Se forem necessários valores de RPO mais baixos, os backups de log DO HANA também devem ser replicados para recuperação futura.
+
+
+NOTE: O termo "backup de log" usado neste documento inclui o backup de log e o backup do catálogo de backup HANA. O catálogo de BACKUP DO HANA é necessário para executar operações de recuperação futuras.
+
+
+NOTE: A descrição a seguir e a configuração do laboratório se concentram no banco de dados HANA. Outros arquivos compartilhados, por exemplo, o diretório de transporte SAP, seriam protegidos e replicados da mesma forma que o volume compartilhado HANA.
+
+Para habilitar a recuperação do ponto de salvamento ou a recuperação avançada DO HANA usando os backups de log, os backups de Snapshot de dados consistentes com aplicações devem ser criados no local principal para o volume de dados HANA. Isso pode ser feito, por exemplo, com a ferramenta de backup do ANF AzAcSnap (consulte também https://docs.microsoft.com/en-us/azure/azure-netapp-files/azacsnap-introduction["O que é a ferramenta Snapshot consistente de aplicativos do Azure para o Azure NetApp Files | Microsoft Docs"^]). Os backups Snapshot criados no local principal são replicados para o local de recuperação de desastres.
+
+No caso de um failover de desastres, a relação de replicação deve ser quebrada, os volumes devem ser montados no servidor de produção de DR e o banco de DADOS HANA deve ser recuperado, seja no último ponto de salvamento DO HANA ou com recuperação avançada usando os backups de log replicados. O link:hana-dr-anf-failover-overview.html["Failover de recuperação de desastres"]capítulo , descreve os passos necessários.
+
+A figura a seguir mostra as opções de CONFIGURAÇÃO HANA para replicação entre regiões.
+
+image:saphana-dr-anf_image6.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Com a versão atual da replicação entre regiões, apenas é possível selecionar agendas fixas e o tempo real de atualização da replicação não pode ser definido pelo usuário. Os horários disponíveis são diários, de hora em hora e a cada 10 minutos. Com essas opções de agendamento, duas configurações diferentes fazem sentido dependendo dos requisitos RPO: Replicação de volume de dados sem replicação de backup de log e replicação de backup de log com diferentes programações, por hora ou a cada 10 minutos. O RPO mais baixo alcançável é de cerca de 20 minutos. A tabela a seguir resume as opções de configuração e os valores RPO e rto resultantes.
+
+|===
+|  | Replicação de volume de dados | Replicação de volume de backup de dados e log | Replicação de volume de backup de dados e log 
+
+
+| Volume de dados de programação CRR | Diariamente | Diariamente | Diariamente 
+
+
+| Volume de cópia de segurança do registo de agendamento CRR | n/a. | Por hora | 10 min 
+
+
+| RPO máximo | Mais de 6 horas e agendamento de instantâneos (por exemplo, mais de 24 horas) | 1 hora | 2 x 10 min 
+
+
+| Rto máx | Definido principalmente pelo tempo de INICIALIZAÇÃO DO HANA | Tempo de inicialização DO HANA e tempo de recuperação mais | Tempo de inicialização DO HANA e tempo de recuperação mais 
+
+
+| Recuperação avançada | NA | Registros para as últimas 24 horas e agendamento instantâneo (por exemplo, 6 horas) | Registros para as últimas 24 horas e agendamento instantâneo (por exemplo, 6 horas) 
+|===
