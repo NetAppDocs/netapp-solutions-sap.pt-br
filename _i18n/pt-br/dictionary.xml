@@ -4420,7 +4420,6 @@
   <block id="57c187411855aa330625e6e0331a74b7" category="paragraph"><block ref="57c187411855aa330625e6e0331a74b7" category="inline-image-macro-rx" type="image"></block></block>
   <block id="a2ef5d14ae5c3accf7291e39163d1ebd" category="paragraph">Cada compartimento de disco NVMe de NS224 GB é conetado a duas portas de 100GbE GbE por controladora, conforme mostrado na figura a seguir. Os discos em cada gaveta devem ser distribuídos igualmente para as duas controladoras do par de HA.</block>
   <block id="ef8d203413a4aabe57527556e0ef5fcb" category="paragraph"><block ref="ef8d203413a4aabe57527556e0ef5fcb" category="inline-image-macro-rx" type="image"></block></block>
-  <block id="7165d8e624155bf7a4889b98927f605c" category="list-text">ASA C250, ASA C400, ASA C800</block>
   <block id="5c93db5d513dfbb32e85b013261b5aa8" category="list-text">Verifique a configuração correta do compartimento de disco, conforme descrito em <block ref="039cb3f1d3f19b24b2d3e1a57595e88d" category="inline-xref-macro-rx"></block>.</block>
   <block id="cf0ea9a7f661e4a10ff9e179d0893564" category="list-text">Crie e configure os agregados necessários, conforme descrito em <block ref="19f0aba2b822910f53ba3966ee7c8d59" category="inline-xref-macro-rx"></block>.</block>
   <block id="07701c9e659f97922638b5c031983241" category="list-text">Crie uma máquina virtual de storage (SVM), conforme descrito em <block ref="7c58f6887f41bcea1635c2c18a7a4529" category="inline-xref-macro-rx"></block>.</block>
@@ -5477,4 +5476,5 @@
   <block id="3ff94088a12e40d70ab49680b4fa8d2d" category="sidebar">SnapCenter (independente da plataforma)</block>
   <block id="58b9bbf1f64eb397b83e8797b4eb9abc" category="sidebar">Replicação do sistema SAP HANA: Backup e recuperação com o SnapCenter</block>
   <block id="64b03de2a20ee77b8fcb65406457066c" category="sidebar">Visão geral da replicação entre regiões com o SAP HANA</block>
+  <block id="f8215a05c2f913eab74a6d7166384232" category="list-text">ASA C250, ASA C30, ASA C400, ASA C800</block>
 </blocks>
