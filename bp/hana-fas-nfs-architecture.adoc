@@ -20,7 +20,7 @@ Uma infraestrutura de comutação redundante é recomendada para fornecer coneti
 
 Diferentes modelos da família de produtos do sistema FAS podem ser combinados e combinados na camada de storage para permitir crescimento e diferentes necessidades de desempenho e capacidade. O número máximo de hosts SAP HANA que pode ser anexado ao sistema de storage é definido pelos requisitos de performance do SAP HANA e pelo modelo de controladora NetApp usado. O número de compartimentos de disco necessários só é determinado pelos requisitos de capacidade e performance dos sistemas SAP HANA. A figura a seguir mostra um exemplo de configuração com oito hosts SAP HANA conectados a um par de HA (storage high availability).
 
-image:saphana-fas-nfs_image2.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+image:saphana-fas-nfs_image2.png["Oito hosts SAP HANA conectados a um par de alta disponibilidade (HA) de armazenamento"]
 
 A arquitetura pode ser dimensionada em duas dimensões:
 
@@ -30,11 +30,11 @@ A arquitetura pode ser dimensionada em duas dimensões:
 
 A figura a seguir mostra um exemplo de configuração na qual mais hosts SAP HANA são conectados aos controladores de storage. Neste exemplo, mais compartimentos de disco são necessários para atender aos requisitos de capacidade e desempenho de 16 hosts SAP HANA. Dependendo do total dos requisitos de taxa de transferência, devem ser adicionadas conexões 10GbE (ou mais rápidas) adicionais aos controladores de storage.
 
-image:saphana-fas-nfs_image4.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+image:saphana-fas-nfs_image4.png["Hosts SAP HANA adicionais a um par de HA com controladora de storage existente"]
 
 Independente do sistema FAS implantado, o cenário SAP HANA também pode ser dimensionado adicionando qualquer uma das controladoras de storage certificadas para atender à densidade de nó desejada (figura a seguir).
 
-image:saphana-fas-nfs_image5.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+image:saphana-fas-nfs_image5a.png["Par de HA adicional adicionado"]
 
 
 
@@ -48,7 +48,7 @@ A tecnologia NetApp SnapMirror permite que cópias Snapshot criadas em um sistem
 
 É possível fazer backup dos logs do banco de dados diretamente no storage secundário usando uma montagem NFS, como mostrado na figura a seguir.
 
-image:saphana-fas-nfs_image6.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+image:saphana_asa_fc_image5a.png["Visão geral do SnapCenter"]
 
 Os backups Snapshot baseados em storage oferecem vantagens significativas em comparação aos backups convencionais baseados em arquivos. Estas vantagens incluem, mas não estão limitadas a, o seguinte:
 

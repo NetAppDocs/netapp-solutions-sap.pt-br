@@ -1,0 +1,25 @@
+---
+sidebar: sidebar 
+permalink: bp/hana-asa-fc-update-history.html 
+keywords:  
+summary:  
+---
+= Histórico de atualizações
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+As seguintes alterações técnicas foram feitas a esta solução desde a sua publicação original.
+
+[cols="25,50"]
+|===
+| Data | Atualizar resumo 
+
+
+| Julho de 2025 | Versão inicial 
+|===

@@ -215,4 +215,4 @@ O tamanho da RAM, o tamanho líquido dos dados no disco de cada host SAP HANA e 
 
 A figura a seguir resume o processo de dimensionamento.
 
-image:saphana_aff_fc_image8a.png["Processo de dimensionamento do SAP HANA"]
+image:saphana_aff_fc_image8b.png["Processo de dimensionamento do SAP HANA"]

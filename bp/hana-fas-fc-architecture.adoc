@@ -34,7 +34,7 @@ image:saphana_fas_fc_image3.png["Figura que mostra a caixa de diálogo de entrad
 
 Independente do modelo de storage do sistema FAS implantado, o cenário SAP HANA também pode ser dimensionado adicionando mais controladores de storage, como mostrado na figura a seguir.
 
-image:saphana_fas_fc_image4.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+image:saphana_fas_fc_image4a.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
 
 
 
@@ -48,7 +48,7 @@ Com o uso do software NetApp SnapVault, as cópias Snapshot criadas no storage p
 
 É possível fazer backup dos logs do banco de dados diretamente no storage secundário usando uma montagem NFS, como mostrado na figura a seguir.
 
-image:saphana_fas_fc_image5.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+image:saphana_asa_fc_image5a.png["Visão geral do SnapCenter"]
 
 Os backups Snapshot baseados em storage oferecem vantagens significativas em comparação aos backups baseados em arquivos. Essas vantagens incluem o seguinte:
 

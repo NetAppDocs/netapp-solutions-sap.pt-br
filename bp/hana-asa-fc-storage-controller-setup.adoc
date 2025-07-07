@@ -1,0 +1,105 @@
+---
+sidebar: sidebar 
+permalink: bp/hana-asa-fc-storage-controller-setup.html 
+keywords: storage efficiency, netapp volume encryption, quality of service, qos, fabricpool, Disk shelf, sas, fcp port sets, linux lvm, 
+summary: Esta seção descreve a configuração do sistema de storage NetApp. Você deve concluir a instalação e configuração primária de acordo com os guias de configuração e configuração do Data ONTAP correspondentes. 
+---
+= Configuração do controlador de storage
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Esta seção descreve a configuração do sistema de storage NetApp. Você deve concluir a instalação e configuração primária de acordo com os guias de configuração e configuração do Data ONTAP correspondentes.
+
+
+
+== Eficiência de storage
+
+A deduplicação in-line, a deduplicação in-line entre volumes, a compressão e a compactação in-line são compatíveis com SAP HANA em uma configuração SSD.
+
+
+
+== Qualidade do serviço
+
+O QoS pode ser usado para limitar a taxa de transferência de storage para sistemas SAP HANA específicos ou aplicações que não sejam SAP em um controlador compartilhado.
+
+
+
+=== Produção e desenvolvimento/teste
+
+Um caso de uso seria limitar o rendimento dos sistemas de desenvolvimento e teste para que eles não possam influenciar os sistemas de produção em uma configuração mista. Durante o processo de dimensionamento, você deve determinar os requisitos de desempenho de um sistema que não seja de produção. Os sistemas de desenvolvimento e teste podem ser dimensionados com valores de desempenho mais baixos, normalmente na faixa de 20% a 50% de um KPI do sistema de produção conforme definido pelo SAP. A e/S de gravação grande tem o maior efeito de desempenho no sistema de storage. Portanto, o limite de taxa de transferência de QoS deve ser definido para uma porcentagem dos valores de KPI de performance de storage SAP HANA de gravação correspondentes nos volumes de dados e log.
+
+
+
+=== Ambientes compartilhados
+
+Outro caso de uso é limitar a taxa de transferência de cargas de trabalho de gravação pesadas, especialmente para evitar que essas cargas de trabalho tenham impacto em outras cargas de trabalho de gravação sensíveis à latência. Nesses ambientes, é prática recomendada aplicar uma política de grupo de QoS de teto de taxa de transferência não compartilhada a cada LUN em cada máquina virtual de storage (SVM) para restringir a taxa de transferência máxima de cada objeto de storage individual ao valor especificado. Isso reduz a possibilidade de que um único workload possa influenciar negativamente outros workloads.
+
+Para fazer isso, é necessário criar uma política de grupo com a CLI do cluster do ONTAP para cada SVM:
+
+....
+qos policy-group create -policy-group <policy-name> -vserver <vserver name> -max-throughput 1000MB/s -is-shared false
+....
+Aplicado a cada LUN no SVM. Veja a seguir um exemplo para aplicar o grupo de políticas a todas as LUNs existentes em uma SVM:
+
+....
+lun modify -vserver <vserver name>  -path * -qos-policy-group  <policy-name>
+....
+Isso precisa ser feito para cada SVM. O nome do grupo de polícia QoS para cada SVM precisa ser diferente. Para novos LUNs, a política pode ser aplicada diretamente:
+
+....
+lun create -vserver <vserver_name> -path  /vol/<volume_name>/<lun_name>   -size <size> -ostype <e.g. linux>  -qos-policy-group <policy-name>
+....
+Recomenda-se usar 1000Mb GB/s como taxa de transferência máxima para um determinado LUN. Se um aplicativo exigir mais throughput, vários LUNs com distribuição LUN devem ser usados para fornecer a largura de banda necessária. Este guia fornece um exemplo para SAP HANA com base no Linux LVM na link:hana-asa-fc-host-setup.html#create-lvm-volume-groups-and-logical-volumes["Configuração do host"]seção .
+
+
+NOTE: O limite também se aplica a leituras. Portanto, use LUNs suficientes para cumprir os SLAs necessários para o tempo de inicialização do banco de dados SAP HANA e para backups.
+
+
+
+== Configurar o armazenamento
+
+A visão geral a seguir resume as etapas de configuração de armazenamento necessárias. Cada passo é abordado com mais detalhes nas seções subsequentes. Nesta seção, assumimos que o hardware de armazenamento está configurado e que o software ONTAP já está instalado. Além disso, a conexão das portas de storage FCP à malha SAN já precisa estar em vigor.
+
+. Verifique a configuração correta do compartimento de disco, conforme descrito em <<Compartimentos de disco baseados em NVMe(100GbE)>>.
+. Crie grupos de iniciadores (igroups) com nomes mundiais (WWNs) de servidores HANA, conforme descrito na seção link:saphana-asa-fc-storage-controller-setup.html#initiator-groups <<Grupos de iniciadores>> .
+. Crie LUNs e mapeie-os para os servidores descritos na seção link:hana-asa-fc-storage-controller-setup_single_host.html["Configuração de LUN para sistemas de host único SAP HANA"] e link:hana-asa-fc-storage-controller-setup_multiple_hosts.html["Configuração de LUN para sistemas SAP HANA de múltiplos hosts"]
+
+
+
+
+=== Compartimentos de disco baseados em NVMe(100GbE)
+
+Cada compartimento de disco NVMe de NS224 GB é conetado a duas portas de 100GbE GbE por controladora, conforme mostrado na figura a seguir. Os discos são distribuídos automaticamente para ambos os controladores do par HA.
+
+image:saphana_asa_fc_image11a.png["Conexão com compartimento de disco NVMe de NS224 GB"]
+
+
+
+=== Grupos de iniciadores
+
+Um grupo de servidores pode ser configurado para cada servidor ou para um grupo de servidores que exigem acesso a um LUN. A configuração do igrupo requer os nomes de portas mundiais (WWPNs) dos servidores.
+
+Usando a `sanlun` ferramenta, execute o seguinte comando para obter os WWPNs de cada host SAP HANA:
+
+....
+sapcc-hana-tst:~ # sanlun fcp show adapter
+/sbin/udevadm
+/sbin/udevadm
+
+host0 ...... WWPN:2100000e1e163700
+host1 ...... WWPN:2100000e1e163701
+....
+
+NOTE: A `sanlun` ferramenta faz parte dos Utilitários de host do NetApp e deve ser instalada em cada host do SAP HANA. Mais detalhes podem ser encontrados na seção link:hana-asa-fc-host-setup.html["Configuração do host."]
+
+Os grupos de iniciadores podem ser criados usando a CLI do cluster ONTAP.
+
+....
+lun igroup create -igroup <igroup name> -protocol fcp -ostype linux -initiator <list of initiators> -vserver <SVM name>
+....

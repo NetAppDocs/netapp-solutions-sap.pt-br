@@ -1,0 +1,64 @@
+---
+sidebar: sidebar 
+permalink: bp/hana-asa-fc-introduction.html 
+keywords: introduction, raw device mapping, rdm, tailored data center integration, FCP datastore 
+summary: A família de produtos NetApp ASA é certificada para uso com SAP HANA em projetos TDI. Este guia fornece as melhores práticas para SAP HANA nesta plataforma. 
+---
+= SAP HANA em sistemas NetApp ASA com protocolo Fibre Channel
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+A família de produtos NetApp ASA é certificada para uso com SAP HANA em projetos TDI. Este guia fornece as melhores práticas para SAP HANA nesta plataforma.
+
+Marco Schoen, NetApp
+
+
+
+== Introdução
+
+As famílias de produtos NetApp ASA A-Series e ASA C-Series foram certificadas para uso com SAP HANA em projetos de integração de data center (TDI) personalizados. Este guia descreve as melhores práticas para os seguintes modelos certificados:
+
+* ASA A20, ASA A30, ASA A50, ASA A70, ASA A90, ASA A1K
+* ASA C30
+
+
+Para obter uma lista completa de soluções de storage certificadas pela NetApp para SAP HANA, consulte https://www.sap.com/dmc/exp/2014-09-02-hana-hardware/enEN/#/solutions?filters=v:deCertified;ve:13["Diretório de hardware SAP HANA certificado e compatível"^].
+
+Este documento descreve as configurações do ASA que usam o protocolo Fibre Channel (FCP).
+
+
+NOTE: A configuração descrita neste documento é necessária para alcançar os KPIs necessários do SAP HANA e a melhor performance para o SAP HANA. Alterar quaisquer configurações ou usar recursos não listados neste documento pode causar degradação de desempenho ou comportamento inesperado e só deve ser feito se aconselhado pelo suporte da NetApp.
+
+Em um ambiente de vários hosts SAP HANA, o conetor de storage padrão SAP HANA é usado para fornecer cercas no caso de um failover de host SAP HANA. Sempre consulte as notas SAP relevantes para as diretrizes de configuração do sistema operacional e dependências específicas do kernel Linux do HANA. Para obter mais informações, https://launchpad.support.sap.com/["SAP Note 2235581 – sistemas operacionais compatíveis com SAP HANA"^]consulte .
+
+
+
+== Integração personalizada do data center do SAP HANA
+
+Os sistemas de armazenamento NetApp ASA são certificados no programa SAP HANA TDI usando protocolos FC (SAN). Eles podem ser implantados em qualquer um dos cenários atuais do SAP HANA, como SAP Business Suite on HANA, S/4HANA, BW/4HANA ou SAP Business Warehouse on HANA, em configurações de host único ou de múltiplos hosts. Qualquer servidor certificado para uso com SAP HANA pode ser combinado com as soluções de storage certificadas da NetApp. A figura a seguir mostra uma visão geral da arquitetura.
+
+image:saphana_aff_fc_image1.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Para obter mais informações sobre os pré-requisitos e recomendações para sistemas SAP HANA produtivos, consulte o seguinte recurso:
+
+* http://go.sap.com/documents/2016/05/e8705aae-717c-0010-82c7-eda71af511fa.html["Perguntas mais frequentes sobre a integração de data center personalizada do SAP HANA"^]
+
+
+
+
+= SAP HANA usando o VMware vSphere
+
+Existem várias opções para conetar o armazenamento a máquinas virtuais (VMs). Mapeamentos de dispositivos brutos (RDM), armazenamentos de dados FCP ou armazenamentos de dados VVOL com FCP são suportados. Para ambas as opções de armazenamento de dados, apenas um volume de log ou dados do SAP HANA deve ser armazenado no armazenamento de dados para casos de uso produtivos.
+
+Para obter mais informações sobre como usar o vSphere com o SAP HANA, consulte os seguintes links:
+
+* https://help.sap.com/docs/SUPPORT_CONTENT/virtualization/3362185751.html["SAP HANA no VMware vSphere - virtualização - Community Wiki"^]
+* https://www.vmware.com/docs/sap_hana_on_vmware_vsphere_best_practices_guide-white-paper["SAP HANA no Guia de práticas recomendadas do VMware vSphere"^]
+* https://launchpad.support.sap.com/["2161991 - diretrizes de configuração do VMware vSphere - SAP ONE Support Launchpad (Login necessário)"^]
+

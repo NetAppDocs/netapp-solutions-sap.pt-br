@@ -1,0 +1,250 @@
+---
+sidebar: sidebar 
+permalink: bp/hana-asa-fc-host-setup.html 
+keywords: multipathing, fcp, hba, configure 
+summary: Antes de configurar o host, os utilitários de host SAN NetApp devem ser baixados do site de suporte da NetApp e instalados nos servidores HANA. A documentação do utilitário host inclui informações sobre software adicional que deve ser instalado dependendo do HBA FCP usado. 
+---
+= Configuração do host
+:allow-uri-read: 
+
+
+
+
+== Configuração do host
+
+[role="lead"]
+Antes de configurar o host, os utilitários de host SAN NetApp devem ser baixados do http://mysupport.netapp.com/["Suporte à NetApp"^] site e instalados nos servidores HANA. A documentação do utilitário host inclui informações sobre software adicional que deve ser instalado dependendo do HBA FCP usado.
+
+A documentação também contém informações sobre configurações multipath específicas à versão Linux usada. Este documento aborda as etapas de configuração necessárias para SLES 12 SP1 ou superior e RHEL 7. 2 ou posterior, conforme descrito no https://library.netapp.com/ecm/ecm_download_file/ECMLP2547958["Linux Host Utilities 7,1 Guia de instalação e configuração"^].
+
+
+
+=== Configurar multipathing
+
+
+NOTE: As etapas de 1 a 6 devem ser executadas em todos os hosts de trabalho e de espera em uma configuração de vários hosts do SAP HANA.
+
+Para configurar multipathing, execute as seguintes etapas:
+
+. Execute o comando Linux `rescan-scsi-bus.sh -a` em cada servidor para descobrir novos LUNs.
+. Execute o `sanlun lun show` comando e verifique se todos os LUNs necessários estão visíveis. O exemplo a seguir mostra a `sanlun lun show` saída de comando para um 2 sistema HANA de mais de 1 host com dois LUNs de dados e dois LUNs de log. A saída mostra os LUNs e os arquivos de dispositivo correspondentes, como LUN `FC5_data_mnt00001` e o arquivo de dispositivo `/dev/sdag`, cada LUN tem oito caminhos FC do host para os controladores de storage.
++
+....
+sapcc-hana-tst:~ # sanlun lun show
+controller(7mode/E-Series)/                                  device          host                  lun
+vserver(cDOT/FlashRay)        lun-pathname                   filename        adapter    protocol   size    product
+---------------------------------------------------------------------------------------------------------------
+svm1                          FC5_log2_mnt00002              /dev/sdbb       host21     FCP        500g    cDOT
+svm1                          FC5_log_mnt00002               /dev/sdba       host21     FCP        500g    cDOT
+svm1                          FC5_log2_mnt00001              /dev/sdaz       host21     FCP        500g    cDOT
+svm1                          FC5_log_mnt00001               /dev/sday       host21     FCP        500g    cDOT
+svm1                          FC5_data2_mnt00002             /dev/sdax       host21     FCP        1t      cDOT
+svm1                          FC5_data_mnt00002              /dev/sdaw       host21     FCP        1t      cDOT
+svm1                          FC5_data2_mnt00001             /dev/sdav       host21     FCP        1t      cDOT
+svm1                          FC5_data_mnt00001              /dev/sdau       host21     FCP        1t      cDOT
+svm1                          FC5_log2_mnt00002              /dev/sdat       host21     FCP        500g    cDOT
+svm1                          FC5_log_mnt00002               /dev/sdas       host21     FCP        500g    cDOT
+svm1                          FC5_log2_mnt00001              /dev/sdar       host21     FCP        500g    cDOT
+svm1                          FC5_log_mnt00001               /dev/sdaq       host21     FCP        500g    cDOT
+svm1                          FC5_data2_mnt00002             /dev/sdap       host21     FCP        1t      cDOT
+svm1                          FC5_data_mnt00002              /dev/sdao       host21     FCP        1t      cDOT
+svm1                          FC5_data2_mnt00001             /dev/sdan       host21     FCP        1t      cDOT
+svm1                          FC5_data_mnt00001              /dev/sdam       host21     FCP        1t      cDOT
+svm1                          FC5_log2_mnt00002              /dev/sdal       host20     FCP        500g    cDOT
+svm1                          FC5_log_mnt00002               /dev/sdak       host20     FCP        500g    cDOT
+svm1                          FC5_log2_mnt00001              /dev/sdaj       host20     FCP        500g    cDOT
+svm1                          FC5_log_mnt00001               /dev/sdai       host20     FCP        500g    cDOT
+svm1                          FC5_data2_mnt00002             /dev/sdah       host20     FCP        1t      cDOT
+svm1                          FC5_data_mnt00002              /dev/sdag       host20     FCP        1t      cDOT
+svm1                          FC5_data2_mnt00001             /dev/sdaf       host20     FCP        1t      cDOT
+svm1                          FC5_data_mnt00001              /dev/sdae       host20     FCP        1t      cDOT
+svm1                          FC5_log2_mnt00002              /dev/sdad       host20     FCP        500g    cDOT
+svm1                          FC5_log_mnt00002               /dev/sdac       host20     FCP        500g    cDOT
+svm1                          FC5_log2_mnt00001              /dev/sdab       host20     FCP        500g    cDOT
+svm1                          FC5_log_mnt00001               /dev/sdaa       host20     FCP        500g    cDOT
+svm1                          FC5_data2_mnt00002             /dev/sdz        host20     FCP        1t      cDOT
+svm1                          FC5_data_mnt00002              /dev/sdy        host20     FCP        1t      cDOT
+svm1                          FC5_data2_mnt00001             /dev/sdx        host20     FCP        1t      cDOT
+svm1                          FC5_data_mnt00001              /dev/sdw        host20     FCP        1t      cDOT
+
+....
+. Execute o  `multipath -r` e  `multipath -ll` comando para obter os identificadores mundiais (WWIDs) para os nomes de arquivos do dispositivo.
++
+
+NOTE: Neste exemplo, há oito LUNs.
+
++
+....
+sapcc-hana-tst:~ # multipath -r
+sapcc-hana-tst:~ # multipath -ll
+3600a098038314e63492b59326b4b786d dm-7 NETAPP,LUN C-Mode
+size=1.0T features='3 queue_if_no_path pg_init_retries 50' hwhandler='1 alua' wp=rw
+`-+- policy='service-time 0' prio=50 status=active
+  |- 20:0:4:2 sdaf 65:240 active ready running
+  |- 20:0:5:2 sdx  65:112 active ready running
+  |- 21:0:4:2 sdav 66:240 active ready running
+  `- 21:0:6:2 sdan 66:112 active ready running
+3600a098038314e63492b59326b4b786e dm-9 NETAPP,LUN C-Mode
+size=1.0T features='3 queue_if_no_path pg_init_retries 50' hwhandler='1 alua' wp=rw
+`-+- policy='service-time 0' prio=50 status=active
+  |- 20:0:4:4 sdah 66:16  active ready running
+  |- 20:0:5:4 sdz  65:144 active ready running
+  |- 21:0:4:4 sdax 67:16  active ready running
+  `- 21:0:6:4 sdap 66:144 active ready running
+3600a098038314e63492b59326b4b786f dm-11 NETAPP,LUN C-Mode
+size=500G features='3 queue_if_no_path pg_init_retries 50' hwhandler='1 alua' wp=rw
+`-+- policy='service-time 0' prio=50 status=active
+  |- 20:0:4:6 sdaj 66:48  active ready running
+  |- 20:0:5:6 sdab 65:176 active ready running
+  |- 21:0:4:6 sdaz 67:48  active ready running
+  `- 21:0:6:6 sdar 66:176 active ready running
+3600a098038314e63492b59326b4b7870 dm-13 NETAPP,LUN C-Mode
+size=500G features='3 queue_if_no_path pg_init_retries 50' hwhandler='1 alua' wp=rw
+`-+- policy='service-time 0' prio=50 status=active
+  |- 20:0:4:8 sdal 66:80  active ready running
+  |- 20:0:5:8 sdad 65:208 active ready running
+  |- 21:0:4:8 sdbb 67:80  active ready running
+  `- 21:0:6:8 sdat 66:208 active ready running
+3600a098038314e63532459326d495a64 dm-6 NETAPP,LUN C-Mode
+size=1.0T features='3 queue_if_no_path pg_init_retries 50' hwhandler='1 alua' wp=rw
+`-+- policy='service-time 0' prio=50 status=active
+  |- 20:0:4:1 sdae 65:224 active ready running
+  |- 20:0:5:1 sdw  65:96  active ready running
+  |- 21:0:4:1 sdau 66:224 active ready running
+  `- 21:0:6:1 sdam 66:96  active ready running
+3600a098038314e63532459326d495a65 dm-8 NETAPP,LUN C-Mode
+size=1.0T features='3 queue_if_no_path pg_init_retries 50' hwhandler='1 alua' wp=rw
+`-+- policy='service-time 0' prio=50 status=active
+  |- 20:0:4:3 sdag 66:0   active ready running
+  |- 20:0:5:3 sdy  65:128 active ready running
+  |- 21:0:4:3 sdaw 67:0   active ready running
+  `- 21:0:6:3 sdao 66:128 active ready running
+3600a098038314e63532459326d495a66 dm-10 NETAPP,LUN C-Mode
+size=500G features='3 queue_if_no_path pg_init_retries 50' hwhandler='1 alua' wp=rw
+`-+- policy='service-time 0' prio=50 status=active
+  |- 20:0:4:5 sdai 66:32  active ready running
+  |- 20:0:5:5 sdaa 65:160 active ready running
+  |- 21:0:4:5 sday 67:32  active ready running
+  `- 21:0:6:5 sdaq 66:160 active ready running
+3600a098038314e63532459326d495a67 dm-12 NETAPP,LUN C-Mode
+size=500G features='3 queue_if_no_path pg_init_retries 50' hwhandler='1 alua' wp=rw
+`-+- policy='service-time 0' prio=50 status=active
+  |- 20:0:4:7 sdak 66:64  active ready running
+  |- 20:0:5:7 sdac 65:192 active ready running
+  |- 21:0:4:7 sdba 67:64  active ready running
+  `- 21:0:6:7 sdas 66:192 active ready running
+
+....
+. Edite o `/etc/multipath.conf` arquivo e adicione os WWIDs e nomes de alias.
++
+
+NOTE: A saída de exemplo mostra o conteúdo do `/etc/multipath.conf` arquivo, que inclui nomes de alias para os quatro LUNs de um sistema de vários hosts 2-1. Se não houver nenhum arquivo multipath.conf disponível, você pode criar um executando o seguinte comando: `multipath -T > /etc/multipath.conf`.
+
++
+....
+sapcc-hana-tst:/ # cat /etc/multipath.conf
+multipaths {
+                multipath {
+                wwid    3600a098038314e63492b59326b4b786d
+                alias   svm1-FC5_data2_mnt00001
+        }
+        multipath {
+                wwid    3600a098038314e63492b59326b4b786e
+                alias   svm1-FC5_data2_mnt00002
+        }
+        multipath {
+                wwid    3600a098038314e63532459326d495a64
+                alias   svm1-FC5_data_mnt00001
+        }
+        multipath {
+                wwid    3600a098038314e63532459326d495a65
+                alias   svm1-FC5_data_mnt00002
+        }
+        multipath {
+                wwid    3600a098038314e63492b59326b4b786f
+                alias   svm1-FC5_log2_mnt00001
+        }
+        multipath {
+                wwid    3600a098038314e63492b59326b4b7870
+                alias   svm1-FC5_log2_mnt00002
+        }
+        multipath {
+                wwid    3600a098038314e63532459326d495a66
+                alias   svm1-FC5_log_mnt00001
+        }
+        multipath {
+                wwid    3600a098038314e63532459326d495a67
+                alias   svm1-FC5_log_mnt00002
+        }
+
+
+}
+....
+. Execute o `multipath -r` comando para recarregar o mapa de dispositivos.
+. Verifique a configuração executando o `multipath -ll` comando para listar todos os LUNs, nomes de alias e caminhos ativos e de espera.
++
+
+NOTE: A saída de exemplo a seguir mostra a saída de um 2 sistema HANA de vários hosts de mais de 1 U com dois dados e dois LUNs de log.
+
++
+....
+sapcc-hana-tst:~ # multipath -ll
+hsvm1-FC5_data2_mnt00001 (3600a098038314e63492b59326b4b786d) dm-7 NETAPP,LUN C-Mode
+size=1.0T features='3 queue_if_no_path pg_init_retries 50' hwhandler='1 alua' wp=rw
+`-+- policy='service-time 0' prio=50 status=active
+  |- 20:0:4:2 sdaf 65:240 active ready running
+  |- 20:0:5:2 sdx  65:112 active ready running
+  |- 21:0:4:2 sdav 66:240 active ready running
+  `- 21:0:6:2 sdan 66:112 active ready running
+svm1-FC5_data2_mnt00002 (3600a098038314e63492b59326b4b786e) dm-9 NETAPP,LUN C-Mode
+size=1.0T features='3 queue_if_no_path pg_init_retries 50' hwhandler='1 alua' wp=rw
+`-+- policy='service-time 0' prio=50 status=active
+  |- 20:0:4:4 sdah 66:16  active ready running
+  |- 20:0:5:4 sdz  65:144 active ready running
+  |- 21:0:4:4 sdax 67:16  active ready running
+  `- 21:0:6:4 sdap 66:144 active ready running
+svm1-FC5_data_mnt00001 (3600a098038314e63532459326d495a64) dm-6 NETAPP,LUN C-Mode
+size=1.0T features='3 queue_if_no_path pg_init_retries 50' hwhandler='1 alua' wp=rw
+`-+- policy='service-time 0' prio=50 status=active
+  |- 20:0:4:1 sdae 65:224 active ready running
+  |- 20:0:5:1 sdw  65:96  active ready running
+  |- 21:0:4:1 sdau 66:224 active ready running
+  `- 21:0:6:1 sdam 66:96  active ready running
+svm1-FC5_data_mnt00002 (3600a098038314e63532459326d495a65) dm-8 NETAPP,LUN C-Mode
+size=1.0T features='3 queue_if_no_path pg_init_retries 50' hwhandler='1 alua' wp=rw
+`-+- policy='service-time 0' prio=50 status=active
+  |- 20:0:4:3 sdag 66:0   active ready running
+  |- 20:0:5:3 sdy  65:128 active ready running
+  |- 21:0:4:3 sdaw 67:0   active ready running
+  `- 21:0:6:3 sdao 66:128 active ready running
+svm1-FC5_log2_mnt00001 (3600a098038314e63492b59326b4b786f) dm-11 NETAPP,LUN C-Mode
+size=500G features='3 queue_if_no_path pg_init_retries 50' hwhandler='1 alua' wp=rw
+`-+- policy='service-time 0' prio=50 status=active
+  |- 20:0:4:6 sdaj 66:48  active ready running
+  |- 20:0:5:6 sdab 65:176 active ready running
+  |- 21:0:4:6 sdaz 67:48  active ready running
+  `- 21:0:6:6 sdar 66:176 active ready running
+svm1-FC5_log2_mnt00002 (3600a098038314e63492b59326b4b7870) dm-13 NETAPP,LUN C-Mode
+size=500G features='3 queue_if_no_path pg_init_retries 50' hwhandler='1 alua' wp=rw
+`-+- policy='service-time 0' prio=50 status=active
+  |- 20:0:4:8 sdal 66:80  active ready running
+  |- 20:0:5:8 sdad 65:208 active ready running
+  |- 21:0:4:8 sdbb 67:80  active ready running
+  `- 21:0:6:8 sdat 66:208 active ready running
+svm1-FC5_log_mnt00001 (3600a098038314e63532459326d495a66) dm-10 NETAPP,LUN C-Mode
+size=500G features='3 queue_if_no_path pg_init_retries 50' hwhandler='1 alua' wp=rw
+`-+- policy='service-time 0' prio=50 status=active
+  |- 20:0:4:5 sdai 66:32  active ready running
+  |- 20:0:5:5 sdaa 65:160 active ready running
+  |- 21:0:4:5 sday 67:32  active ready running
+  `- 21:0:6:5 sdaq 66:160 active ready running
+svm1-FC5_log_mnt00002 (3600a098038314e63532459326d495a67) dm-12 NETAPP,LUN C-Mode
+size=500G features='3 queue_if_no_path pg_init_retries 50' hwhandler='1 alua' wp=rw
+`-+- policy='service-time 0' prio=50 status=active
+  |- 20:0:4:7 sdak 66:64  active ready running
+  |- 20:0:5:7 sdac 65:192 active ready running
+  |- 21:0:4:7 sdba 67:64  active ready running
+  `- 21:0:6:7 sdas 66:192 active ready running
+
+....
+

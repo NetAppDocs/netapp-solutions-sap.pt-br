@@ -1,0 +1,23 @@
+---
+sidebar: sidebar 
+permalink: bp/hana-asa-fc-infra-setup-config-overview.html 
+keywords:  
+summary:  
+---
+= Configuração e configuração da infraestrutura
+:allow-uri-read: 
+
+
+
+
+== Configuração e configuração da infraestrutura
+
+[role="lead"]
+As seções a seguir fornecem diretrizes de configuração e configuração da infraestrutura do SAP HANA e descrevem todas as etapas necessárias para configurar um sistema SAP HANA. Nestas seções, são usadas as seguintes configurações de exemplo:
+
+* Sistema HANA com SID FC5
++
+** SAP HANA de um e vários hosts
+
+
+

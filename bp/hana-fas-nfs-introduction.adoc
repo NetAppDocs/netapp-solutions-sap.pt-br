@@ -2,16 +2,16 @@
 sidebar: sidebar 
 permalink: bp/hana-fas-nfs-introduction.html 
 keywords: sap, hana, fas, systems, nfs, configuration, guide 
-summary: 'A família de produtos NetApp FAS foi certificada para uso com SAP HANA em projetos de integração de data center (TDI) personalizados. O sistema de storage empresarial certificado é caraterizado pelo software NetApp ONTAP.' 
+summary: 'A família de produtos NetApp FAS foi certificada para uso com SAP HANA em projetos de integração de data center (TDI) personalizados. Este guia fornece as melhores práticas para SAP HANA nesta plataforma.' 
 ---
 = SAP HANA em sistemas NetApp FAS com guia de configuração NFS
 :allow-uri-read: 
 
 
 [role="lead"]
-A família de produtos NetApp FAS foi certificada para uso com SAP HANA em projetos de integração de data center (TDI) personalizados. O sistema de storage empresarial certificado é caraterizado pelo software NetApp ONTAP.
+A família de produtos NetApp FAS foi certificada para uso com SAP HANA em projetos de integração de data center (TDI) personalizados. Este guia fornece as melhores práticas para SAP HANA nesta plataforma com NFS.
 
-Marco Schön, NetApp
+Marco Schoen, NetApp
 
 Atualmente, esta certificação só é válida para os seguintes modelos:
 
@@ -28,9 +28,10 @@ NOTE: A configuração descrita neste documento é necessária para alcançar os
 
 Os guias de configuração de sistemas NetApp FAS que usam FCP e sistemas AFF que usam NFS ou FC podem ser encontrados nos seguintes links:
 
-* link:hana-fas-fc-introduction.html["SAP HANA em sistemas NetApp FAS com protocolo Fibre Channel"^]
+* link:hana-fas-fc-introduction.html["SAP HANA em sistemas NetApp FAS com FCP"^]
 * link:hana-aff-nfs-introduction.html["SAP HANA em sistemas NetApp AFF com NFS"^]
-* link:hana-aff-fc-introduction.html["SAP HANA em sistemas NetApp AFF com protocolo Fibre Channel"^]
+* link:hana-aff-fc-introduction.html["SAP HANA em sistemas NetApp AFF com FCP"^]
+* link:hana-asa-fc-introduction.html["SAP HANA em sistemas NetApp ASA com FCP"^]
 
 
 A tabela a seguir mostra as combinações compatíveis com versões de NFS, bloqueio de NFS e implementações de isolamento necessárias, dependendo da configuração do banco de dados SAP HANA.
