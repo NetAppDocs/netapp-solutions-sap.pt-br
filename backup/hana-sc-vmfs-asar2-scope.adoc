@@ -1,0 +1,33 @@
+---
+sidebar: sidebar 
+permalink: backup/hana-sc-vmfs-asar2-scope.html 
+keywords: SAP HANA, VMware, SnapCenter, backup and recovery 
+summary:  
+---
+= Proteção de dados SAP HANA com SnapCenter com sistemas VMware VMFS e NetApp ASA
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Este documento descreve as práticas recomendadas para proteção de dados usando o SnapCenter para sistemas HANA em execução no VMware com armazenamentos de dados usando VMFS e LUNs armazenados em sistemas NetApp ASA .
+
+Autor: Nils Bauer, NetApp
+
+
+
+== Âmbito deste documento
+
+Ele não serve como um guia passo a passo para configurar todo o ambiente, mas se concentra em detalhes específicos do SnapCenter e do HANA no VMFS, incluindo:
+
+* Configurando sistemas SAP HANA com VMware VMFS
+* Configurações específicas do SnapCenter para HANA no VMware com VMFS
+* Operações de backup, restauração e recuperação do SnapCenter para HANA no VMware com VMFS
+* Operações de atualização do sistema SnapCenter SAP para HANA no VMware com VMFS
+
+
+Para obter mais informações e instruções detalhadas de configuração, consulte os documentos listados no link:hana-sc-vmfs-asar2-add-info.html[""Informações adicionais""] capítulo.

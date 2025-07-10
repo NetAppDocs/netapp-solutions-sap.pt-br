@@ -1,0 +1,100 @@
+---
+sidebar: sidebar 
+permalink: backup/hana-sc-vmfs-asar2-sc-config.html 
+keywords: SAP HANA, VMware, SnapCenter, backup and recovery 
+summary:  
+---
+= Configuração do SnapCenter
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+
+
+== Pré-requisitos
+
+
+
+=== O recurso do SnapCenter HANA deve ser descoberto automaticamente
+
+Os recursos configurados com o VMware VMFS devem ser descobertos automaticamente pelo SnapCenter para habilitar operações específicas necessárias para essas configurações.
+
+Como os volumes não relacionados a dados do HANA são sempre recursos configurados manualmente no SnapCenter, eles não são suportados pelo SnapCenter com VMFS.
+
+Sistemas SAP HANA com múltiplos hosts devem ser configurados usando um plugin HANA central e, portanto, são configurados manualmente por padrão. Esses sistemas também não são suportados pelo SnapCenter ao usar o VMware VMFS.
+
+
+
+=== Plug-in do SnapCenter para VMware vSphere
+
+O plug-in do SnapCenter para VMware vSphere deve ser implantado no ambiente VMware.
+
+
+
+=== IP de gerenciamento de SVM de armazenamento
+
+Os SVMs de armazenamento que hospedam os LUNs devem ter uma interface de gerenciamento configurada, caso contrário, os SVMs não serão listados no SnapCenter ao adicionar armazenamento com a opção “adicionar cluster” e a operação de descoberta automática falhará.
+
+image:sc-hana-asrr2-vmfs-image9.png["Figura demonstrando o conteúdo que está sendo discutido"]
+
+image:sc-hana-asrr2-vmfs-image10.png["Figura demonstrando o conteúdo que está sendo discutido"]
+
+
+
+=== Parâmetro de disco da VM
+
+O parâmetro deve ser definido conforme descrito no capítulo link:hana-sc-vmfs-asar2-hana-prov.html#vm-parameter-disk-enableuuid["“Parâmetros da VM disk.EnableUUID”"] , caso contrário, a descoberta automática do banco de dados SnapCenter falhará.
+
+image:sc-hana-asrr2-vmfs-image11.png["Figura demonstrando o conteúdo que está sendo discutido"]
+
+
+
+=== Configurar o SnapCenter para usar APIs REST para comunicação de armazenamento
+
+O SnapCenter deve ser configurado para usar APIs REST para comunicações de armazenamento. Caso contrário, a operação de criação de Snapshot falhará, exibindo a mensagem de erro mostrada abaixo.
+
+image:sc-hana-asrr2-vmfs-image12.png["Figura demonstrando o conteúdo que está sendo discutido"]
+
+O parâmetro "IsRestEnabledForStorageConnection" no arquivo de configuração + C:++\++Program Files++\++NetApp++\++SMCore++\++SMCoreServiceHost.dll.config deve ser definido como “true”.
+
+++<++adicionar chave="IsRestEnabledForStorageConnection" valor="true" /++>++
+
+image:sc-hana-asrr2-vmfs-image13.png["Figura demonstrando o conteúdo que está sendo discutido"]
+
+Após a alteração ser feita, o SnapCenter SMCore Service deve ser interrompido e iniciado.
+
+image:sc-hana-asrr2-vmfs-image14.png["Figura demonstrando o conteúdo que está sendo discutido"]
+
+
+
+== Adicionar o plugin VMware ao SnapCenter
+
+Antes que o host possa ser adicionado ao SnapCenter, o plug-in do SnapCenter para VMware vSphere deve ser implantado no ambiente VMware. Consulte também https://docs.netapp.com/us-en/sc-plugin-vmware-vsphere/scpivs44_deploy_snapcenter_plug-in_for_vmware_vsphere.html["Implante o plug-in do SnapCenter para VMware vSphere"].
+
+
+NOTE: As credenciais devem ser definidas durante o fluxo de trabalho de adição do host, em que o vSphere pode ser selecionado como um tipo de host.
+
+image:sc-hana-asrr2-vmfs-image15.png["Figura demonstrando o conteúdo que está sendo discutido"]
+
+
+
+== Adicionar host HANA
+
+
+NOTE: Sem requisitos específicos. A implantação do plugin e a descoberta automática são feitas como de costume.
+
+image:sc-hana-asrr2-vmfs-image16.png["Figura demonstrando o conteúdo que está sendo discutido"]
+
+Com o processo de descoberta automática, o SnapCenter detecta que o recurso HANA está sendo executado virtualizado com VMFS.
+
+image:sc-hana-asrr2-vmfs-image17.png["Figura demonstrando o conteúdo que está sendo discutido"]
+
+
+
+== Configuração de política e proteção de recursos
+
+Nada específico para VMware com VMFS.

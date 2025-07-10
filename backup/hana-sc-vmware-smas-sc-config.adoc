@@ -40,7 +40,7 @@ Vários sistemas host do SAP HANA devem ser configurados usando um plug-in HANA 
 
 
 
-=== Plug-in do SnapCenter para VMware vSphere
+=== SnapCenter para VMware vSphere
 
 O plug-in do SnapCenter para VMware vSphere deve ser implantado no ambiente VMware.
 

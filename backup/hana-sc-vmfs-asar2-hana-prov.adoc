@@ -1,0 +1,221 @@
+---
+sidebar: sidebar 
+permalink: backup/hana-sc-vmfs-asar2-hana-prov.html 
+keywords: SAP HANA, VMware, SnapCenter, backup and recovery 
+summary:  
+---
+= Provisionamento e instalação do SISTEMA HANA
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+Este capítulo descreve a instalação e configuração do sistema SAP HANA específico para uma configuração VMware usando VMFS. As melhores práticas genéricas adicionais podem ser encontradas em https://docs.netapp.com/us-en/netapp-solutions-sap/bp/hana-asa-fc-introduction.html["SAP HANA em sistemas NetApp ASA com protocolo Fibre Channel"].
+
+
+
+== Configuração de armazenamento
+
+Para atender aos KPIs de desempenho de armazenamento definidos pela SAP para sistemas HANA de produção, LUNs e datastores dedicados devem ser configurados para os sistemas de arquivos de dados e log do sistema HANA. Os datastores não devem ser compartilhados entre vários sistemas HANA ou outras cargas de trabalho.
+
+As ferramentas ONTAP para VMware (OTV) foram usadas para provisionar os três armazenamentos de dados para o VFS do sistema HANA.
+
+* hana++_++dados++_++VFS
+* hana++_++log++_++VFS
+* hana++_++compartilhado++_++VFS
+
+
+
+NOTE: O armazenamento de dados do sistema de arquivos compartilhado HANA também pode ser compartilhado entre vários sistemas HANA.
+
+image:sc-hana-asrr2-vmfs-image2.png["Figura demonstrando o conteúdo que está sendo discutido"]
+
+No sistema de armazenamento, três LUNs foram criados pelo OTV.
+
+image:sc-hana-asrr2-vmfs-image3.png["Figura demonstrando o conteúdo que está sendo discutido"]
+
+
+
+== Configuração de disco de VM
+
+Três novos discos (VMDK) devem ser adicionados à VM HANA. Cada disco deve estar em um dos datastores criados anteriormente, conforme ilustrado na imagem abaixo.
+
+image:sc-hana-asrr2-vmfs-image4.png["Figura demonstrando o conteúdo que está sendo discutido"]
+
+image:sc-hana-asrr2-vmfs-image5.png["Figura demonstrando o conteúdo que está sendo discutido"]
+
+image:sc-hana-asrr2-vmfs-image6.png["Figura demonstrando o conteúdo que está sendo discutido"]
+
+Quando os três discos forem adicionados à VM, eles poderão ser listados no nível do sistema operacional.
+
+....
+hana-8:~ # lsblk
+NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS
+sda 8:0 0 100G 0 disk
+├─sda1 8:1 0 256M 0 part /boot/efi
+└─sda2 8:2 0 82G 0 part
+├─system-root 254:0 0 60G 0 lvm /root
+│ /var
+│ /usr/local
+│ /tmp
+│ /srv
+│ /opt
+│ /home
+│ /boot/grub2/x86++_++64-efi
+│ /boot/grub2/i386-pc
+│ /.snapshots
+│ /
+└─system-swap 254:1 0 2G 0 lvm [SWAP]
+sdb 8:16 0 95G 0 disk
+sdc 8:32 0 95G 0 disk
+sdd 8:48 0 95G 0 disk
+sr0 11:0 1 17.1G 0 rom
+....
+
+
+== Parâmetro da VM disk.EnableUUID
+
+Este parâmetro deve ser definido adequadamente, caso contrário, a descoberta automática do banco de dados SnapCenter falhará.
+
+. Desligar VM
+. Adicione o novo parâmetro “disk.EnableUUID” e defina como “TRUE”
+. Iniciar VM
+
+
+image:sc-hana-asrr2-vmfs-image7.png["Figura demonstrando o conteúdo que está sendo discutido"]
+
+
+
+== Preparação do sistema de arquivos no host Linux
+
+
+
+=== Criação do sistema de arquivos xfs em novos discos
+
+Um sistema de arquivos xfs foi criado em cada um dos três novos discos.
+
+....
+hana-8:~ # mkfs.xfs /dev/sdb
+meta-data=/dev/sdb isize=512 agcount=4, agsize=6225920 blks
+= sectsz=512 attr=2, projid32bit=1
+= crc=1 finobt=1, sparse=1, rmapbt=1
+= reflink=1 bigtime=1 inobtcount=0 nrext64=0
+data = bsize=4096 blocks=24903680, imaxpct=25
+= sunit=0 swidth=0 blks
+naming =version 2 bsize=4096 ascii-ci=0, ftype=1
+log =internal log bsize=4096 blocks=16384, version=2
+= sectsz=512 sunit=0 blks, lazy-count=1
+realtime =none extsz=4096 blocks=0, rtextents=0
+Discarding blocks...Done.
+
+hana-8:~ # mkfs.xfs /dev/sdc
+meta-data=/dev/sdc isize=512 agcount=4, agsize=6225920 blks
+= sectsz=512 attr=2, projid32bit=1
+= crc=1 finobt=1, sparse=1, rmapbt=1
+= reflink=1 bigtime=1 inobtcount=0 nrext64=0
+data = bsize=4096 blocks=24903680, imaxpct=25
+= sunit=0 swidth=0 blks
+naming =version 2 bsize=4096 ascii-ci=0, ftype=1
+log =internal log bsize=4096 blocks=16384, version=2
+= sectsz=512 sunit=0 blks, lazy-count=1
+realtime =none extsz=4096 blocks=0, rtextents=0
+Discarding blocks...Done.
+
+hana-8:~ # mkfs.xfs /dev/sdd
+meta-data=/dev/sdd isize=512 agcount=4, agsize=6225920 blks
+= sectsz=512 attr=2, projid32bit=1
+= crc=1 finobt=1, sparse=1, rmapbt=1
+= reflink=1 bigtime=1 inobtcount=0 nrext64=0
+data = bsize=4096 blocks=24903680, imaxpct=25
+= sunit=0 swidth=0 blks
+naming =version 2 bsize=4096 ascii-ci=0, ftype=1
+log =internal log bsize=4096 blocks=16384, version=2
+= sectsz=512 sunit=0 blks, lazy-count=1
+realtime =none extsz=4096 blocks=0, rtextents=0
+Discarding blocks...Done.
+
+hana-8:~ #
+....
+
+
+=== Criação de pontos de montagem
+
+....
+hana-8:/ # mkdir -p /hana/data/VFS/mnt00001
+hana-8:/ # mkdir -p /hana/log/VFS/mnt00001
+hana-8:/ # mkdir -p /hana/shared
+hana-8:/ # chmod –R 777 /hana/log/SMA
+hana-8:/ # chmod –R 777 /hana/data/SMA
+hana-8:/ # chmod -R 777 /hana/shared
+....
+
+
+=== Configuração do /etc/fstab
+
+....
+hana-8:/ # cat /etc/fstab
+
+/dev/system/root / btrfs defaults 0 0
+/dev/system/root /var btrfs subvol=/@/var 0 0
+/dev/system/root /usr/local btrfs subvol=/@/usr/local 0 0
+/dev/system/root /tmp btrfs subvol=/@/tmp 0 0
+/dev/system/root /srv btrfs subvol=/@/srv 0 0
+/dev/system/root /root btrfs subvol=/@/root 0 0
+/dev/system/root /opt btrfs subvol=/@/opt 0 0
+/dev/system/root /home btrfs subvol=/@/home 0 0
+/dev/system/root /boot/grub2/x86++_++64-efi btrfs subvol=/@/boot/grub2/x86++_++64-efi 0 0
+/dev/system/root /boot/grub2/i386-pc btrfs subvol=/@/boot/grub2/i386-pc 0 0
+/dev/system/swap swap swap defaults 0 0
+/dev/system/root /.snapshots btrfs subvol=/@/.snapshots 0 0
+UUID=FB79-24DC /boot/efi vfat utf8 0 2
+### SAPCC_share
+192.168.175.86:/sapcc_share /mnt/sapcc-share nfs rw,vers=3,hard,timeo=600,rsize=1048576,wsize=1048576,intr,noatime,nolock 0 0
+/dev/sdb /hana/data/VFS/mnt00001 xfs relatime,inode64 0 0
+/dev/sdc /hana/log/VFS/mnt00001 xfs relatime,inode64 0 0
+/dev/sdd /hana/shared xfs defaults 0 0
+hana-8:/ #
+
+hana-8:/ # df -h
+Filesystem Size Used Avail Use% Mounted on
+/dev/mapper/system-root 60G 4.4G 54G 8% /
+devtmpfs 4.0M 0 4.0M 0% /dev
+tmpfs 49G 0 49G 0% /dev/shm
+efivarfs 256K 57K 195K 23% /sys/firmware/efi/efivars
+tmpfs 13G 18M 13G 1% /run
+tmpfs 1.0M 0 1.0M 0% /run/credentials/systemd-tmpfiles-setup-dev-early.service
+tmpfs 1.0M 0 1.0M 0% /run/credentials/systemd-sysctl.service
+tmpfs 1.0M 0 1.0M 0% /run/credentials/systemd-tmpfiles-setup-dev.service
+tmpfs 1.0M 0 1.0M 0% /run/credentials/systemd-vconsole-setup.service
+/dev/mapper/system-root 60G 4.4G 54G 8% /.snapshots
+/dev/mapper/system-root 60G 4.4G 54G 8% /boot/grub2/i386-pc
+/dev/mapper/system-root 60G 4.4G 54G 8% /boot/grub2/x86++_++64-efi
+/dev/mapper/system-root 60G 4.4G 54G 8% /home
+/dev/mapper/system-root 60G 4.4G 54G 8% /opt
+/dev/mapper/system-root 60G 4.4G 54G 8% /srv
+/dev/mapper/system-root 60G 4.4G 54G 8% /tmp
+/dev/mapper/system-root 60G 4.4G 54G 8% /usr/local
+/dev/mapper/system-root 60G 4.4G 54G 8% /var
+/dev/sda1 253M 5.9M 247M 3% /boot/efi
+/dev/mapper/system-root 60G 4.4G 54G 8% /root
+tmpfs 1.0M 0 1.0M 0% /run/credentials/systemd-tmpfiles-setup.service
+tmpfs 6.3G 72K 6.3G 1% /run/user/464
+tmpfs 1.0M 0 1.0M 0% /run/credentials/getty@tty1.service
+tmpfs 6.3G 52K 6.3G 1% /run/user/0
+192.168.175.86:/sapcc_share 1.4T 840G 586G 59% /mnt/sapcc-share
+/dev/sdb 95G 1.9G 94G 2% /hana/data/VFS/mnt00001
+/dev/sdc 95G 1.9G 94G 2% /hana/log/VFS/mnt00001
+/dev/sdd 95G 1.9G 94G 2% /hana/shared
+
+hana-8:/ #
+....
+
+
+== INSTALAÇÃO HANA
+
+A instalação HANA agora pode ser executada.
+
+
+NOTE: Com a configuração descrita, o diretório /usr/sap/VFS estará no VMDK do os. Se /usr/sap/VFS deve ser armazenado no VMDK compartilhado, o disco compartilhado HANA pode ser particionado para fornecer outro sistema de arquivos para /usr/sap/VFS.
