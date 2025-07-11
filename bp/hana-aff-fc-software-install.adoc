@@ -37,33 +37,7 @@ Antes de instalar o software SAP HANA em um sistema de vários hosts, as etapas 
 
 . Adicione os WWIDs das partições de dados e log. Os WWIDs devem corresponder aos nomes de alias configurados no `/etc/multipath.conf` arquivo.
 +
-A saída a seguir mostra um exemplo de uma configuração de vários hosts 2-1, na qual o identificador do sistema (SID) é SS3.
-
-+
-....
-stlrx300s8-6:~ # cat /hana/shared/global.ini
-[communication]
-listeninterface = .global
-[persistence]
-basepath_datavolumes = /hana/data/SS3
-basepath_logvolumes = /hana/log/SS3
-[storage]
-ha_provider = hdb_ha.fcClient
-partition_*_*__prtype = 5
-partition_*_data__mountoptions = -o relatime,inode64
-partition_*_log__mountoptions = -o relatime,inode64,nobarrier
-partition_1_data__wwid = hana-SS3_data_mnt00001
-partition_1_log__wwid = hana-SS3_log_mnt00001
-partition_2_data__wwid = hana-SS3_data_mnt00002
-partition_2_log__wwid = hana-SS3_log_mnt00002
-[system_information]
-usage = custom
-[trace]
-ha_fcclient = info
-stlrx300s8-6:~ #
-....
-+
-Se o LVM Linux for usado, a configuração necessária será diferente. O exemplo a seguir mostra uma configuração de vários hosts 2-1 com SID-FC5.
+A saída a seguir mostra um exemplo de uma configuração de múltiplos hosts 2+1 usando LVM com SID=FC5.
 
 +
 ....
@@ -83,8 +57,10 @@ partition_1_log__lvmname = FC5_log_mnt00001-vol
 partition_2_data__lvmname = FC5_data_mnt00002-vol
 partition_2_log__lvmname = FC5_log_mnt00002-vol
 sapcc-hana-tst-03:/hana/shared #
-Using the SAP hdblcm installation tool, start the installation by running the following command at one of the worker hosts. Use the `addhosts` option to add the second worker (sapcc-hana-tst-06) and the standby host (sapcc-hana-tst-07).
 ....
++
+Usando a ferramenta de instalação hdblcm do SAP, inicie a instalação executando o seguinte comando em um dos hosts de trabalho. Use a `addhosts` opção para adicionar o segundo trabalhador (sapcc-HANA-tst-06) e o host de reserva (sapcc-HANA-tst-07).
+
 +
 
 NOTE: O diretório onde o arquivo preparado `global.ini` é armazenado é incluído com a `storage_cfg` opção CLI (`--storage_cfg=/hana/shared`).

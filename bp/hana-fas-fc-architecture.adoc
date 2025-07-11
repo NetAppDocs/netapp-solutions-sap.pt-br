@@ -94,4 +94,4 @@ A replicação síncrona oferece o modo StrictSync. Se a gravação no storage s
 
 A figura a seguir mostra uma visão geral de alto nível da solução. O cluster de storage em cada local fornece alta disponibilidade local e é usado para workloads de produção. Os dados em cada local são replicados em sincronia para o outro local e estão disponíveis em caso de failover de desastres.
 
-image:saphana_fas_fc_image7.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+image:saphana_fas_image8.png["IP do NetApp MetroCluster"]

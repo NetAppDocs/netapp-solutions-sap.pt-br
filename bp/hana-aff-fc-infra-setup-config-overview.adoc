@@ -16,15 +16,10 @@ summary:
 [role="lead"]
 As seções a seguir fornecem diretrizes de configuração e configuração da infraestrutura do SAP HANA e descrevem todas as etapas necessárias para configurar um sistema SAP HANA. Nestas seções, são usadas as seguintes configurações de exemplo:
 
-* Sistema HANA com SID SS3
+* Sistema HANA com SID FC5
 +
-** SAP HANA de um e vários hosts
+** Host único e múltiplo SAP HANA usando gerenciador de volume lógico Linux (LVM)
 ** SAP HANA único host usando várias partições do SAP HANA
-
-
-* Sistema HANA com SID FC5 usando o gerenciador de volume lógico Linux (LVM)
-+
-** SAP HANA de um e vários hosts
 
 
 

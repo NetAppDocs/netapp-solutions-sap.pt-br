@@ -46,7 +46,7 @@ Como todos os dados para instâncias do SAP HANA, incluindo dados essenciais à 
 
 A figura a seguir fornece uma visão geral da rede.
 
-image:saphana-fas-nfs_image11a.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+image:saphana-fas-nfs_image11b.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
 
 Cada nó do SAP HANA usa um grupo de portas dedicado no switch distribuído VMware. Esse grupo de portas permite uma qualidade de serviço (QoS) aprimorada e atribuição dedicada de placas de interface de rede física (NICs) nos hosts ESX. Para usar placas de rede físicas dedicadas, preservando os recursos de HA se houver uma falha de NIC, a NIC física dedicada é configurada como um uplink ativo. As placas de rede adicionais são configuradas como uplinks de reserva nas configurações de agrupamento e failover do grupo de portas SAP HANA. Além disso, os quadros jumbo (MTU 9.000) devem ser ativados de ponta a ponta em switches físicos e virtuais. Além disso, desative o controle de fluxo em todas as portas ethernet usadas para tráfego de armazenamento em servidores, switches e sistemas de armazenamento. A figura a seguir mostra um exemplo de tal configuração.
 

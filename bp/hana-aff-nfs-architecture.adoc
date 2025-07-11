@@ -87,7 +87,7 @@ Os servidores nos locais de DR podem ser usados como sistemas de desenvolvimento
 
 Ambos os métodos de replicação permitem que você execute testes de fluxo de trabalho de DR sem influenciar o RPO e o rto. Os volumes do FlexClone são criados no storage e são anexados aos servidores de teste de DR.
 
-image:saphana_aff_nfs_image7.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+image:saphana_aff_nfs_image7b.png["NetApp SnapMirror"]
 
 A replicação síncrona oferece o modo StrictSync. Se a gravação no storage secundário não for concluída por qualquer motivo, a e/S da aplicação falhará, garantindo assim que os sistemas de storage primário e secundário sejam idênticos. A e/S da aplicação para o primário é retomada somente após a relação SnapMirror retornar ao status InSync. Se o storage primário falhar, a e/S da aplicação poderá ser retomada no storage secundário após o failover sem perda de dados. No modo StrictSync, o RPO é sempre zero.
 
@@ -97,4 +97,4 @@ A replicação síncrona oferece o modo StrictSync. Se a gravação no storage s
 
 A figura a seguir mostra uma visão geral de alto nível da solução. O cluster de storage em cada local fornece alta disponibilidade local e é usado para o workload de produção. Os dados de cada local são replicados em sincronia para o outro local e estão disponíveis em caso de failover de desastres.
 
-image:saphana_aff_nfs_image8.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+image:saphana_aff_image7a.png["IP do NetApp MetroCluster"]
