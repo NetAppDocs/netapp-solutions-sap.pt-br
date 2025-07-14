@@ -1,8 +1,8 @@
 ---
 sidebar: sidebar 
-permalink: bp/hana-aff-fc-storage-controller-setup_single_host.html 
-keywords: storage efficiency, netapp volume encryption, quality of service, qos, fabricpool, Disk shelf, sas, fcp port sets, linux lvm, 
-summary: Esta seção descreve a configuração do sistema de storage NetApp. Você deve concluir a instalação e configuração primária de acordo com os guias de configuração e configuração do Data ONTAP correspondentes. 
+permalink: bp/hana-fas-fc-storage-controller-setup_single_host.html 
+keywords: storage, controller, setup, storage, efficiency volume, encryption, quality, configure, disk, connection, aggregate 
+summary: Esta seção descreve a configuração do sistema de storage NetApp. Você deve concluir a instalação e configuração primária de acordo com os guias de configuração e configuração do ONTAP correspondentes. 
 ---
 = Host único
 :allow-uri-read: 
@@ -22,9 +22,9 @@ Esta seção descreve a configuração do sistema de armazenamento NetApp espec�
 A figura a seguir mostra a configuração de volume de quatro sistemas SAP HANA de um único host. Os volumes de dados e log de cada sistema SAP HANA são distribuídos a diferentes controladores de storage. Por exemplo, o volume `SID1_data_mnt00001` é configurado no controlador A e o volume `SID1_log_mnt00001` é configurado no controlador B. em cada volume, um único LUN é configurado.
 
 
-NOTE: Se apenas um controlador de storage de um par de HA for usado nos sistemas SAP HANA, os volumes de dados e os volumes de log também poderão ser armazenados na mesma controladora de storage.
+NOTE: Se apenas uma controladora de storage de um par de alta disponibilidade (HA) for usada para os sistemas SAP HANA, os volumes de dados e volumes de log também poderão ser armazenados na mesma controladora de storage.
 
-image:saphana_aff_fc_image16a.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+image:saphana_fas_fc_image18.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
 
 Para cada host do SAP HANA, um volume de dados, um volume de log e um volume para `/hana/shared` são configurados. A tabela a seguir mostra um exemplo de configuração com quatro sistemas SAP HANA de host único.
 
@@ -43,10 +43,10 @@ Para cada host do SAP HANA, um volume de dados, um volume de log e um volume par
 
 | Dados, log e volumes compartilhados para o sistema SID4 | Volume de log: SID4_log_mnt00001 | – | Volume compartilhado: SID4_shared | Volume de dados: SID4_data_mnt00001 
 |===
-A tabela a seguir mostra um exemplo da configuração do ponto de montagem para um sistema de host único.
+A tabela seguinte mostra um exemplo da configuração do ponto de montagem para um sistema de host único.
 
 |===
-| LUN | Ponto de montagem no host SAP HANA | Nota 
+| LUN | Ponto de montagem no host HANA | Nota 
 
 
 | SID1_data_mnt00001 | /Hana/data/SID1/mnt00001 | Montado usando a entrada /etc/fstab 
@@ -75,7 +75,7 @@ NOTE: Não é necessário usar o LVM com vários LUNs para cumprir os KPIs do SA
 
 | Dados, log e volumes compartilhados para sistema baseado em LVM | Volume de dados: SID1_data_mnt00001 | Volume compartilhado: SID1_shared Log2 volume: SID1_log2_mnt00001 | Data2 volume: SID1_data2_mnt00001 | Volume de log: SID1_log_mnt00001 
 |===
-No host SAP HANA, grupos de volume e volumes lógicos precisam ser criados e montados, como indicado na tabela a seguir.
+No host do SAP HANA, grupos de volumes e volumes lógicos precisam ser criados e montados. A tabela seguinte lista os pontos de montagem para sistemas de um único host usando LVM.
 
 |===
 | Volume lógico/LUN | Ponto de montagem no host SAP HANA | Nota 
@@ -109,7 +109,13 @@ As opções de volume listadas na tabela a seguir devem ser verificadas e defini
 |===
 
 
-=== Criação de LUNs e mapeamento de LUNs para grupos iniciadores usando a CLI
+=== Criação de LUNs, volumes e mapeamento de LUNs para grupos de iniciadores
+
+Você pode usar o Gerenciador de sistemas do NetApp ONTAP para criar volumes de armazenamento e LUNs e mapeá-los para os grupos de servidores e a CLI do ONTAP. Este guia descreve o uso da CLI.
+
+
+
+=== Criação de LUNs, volumes e mapeamento de LUNs para grupos usando a CLI
 
 Esta seção mostra um exemplo de configuração usando a linha de comando com o ONTAP 9 para um sistema de host único SAP HANA com SID FC5 usando LVM e dois LUNs por grupo de volume LVM:
 

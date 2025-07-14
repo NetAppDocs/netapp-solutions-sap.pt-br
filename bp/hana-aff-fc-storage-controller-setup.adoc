@@ -96,12 +96,12 @@ A visão geral a seguir resume as etapas de configuração de armazenamento nece
 . Crie uma máquina virtual de storage (SVM), conforme descrito em <<Configuração da máquina virtual de armazenamento>>.
 . Crie interfaces lógicas (LIFs), conforme descrito em <<Configuração de interface lógica>>.
 . Crie grupos de iniciadores (igroups) com nomes mundiais (WWNs) de servidores HANA, conforme descrito na seção <<Grupos de iniciadores>> .
-. Crie e configure volumes e LUNs dentro dos agregados conforme descrito na seção link:hana-aff-fc-host-setup_single_host.html["Configuração de host único"] para hosts individuais ou em seção link:hana-aff-fc-host-setup_multiple_hosts.html["Configuração de múltiplos hosts"]
+. Crie e configure volumes e LUNs dentro dos agregados conforme descrito na seção link:hana-aff-fc-storage-controller-setup_single_host.html["Configuração de host único"] para hosts individuais ou em seção link:hana-aff-fc-storage-controller-setup_multiple_hosts.html["Configuração de múltiplos hosts"]
 
 
 
 
-== Conexão do compartimento de disco
+== Conexões de prateleira de disco
 
 
 
@@ -116,7 +116,7 @@ image:saphana_aff_fc_image10.png["Conexão do compartimento de disco DS224C"]
 
 
 
-=== Compartimentos de disco baseados em NVMe(100GbE)
+=== Prateleiras de disco baseadas em NVMe
 
 Cada compartimento de disco NVMe de NS224 GB é conetado a duas portas de 100GbE GbE por controladora, conforme mostrado na figura a seguir. Os discos em cada gaveta devem ser distribuídos igualmente para as duas controladoras do par de HA. O ADPv2 também é usado para o compartimento de disco NS224.
 

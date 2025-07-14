@@ -70,7 +70,7 @@ Para obter mais informações sobre os pré-requisitos e recomendações para si
 
 = SAP HANA usando o VMware vSphere
 
-Existem várias opções para conetar o armazenamento a máquinas virtuais (VMs). O preferido é conectar os volumes de storage ao NFS diretamente do sistema operacional convidado. Esta opção é descrita em link:hana-aff-nfs-introduction.html["SAP HANA em sistemas NetApp AFF com NFS"].
+Existem várias opções para conetar o armazenamento a máquinas virtuais (VMs). O preferido é conectar os volumes de storage ao NFS diretamente do sistema operacional convidado. Esta opção é descrita em link:hana-aff-nfs-introduction.html["SAP HANA em sistemas NetApp AFF com NFS"^].
 
 Também são suportados mapeamentos de dispositivos brutos (RDM), armazenamentos de dados FCP ou armazenamentos de dados VVOL com FCP. Para ambas as opções de armazenamento de dados, apenas um volume de log ou dados do SAP HANA deve ser armazenado no armazenamento de dados para casos de uso produtivos.
 

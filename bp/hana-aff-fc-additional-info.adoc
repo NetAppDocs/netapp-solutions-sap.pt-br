@@ -16,10 +16,10 @@ summary:
 [role="lead"]
 Para saber mais sobre as informações descritas neste documento, consulte os seguintes documentos e/ou sites:
 
-* link:../index.html["Soluções de software SAP HANA"]
-* link:../backup/hana-dr-sr-pdf-link.html["TR-4646: Recuperação de desastres do SAP HANA com replicação de storage"]
-* link:../backup/hana-br-scs-overview.html["TR-4614: Backup e recuperação do SAP HANA com o SnapCenter"]
-* link:../lifecycle/sc-copy-clone-introduction.html["TR-4667: Automatizando as operações de clonagem e cópia do sistema SAP HANA com o SnapCenter"]
+* link:../index.html["Soluções de software SAP HANA"^]
+* link:../backup/hana-dr-sr-pdf-link.html["TR-4646: Recuperação de desastres do SAP HANA com replicação de storage"^]
+* link:../backup/hana-br-scs-overview.html["TR-4614: Backup e recuperação do SAP HANA com o SnapCenter"^]
+* link:../lifecycle/sc-copy-clone-introduction.html["TR-4667: Automatizando as operações de clonagem e cópia do sistema SAP HANA com o SnapCenter"^]
 * Centros de Documentação da NetApp
 +
 https://www.netapp.com/support-and-training/documentation/["https://www.netapp.com/support-and-training/documentation/"^]

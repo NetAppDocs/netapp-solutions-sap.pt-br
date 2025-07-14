@@ -66,14 +66,14 @@ NOTE: O limite também se aplica a leituras. Portanto, use LUNs suficientes para
 
 A visão geral a seguir resume as etapas de configuração de armazenamento necessárias. Cada passo é abordado com mais detalhes nas seções subsequentes. Nesta seção, assumimos que o hardware de armazenamento está configurado e que o software ONTAP já está instalado. Além disso, a conexão das portas de storage FCP à malha SAN já precisa estar em vigor.
 
-. Verifique a configuração correta do compartimento de disco, conforme descrito em <<Compartimentos de disco baseados em NVMe(100GbE)>>.
+. Verifique a configuração correta do compartimento de disco, conforme descrito em <<Prateleiras de disco baseadas em NVMe>>.
 . Crie grupos de iniciadores (igroups) com nomes mundiais (WWNs) de servidores HANA, conforme descrito na seção link:saphana-asa-fc-storage-controller-setup.html#initiator-groups <<Grupos de iniciadores>> .
 . Crie LUNs e mapeie-os para os servidores descritos na seção link:hana-asa-fc-storage-controller-setup_single_host.html["Configuração de LUN para sistemas de host único SAP HANA"] e link:hana-asa-fc-storage-controller-setup_multiple_hosts.html["Configuração de LUN para sistemas SAP HANA de múltiplos hosts"]
 
 
 
 
-=== Compartimentos de disco baseados em NVMe(100GbE)
+=== Prateleiras de disco baseadas em NVMe
 
 Cada compartimento de disco NVMe de NS224 GB é conetado a duas portas de 100GbE GbE por controladora, conforme mostrado na figura a seguir. Os discos são distribuídos automaticamente para ambos os controladores do par HA.
 
