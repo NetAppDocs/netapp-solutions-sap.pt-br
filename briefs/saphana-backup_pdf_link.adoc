@@ -1,0 +1,28 @@
+---
+sidebar: sidebar 
+permalink: briefs/saphana-backup_pdf_link.html 
+keywords: sb-3965, sap, SAP HANA, Backup & Recovery 
+summary: Este documento se concentra em Backup e Recuperação para SAP HANA. 
+---
+= SB-3965: Backup e recuperação para SAP HANA
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+
+
+== O desafio
+
+Com as operações de backup e restauração do SAP HANA, sua organização enfrenta os seguintes desafios: • Longas operações de backup com degradação de desempenho em sistemas SAP de produção • Tempo de inatividade inaceitável do sistema devido a longas operações de restauração e recuperação • Janelas de backup reduzidas devido à criticidade dos aplicativos • A necessidade de uma solução flexível para mitigar a corrupção lógica
+
+
+
+== A Solução
+
+Com as soluções de armazenamento NetApp® que executam o software de gerenciamento de dados NetApp ONTAP®, em combinação com o software de proteção de dados NetApp SnapCenter®, você pode enfrentar todos esses desafios.  E com a tecnologia NetApp Snapshot™ incluída no software ONTAP , você pode criar backups ou executar operações de restauração de conjuntos de dados de qualquer tamanho em questão de segundos.  O SAP HANA oferece suporte ao uso de cópias de snapshot baseadas em armazenamento como uma operação de backup válida.
+
+link:https://www.netapp.com/pdf.html?item=/media/6997-sb-3965pdf.pdf["https://www.netapp.com/pdf.html?item=/media/6997-sb-3965pdf.pdf"]

@@ -17,6 +17,33 @@ Este capítulo descreve a configuração de um sistema de múltiplos hosts SAP H
 
 
 
+== Configuração de LUN para sistemas SAP HANA de múltiplos hosts
+
+No host SAP HANA, grupos de volume e volumes lógicos precisam ser criados e montados, como indicado na tabela a seguir.
+
+|===
+| Volume lógico (LV) ou volume | Ponto de montagem no host SAP HANA | Nota 
+
+
+| LV: FC5_data_mnt00001-vol | /Hana/data/FC5/mnt00001 | Montado usando o conetor de armazenamento 
+
+
+| LV: FC5_log_mnt00001-vol | /Hana/log/FC5/mnt00001 | Montado usando o conetor de armazenamento 
+
+
+| LV: FC5_data_mnt00002-vol | /Hana/data/FC5/mnt00002 | Montado usando o conetor de armazenamento 
+
+
+| LV: FC5_log_mnt00002-vol | /Hana/log/FC5/mnt00002 | Montado usando o conetor de armazenamento 
+
+
+| Volume: FC5_compartilhado | /hana/compartilhado | Montado em todos os hosts usando entrada NFS e /etc/fstab 
+|===
+
+NOTE: Com a configuração descrita, o `/usr/sap/FC5` diretório no qual o diretório inicial padrão do usuário FC5adm é armazenado está no disco local de cada host HANA.  Em uma configuração de recuperação de desastres com replicação baseada em disco, a NetApp recomenda a criação de quatro subdiretórios adicionais no `FC5_shared` volume para o `/usr/sap/FC5` sistema de arquivos para que cada host de banco de dados tenha todos os seus sistemas de arquivos no armazenamento central.
+
+
+
 === Crie grupos de volumes LVM e volumes lógicos
 
 . Inicialize todos os LUNs como um volume físico.

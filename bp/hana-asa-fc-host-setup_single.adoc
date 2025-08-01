@@ -17,21 +17,42 @@ Este capítulo descreve a configuração de um host único SAP HANA.
 
 
 
+== Configuração de LUN para sistemas de host único SAP HANA
+
+O Linux LVM está sendo usado para aumentar o desempenho e abordar limitações de tamanho de LUN. No host SAP HANA, grupos de volume e volumes lógicos precisam ser criados e montados, como indicado na tabela a seguir.
+
+|===
+| Volume lógico/LUN | Ponto de montagem no host SAP HANA | Nota 
+
+
+| LV: FC5_data_mnt00001-vol | /Hana/data/FC5/mnt00001 | Montado usando a entrada /etc/fstab 
+
+
+| LV: FC5_log_mnt00001-vol | /Hana/log/FC5/mnt00001 | Montado usando a entrada /etc/fstab 
+
+
+| LUN: FC5_shared | /Hana/shared/FC5 | Montado usando a entrada /etc/fstab 
+|===
+
+NOTE: Com a configuração descrita, o `/usr/sap/FC5` diretório no qual o diretório home padrão do usuário FC5adm está armazenado, está no disco local. Em uma configuração de recuperação de desastres com replicação baseada em disco, a NetApp recomenda a criação de um LUN adicional para o  `/usr/sap/FC5` diretório para que todos os sistemas de arquivos fiquem no armazenamento central.
+
+
+
 === Crie grupos de volumes LVM e volumes lógicos
 
 . Inicialize todos os LUNs como um volume físico.
 +
 ....
-pvcreate /dev/mapper/hana-FC5_data_mnt00001
-pvcreate /dev/mapper/hana-FC5_data2_mnt00001
-pvcreate /dev/mapper/hana-FC5_log_mnt00001
-pvcreate /dev/mapper/hana-FC5_log2_mnt00001
+pvcreate /dev/mapper/svm1-FC5_data_mnt00001_1
+pvcreate /dev/mapper/svm1-FC5_data_mnt00001_2
+pvcreate /dev/mapper/svm1-FC5_log_mnt00001_1
+pvcreate /dev/mapper/svm1-FC5_log_mnt00001_2
 ....
 . Crie os grupos de volume para cada partição de dados e log.
 +
 ....
-vgcreate FC5_data_mnt00001 /dev/mapper/hana-FC5_data_mnt00001 /dev/mapper/hana-FC5_data2_mnt00001
-vgcreate FC5_log_mnt00001 /dev/mapper/hana-FC5_log_mnt00001 /dev/mapper/hana-FC5_log2_mnt00001
+vgcreate FC5_data_mnt00001 /dev/mapper/svm1-FC5_data_mnt00001_1 /dev/mapper/svm1-FC5_data_mnt00001_2
+vgcreate FC5_log_mnt00001 /dev/mapper/svm1-FC5_log_mnt00001_1 /dev/mapper/svm1-FC5_log_mnt00001_2
 ....
 . Crie um volume lógico para cada partição de dados e log. Use um tamanho de faixa que seja igual ao número de LUNs usados por grupo de volume (neste exemplo, é dois) e um tamanho de faixa de 256K para dados e 64k para log. O SAP suporta apenas um volume lógico por grupo de volumes.
 +

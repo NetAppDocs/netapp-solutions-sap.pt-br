@@ -67,27 +67,13 @@ NOTE: Com a configuração descrita, o `/usr/sap/SID1` diretório no qual o dire
 O LVM Linux pode ser usado para aumentar o desempenho e para lidar com as limitações de tamanho de LUN. Os diferentes LUNs de um grupo de volumes LVM devem ser armazenados em um agregado diferente e em um controlador diferente. A tabela a seguir mostra um exemplo para dois LUNs por grupo de volume.
 
 
-NOTE: Não é necessário usar o LVM com vários LUNs para cumprir os KPIs do SAP HANA. Uma única configuração de LUN cumpre os KPIs necessários.
+NOTE: Não é necessário usar o LVM com vários LUNs para atender aos KPIs do SAP HANA, mas é recomendável
 
 |===
 | Finalidade | Agregar 1 no controlador A | Agregar 2 no controlador A | Agregado 1 no controlador B | Agregado 2 no controlador B 
 
 
 | Dados, log e volumes compartilhados para sistema baseado em LVM | Volume de dados: SID1_data_mnt00001 | Volume compartilhado: SID1_shared Log2 volume: SID1_log2_mnt00001 | Data2 volume: SID1_data2_mnt00001 | Volume de log: SID1_log_mnt00001 
-|===
-No host do SAP HANA, grupos de volumes e volumes lógicos precisam ser criados e montados. A tabela seguinte lista os pontos de montagem para sistemas de um único host usando LVM.
-
-|===
-| Volume lógico/LUN | Ponto de montagem no host SAP HANA | Nota 
-
-
-| LV: SID1_data_mnt0000-vol | /Hana/data/SID1/mnt00001 | Montado usando a entrada /etc/fstab 
-
-
-| LV: SID1_log_mnt00001-vol | /Hana/log/SID1/mnt00001 | Montado usando a entrada /etc/fstab 
-
-
-| LUN: SID1_shared | /Hana/shared/SID1 | Montado usando a entrada /etc/fstab 
 |===
 
 NOTE: Com a configuração descrita, o `/usr/sap/SID1` diretório no qual o diretório home padrão do usuário SID1adm está armazenado, está no disco local. Em uma configuração de recuperação de desastres com replicação baseada em disco, a NetApp recomenda a criação de um LUN adicional dentro `SID1_shared` do volume para `/usr/sap/SID1` o diretório, para que todos os sistemas de arquivos estejam no storage central.
