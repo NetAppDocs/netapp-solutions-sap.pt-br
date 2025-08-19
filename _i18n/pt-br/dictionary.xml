@@ -2697,9 +2697,7 @@
   <block id="912023f4eba0bf223e908e20d22ff92f" category="paragraph">As seções a seguir fornecem diretrizes de configuração e configuração da infraestrutura do SAP HANA e descrevem todas as etapas necessárias para configurar um sistema SAP HANA. Nestas seções, são usadas as seguintes configurações de exemplo:</block>
   <block id="e7f4f805e4b2edf4e5d40f8db1e51fd5" category="list-text">SAP HANA de um e vários hosts</block>
   <block id="0bad0fb3efdfa0349f059e6510652363" category="list-text">SAP HANA único host usando várias partições do SAP HANA</block>
-  <block id="fcb7778cf38a196128c87d1b6e20281e" category="paragraph">As famílias de produtos NetApp AFF A-Series e AFF C-Series foram certificadas para uso com SAP HANA em projetos de integração de data center (TDI) personalizados.</block>
   <block id="af01ac16ca42b9b924b834a3199131e9" category="paragraph">Esta certificação é válida para os seguintes modelos:</block>
-  <block id="ba7dc8a883957fda819c429f468dc4d0" category="admonition">O NetApp AFF e o ASA C-Series exigem o NetApp ONTAP 9.13,1 ou posterior</block>
   <block id="130c9ce9d2909449cb229a98c66f9d29" category="inline-link">Diretório de hardware SAP HANA certificado e compatível</block>
   <block id="97bfb54320c9268725cfbb374a5168fb" category="paragraph">Para obter uma lista completa de soluções de storage certificadas pela NetApp para SAP HANA, consulte<block ref="a3976abaebe3520fd66c465c4d7747d7" category="inline-link-rx"></block>.</block>
   <block id="171ad4663cdfb492651e0357292fbe82" category="paragraph">Este documento descreve as configurações do AFF que usam o protocolo Fibre Channel (FCP).</block>
@@ -2895,7 +2893,6 @@
   <block id="57011fe1859f006c6ec7d602edb7a5a4" category="paragraph">A partir do SAP HANA 2,0 SPS5, você pode usar o<block ref="424ce98c5afd8a7930522d8ced86cd2e" prefix=" " category="inline-code"></block> script para definir os parâmetros corretos:</block>
   <block id="1061c8a586da3d6a249f18df930dc33a" category="paragraph">Este documento discute a configuração e configuração da infraestrutura para sistemas NetApp AFF e NFS.</block>
   <block id="a56f5f8ccd94f38be4e8a0f1faf81823" category="doc">SAP HANA em sistemas NetApp AFF com NFS - Guia de configuração</block>
-  <block id="326f77b6d7cda2b57e0f8e89a8f89959" category="admonition">O NetApp AFF Série C requer o NetApp ONTAP 9.13,1 ou posterior</block>
   <block id="152277675a8ef46c12f1dc91f2f53ede" category="paragraph">Pode encontrar uma lista completa de soluções de storage certificadas da NetApp para SAP HANA em<block ref="a3976abaebe3520fd66c465c4d7747d7" category="inline-link-rx"></block>.</block>
   <block id="18cab9085e2115741cf08f1964299a5a" category="paragraph">Este documento descreve os requisitos de configuração do ONTAP para o protocolo NFS versão 3 (NFSv3) ou o protocolo NFS versão 4 (NFSv4,1).</block>
   <block id="793f62e70c31f71a93161db091bea2c0" category="paragraph">Os guias de configuração de sistemas NetApp AFF que usam FCP e sistemas FAS que usam NFS ou FCP podem ser encontrados nos seguintes links:</block>
@@ -4282,9 +4279,6 @@
   <block id="9adaadfddff33c2daa546229f2809747" category="list-text">Usando a ferramenta de instalação SAP<block ref="b0aa3e7cad7b6222087aedbd4c799832" prefix=" " category="inline-code"></block>, inicie a instalação executando o seguinte comando em um dos hosts de trabalho. Use a<block ref="9676c5ff8ed94e9d3ceba55f16dde62f" prefix=" " category="inline-code"></block> opção para adicionar o segundo trabalhador <block ref="d6075976fde6718b25d21e4894d5d07d" prefix="(" category="inline-code"></block>) e o host de <block ref="7e4282317c0dcc7ce1f24f047b09f466" prefix="(" category="inline-code"></block>reserva ).</block>
   <block id="dc6dd758c7cbed933fdee36ba03835f9" category="admonition">O diretório onde o arquivo preparado<block ref="1611b9881f1a590d33bbbcfdd9c55ca7" prefix=" " category="inline-code"></block> é armazenado é incluído com a<block ref="09c9689230344c41364f0fa22da928c6" prefix=" " category="inline-code"></block> opção CLI <block ref="1b723e0f23eac7863dadd5b0b02436e4" prefix="(" category="inline-code"></block>).</block>
   <block id="b5b2eafc66ebc94cfb50a26c15cf1f52" category="paragraph">Usando a ferramenta de instalação SAP<block ref="e57381f2a2aa941f8d88ba956c77d978" prefix=" " category="inline-code"></block>, inicie a instalação executando o seguinte comando em um dos hosts de trabalho. Use a<block ref="9676c5ff8ed94e9d3ceba55f16dde62f" prefix=" " category="inline-code"></block> opção para adicionar o segundo trabalhador (sapcc-HANA-tst-06) e o host de reserva (sapcc-HANA-tst-07). O diretório onde o arquivo foi preparado<block ref="1611b9881f1a590d33bbbcfdd9c55ca7" prefix=" " category="inline-code"></block> foi armazenado é incluído com a<block ref="09c9689230344c41364f0fa22da928c6" prefix=" " category="inline-code"></block> opção CLI <block ref="1b723e0f23eac7863dadd5b0b02436e4" prefix="(" category="inline-code"></block>). Dependendo da versão do sistema operacional que está sendo usada, talvez seja necessário instalar o phyton 2,7 antes de instalar o banco de dados SAP HANA.</block>
-  <block id="1a808aae97e904d2d0d8b853c60fa475" category="list-text">AFF A150, AFF A20, AFF A250, AFF A30, AFF A400, AFF A50, AFF A70, AFF A1K, AFF A90, AFF A900, AFF A800</block>
-  <block id="19fe8eb256f35b3d5110d29e652ce432" category="list-text">AFF C250, AFF C30, AFF C400, AFF C60, AFF C800, AFF C80</block>
-  <block id="968cad2bf5c711dad5ccd0efa3e1ff9f" category="list-text">AFF A150, AFF A20, AFF A250, AFF A30, AFF A400, AFF A50, AFF A70, AFF A1K, AFF A900, AFF A90, AFF A800</block>
   <block id="54652d040ebb810c360684ca8e231a52" category="paragraph">Armazenamentos de dados NFS ou armazenamentos de dados VVOL com NFS também são compatíveis. Para ambas as opções, apenas um volume de log ou dados do SAP HANA deve ser armazenado no armazenamento de dados para casos de uso de produção.</block>
   <block id="7d631f41ea82e4581ac749b6874d885a" category="paragraph">Também são suportados mapeamentos de dispositivos brutos (RDM), armazenamentos de dados FCP ou armazenamentos de dados VVOL com FCP. Para ambas as opções de armazenamento de dados, apenas um volume de log ou dados do SAP HANA deve ser armazenado no armazenamento de dados para casos de uso produtivos.</block>
   <block id="efd1d0d586a27578c98f10496d441cd4" category="paragraph">Armazenamentos de dados NFS e armazenamentos de dados VVOL com NFS também são compatíveis. Para ambas as opções, apenas um volume de log ou dados do SAP HANA deve ser armazenado no armazenamento de dados para casos de uso de produção.</block>
@@ -5388,8 +5382,6 @@
   <block id="164fe74cfbca9ef543331e42b891cf2c" category="inline-image-macro">NetApp MetroCluster</block>
   <block id="e0688cb7d6291c05b4b81e03674d396f" category="summary">A família de produtos NetApp AFF é certificada para uso com SAP HANA em projetos TDI. Este guia fornece as melhores práticas para SAP HANA nesta plataforma.</block>
   <block id="43af0fa315980d56444cafe5aa7da0d8" category="paragraph">A família de produtos NetApp AFF é certificada para uso com SAP HANA em projetos TDI. Este guia fornece as melhores práticas para SAP HANA nesta plataforma para FCP.</block>
-  <block id="f24901db79bd7adbcfdc97deb6526be7" category="list-text">ASA A250, ASA A400, ASA A800, ASA A900</block>
-  <block id="7165d8e624155bf7a4889b98927f605c" category="list-text">ASA C250, ASA C400, ASA C800</block>
   <block id="22b98f7a97d9cee874821e4b572b6c5d" category="inline-link-macro">SAP HANA em sistemas NetApp ASA com FCP</block>
   <block id="8a3ac33050df8d373b59758f241b1e68" category="list-text"><block ref="8a3ac33050df8d373b59758f241b1e68" category="inline-link-macro-rx"></block></block>
   <block id="7f07617f785b58f6b368eb03e7188fdd" category="paragraph"><block ref="7f07617f785b58f6b368eb03e7188fdd" category="inline-image-macro-rx" type="image"></block></block>
@@ -5398,7 +5390,6 @@
   <block id="cd4edf52138d04dee0b63f481803c909" category="paragraph"><block ref="cd4edf52138d04dee0b63f481803c909" category="inline-image-macro-rx" type="image"></block></block>
   <block id="e86ef10a731bbc034f957525a4267b82" category="paragraph"><block ref="e86ef10a731bbc034f957525a4267b82" category="inline-image-macro-rx" type="image"></block></block>
   <block id="7ea917f7bcbac29ff77e06d916b6e4bf" category="summary">A família de produtos do sistema NetApp AFF foi certificada para uso com SAP HANA em projetos de integração de data center (TDI) personalizados. Este guia fornece as melhores práticas para SAP HANA nesta plataforma.</block>
-  <block id="33af92fae250bf5ae7bd6f087c68910d" category="paragraph">As famílias de produtos NetApp AFF A-Series e AFF C-Series foram certificadas para uso com SAP HANA em projetos de integração de data center (TDI) personalizados. Este guia fornece as melhores práticas para SAP HANA nesta plataforma para NFS.</block>
   <block id="8c1992cbbe373136f1e087b51b1fa92a" category="inline-link-macro">SAP HANA em sistemas NetApp AFF com FCP</block>
   <block id="26e279412c39b8d78be1eba7d6340c48" category="list-text"><block ref="26e279412c39b8d78be1eba7d6340c48" category="inline-link-macro-rx"></block></block>
   <block id="c9baa6589eb03e3de8596468ec4d3113" category="inline-image-macro">Processo de dimensionamento de armazenamento SAP HANA</block>
@@ -5793,4 +5784,7 @@
   <block id="7caa0b3fa0fd74ced773a86b62850a8b" category="sidebar">Introdução ao SAP no FlexPod</block>
   <block id="36211f481e2e2626220b1d9e8a3325bb" category="sidebar">Soluções para SAP</block>
   <block id="33871b6190a8d5adbe8b15282054766c" category="sidebar">O que há de novo</block>
+  <block id="11c46485b4b3a1ac8c78c2b4fab3494c" category="paragraph">A família de produtos NetApp AFF/ ASA A-Series foi certificada para uso com SAP HANA em projetos de integração de data center (TDI) personalizados.</block>
+  <block id="570cc63e0195f0a2bf35f6333e8c271b" category="list-text">AFF A20, AFF A30, AFF A50, AFF A70, AFF A90, AFF A1K</block>
+  <block id="650bbb24893f36d6991bb48ee757fff0" category="paragraph">A família de produtos NetApp AFF A-Series foi certificada para uso com SAP HANA em projetos personalizados de integração de data center (TDI).  Este guia fornece as melhores práticas para SAP HANA nesta plataforma para NFS.</block>
 </blocks>
