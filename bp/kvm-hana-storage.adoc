@@ -1,0 +1,17 @@
+---
+sidebar: sidebar 
+permalink: bp/kvm-hana-storage.html 
+keywords: NetApp storage, KVM, SAP HANA, tailored data center integration, NFS, FCP 
+summary: Este guia fornece informações sobre como configurar o SUSE KVM para SAP HANA usando o armazenamento NetApp . 
+---
+= Conectando armazenamento à VM KVM para SAP HANA
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Após a configuração bem-sucedida da máquina virtual, o armazenamento pode ser conectado a partir do próprio dispositivo virtual.  + Para NFS, siga as instruções. https://docs.netapp.com/us-en/netapp-solutions-sap/bp/hana-aff-nfs-introduction.html["SAP HANA em sistemas NetApp AFF com NFS - Guia de configuração"] e para FCP siga o https://docs.netapp.com/us-en/netapp-solutions-sap/bp/hana-aff-fc-introduction.html["SAP HANA em sistemas NetApp AFF com protocolo Fibre Channel"] guia ou o https://docs.netapp.com/us-en/netapp-solutions-sap/bp/hana-asa-fc-introduction.html["SAP HANA em sistemas NetApp ASA com protocolo Fibre Channel"] guia dependendo do produto de armazenamento utilizado.

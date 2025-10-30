@@ -1,0 +1,38 @@
+---
+sidebar: sidebar 
+permalink: bp/kvm-hana-fcn.html 
+keywords: fibre channel,KVM, SAP HANA, tailored data center integration, FCP 
+summary: Este guia fornece informações sobre como configurar o SUSE KVM para SAP HANA usando o armazenamento NetApp . 
+---
+= Configurando uma rede Fibre Channel
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Esta seção fornece informações sobre como configurar o FCP no SUSE KVM para SAP HANA usando armazenamento NetApp .
+
+
+
+== Atribuir portas FCP à VM
+
+Como não existe um recurso semelhante ao SR-IOV para FCP, as portas HBA físicas precisam ser atribuídas à máquina virtual.  É necessário utilizar duas portas físicas fixadas em tecidos diferentes.
+
+
+NOTE: Uma porta física deve ser atribuída a apenas uma máquina virtual.
+
+Para isso, siga os seguintes passos:
+
+. Inicie o _virt-manager._ +image:kvm-hana-image2.png["largura=601, altura=385"]
+. Abra a máquina virtual desejada. + image:kvm-hana-image3.png["largura=601, altura=385"]
+. Pressione “Adicionar hardware”. + image:kvm-hana-image4.png["Virtmanager Adicionar Hardware, largura=601, altura=443"]
+. Selecione a porta HBA desejada na lista de Dispositivos Host PCI e clique em Concluir.  + Neste exemplo 0000.A2:00:0. + image:kvm-hana-image9.png["largura=601, altura=441"]
+. Selecione a porta HBA desejada na lista de dispositivos host PCI pertencentes à segunda malha e clique em Concluir.  Neste exemplo 0000.A2:00:1. + image:kvm-hana-image10.png["largura=601, altura=441"]
+. Em seguida, as portas HBA físicas são atribuídas à máquina virtual e a máquina virtual pode ser iniciada. + image:kvm-hana-image11.png["largura=601, altura=441"]
+
+
+Como as portas físicas já foram encaminhadas para a máquina virtual, nenhuma preparação adicional precisa ser feita.
