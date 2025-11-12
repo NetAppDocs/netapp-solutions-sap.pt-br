@@ -1,10 +1,10 @@
 ---
 sidebar: sidebar 
 permalink: bp/kvm-hana-storage.html 
-keywords: NetApp storage, KVM, SAP HANA, tailored data center integration, NFS, FCP 
-summary: Este guia fornece informações sobre como configurar o SUSE KVM para SAP HANA usando o armazenamento NetApp . 
+keywords: NetApp storage, KVM, SAP HANA, NFS, FCP, ONTAP, storage configuration 
+summary: Configure o armazenamento NetApp para SAP HANA no SUSE KVM usando os protocolos NFS ou FCP.  Configure as conexões de armazenamento entre a máquina virtual e os sistemas NetApp ONTAP para obter o desempenho ideal do banco de dados. 
 ---
-= Conectando armazenamento à VM KVM para SAP HANA
+= Configure o armazenamento NetApp para SAP HANA no SUSE KVM.
 :hardbreaks:
 :allow-uri-read: 
 :nofooter: 
@@ -14,4 +14,41 @@ summary: Este guia fornece informações sobre como configurar o SUSE KVM para S
 
 
 [role="lead"]
-Após a configuração bem-sucedida da máquina virtual, o armazenamento pode ser conectado a partir do próprio dispositivo virtual.  + Para NFS, siga as instruções. https://docs.netapp.com/us-en/netapp-solutions-sap/bp/hana-aff-nfs-introduction.html["SAP HANA em sistemas NetApp AFF com NFS - Guia de configuração"] e para FCP siga o https://docs.netapp.com/us-en/netapp-solutions-sap/bp/hana-aff-fc-introduction.html["SAP HANA em sistemas NetApp AFF com protocolo Fibre Channel"] guia ou o https://docs.netapp.com/us-en/netapp-solutions-sap/bp/hana-asa-fc-introduction.html["SAP HANA em sistemas NetApp ASA com protocolo Fibre Channel"] guia dependendo do produto de armazenamento utilizado.
+Configure o armazenamento NetApp para SAP HANA no SUSE KVM usando os protocolos NFS ou FCP.  Configure as conexões de armazenamento entre a máquina virtual e os sistemas NetApp ONTAP para obter o desempenho ideal do banco de dados.
+
+Após configurar a máquina virtual com interfaces de rede SR-IOV ou portas HBA FCP, configure o acesso ao armazenamento a partir da própria máquina virtual.  Utilize o guia de configuração do NetApp SAP HANA apropriado com base no protocolo de armazenamento escolhido.
+
+
+
+== Configure o armazenamento NFS para o SAP HANA.
+
+Utilize as interfaces de rede SR-IOV criadas anteriormente caso o protocolo NFS seja usado para o armazenamento do SAP HANA.
+
+Siga os passos de configuração detalhados em https://docs.netapp.com/us-en/netapp-solutions-sap/bp/hana-aff-nfs-introduction.html["SAP HANA em sistemas NetApp AFF com NFS - Guia de configuração"] .
+
+Principais considerações de configuração para ambientes KVM:
+
+* Utilize as funções virtuais (VFs) SR-IOV configuradas anteriormente para o tráfego de rede.
+* Configure o agrupamento de redes dentro da máquina virtual para redundância.
+* Garanta a comutação de rede adequada entre a VM e os SVMs de armazenamento NetApp .
+* Configure os controladores de armazenamento e a máquina virtual de acordo com o Guia de Configuração do SAP HANA.
+
+
+
+
+== Configure o armazenamento FCP para SAP HANA.
+
+Utilize as portas HBA físicas atribuídas à VM como dispositivos PCI se o protocolo FCP for usado para o armazenamento do SAP HANA.
+
+Escolha o guia de configuração apropriado com base no seu sistema de armazenamento NetApp :
+
+* Para sistemas NetApp AFF : https://docs.netapp.com/us-en/netapp-solutions-sap/bp/hana-aff-fc-introduction.html["SAP HANA em sistemas NetApp AFF com protocolo Fibre Channel"]
+* Para sistemas NetApp ASA : https://docs.netapp.com/us-en/netapp-solutions-sap/bp/hana-asa-fc-introduction.html["SAP HANA em sistemas NetApp ASA com protocolo Fibre Channel"]
+
+
+Principais considerações de configuração para ambientes KVM:
+
+* Utilize as portas HBA físicas que foram atribuídas à VM via PCI passthrough.
+* Configure o multipathing dentro da VM para redundância entre switches de malha.
+* Configure os controladores de armazenamento e a VM de acordo com o Guia de Configuração do SAP HANA.
+

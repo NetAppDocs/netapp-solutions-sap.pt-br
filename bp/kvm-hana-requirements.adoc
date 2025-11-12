@@ -1,0 +1,59 @@
+---
+sidebar: sidebar 
+permalink: bp/kvm-hana-requirements.html 
+keywords: requirements,KVM, SAP HANA, tailored data center integration, FCP, NFS, prerequisites 
+summary: Analise os requisitos para a implementação do SAP HANA Single-Host no SUSE KVM utilizando armazenamento NetApp com interfaces de rede SR-IOV e protocolos de armazenamento NFS ou FCP. 
+---
+= Requisitos de implantação do SAP HANA no SUSE KVM com armazenamento NetApp
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Analise os requisitos para a implementação do SAP HANA Single-Host no SUSE KVM utilizando armazenamento NetApp com interfaces de rede SR-IOV e protocolos de armazenamento NFS ou FCP.
+
+A implementação requer servidores SAP HANA certificados, sistemas de armazenamento NetApp , adaptadores de rede compatíveis com SR-IOV e o SUSE Linux Enterprise Server para aplicações SAP como host KVM.
+
+
+
+== Requisitos de infraestrutura
+
+Certifique-se de que os seguintes componentes e configurações estejam instalados:
+
+* Servidores SAP HANA e sistemas de armazenamento NetApp certificados.  Consulte o https://www.sap.com/dmc/exp/2014-09-02-hana-hardware/enEN["Diretório de hardware do SAP HANA"^] Para opções disponíveis:
+* SUSE Linux Enterprise Server para aplicações SAP 15 SP5/SP6 como host KVM
+* Sistema de armazenamento NetApp ONTAP com Máquina Virtual de Armazenamento (SVM) configurada para tráfego NFS e/ou FCP.
+* Interfaces lógicas (LIFs) criadas nas redes apropriadas para tráfego NFS e FCP.
+* Adaptadores de rede compatíveis com SR-IOV (por exemplo, série Mellanox ConnectX)
+* Adaptadores HBA Fibre Channel para acesso ao armazenamento FCP
+* Infraestrutura de rede que suporte as VLANs e os segmentos de rede necessários.
+* VM configurada de acordo com o https://documentation.suse.com/sbp/sap-15/pdf/SBP-SLES4SAP-HANAonKVM-SLES15SP5_en.pdf["Melhores práticas da SUSE para SAP HANA em KVM"^]
+
+
+
+
+== Considerações importantes
+
+* O protocolo SR-IOV deve ser utilizado para comunicação de rede SAP HANA e para acesso ao armazenamento usando NFS. Cada função virtual (VF) atribuída a uma VM requer pelo menos 10 Gbit/s de largura de banda.
+* As portas HBA FCP físicas devem ser atribuídas à VM como dispositivos PCI para usar LUNs FCP.  Uma porta física só pode ser atribuída a uma máquina virtual.
+* Sistemas SAP HANA com múltiplos hosts não são suportados nesta configuração.
+
+
+
+
+== Recursos adicionais
+
+* Para obter as informações mais recentes, incluindo a arquitetura de CPU compatível e suas limitações, consulte a Nota SAP. https://me.sap.com/notes/3538596["3538596 - SAP HANA em virtualização SUSE KVM com SLES 15 SP5 - SAP para mim"] .
+* Para obter informações sobre como configurar sistemas de armazenamento ONTAP , consulte o https://docs.netapp.com/us-en/ontap["Documentação do ONTAP 9"] .
+* Para configuração de armazenamento SAP HANA com sistemas NetApp , consulte o https://docs.netapp.com/us-en/netapp-solutions-sap/["Documentação de soluções SAP da NetApp"] .
+
+
+
+
+== O que vem a seguir?
+
+Após analisar os requisitos de implantação,link:kvm-hana-network.html["Configurar interfaces de rede SR-IOV"] .

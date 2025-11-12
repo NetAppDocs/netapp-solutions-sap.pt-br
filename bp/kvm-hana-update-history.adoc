@@ -22,4 +22,7 @@ As seguintes alterações técnicas foram feitas a esta solução desde a sua pu
 
 
 | Outubro de 2025 | Versão inicial 
+
+
+| Novembro de 2025 | Atualização de layout. 
 |===
