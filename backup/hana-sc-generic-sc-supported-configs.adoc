@@ -1,0 +1,343 @@
+---
+sidebar: sidebar 
+permalink: backup/hana-sc-generic-sc-supported-configs.html 
+keywords: SAP HANA, SnapCenter, backup and recovery, Azure NetApp Files, FSx for NetApp ONTAP 
+summary:  
+---
+= Saiba mais sobre as configurações compatíveis com o SnapCenter para SAP HANA.
+:allow-uri-read: 
+
+
+[role="lead"]
+O SnapCenter oferece suporte a uma ampla gama de arquiteturas de sistema SAP HANA e cenários de implantação em plataformas de armazenamento locais e em nuvem. Saiba mais sobre as configurações do SAP HANA suportadas, combinações de plataforma, protocolos de armazenamento e operações de backup e restauração disponíveis para cada ambiente.
+
+
+
+== Configurações SAP HANA suportadas
+
+O SnapCenter é compatível com as seguintes configurações e recursos do HANA:
+
+* Sistemas de host único SAP HANA
+* Sistemas de múltiplos hosts SAP HANA
++
+** Requer uma implantação central de plug-in conforme descrito em link:hana-sc-generic-concepts.html#deployment-options-for-snapcenter-plug-in-for-sap-hana["Opções de implantação para o plug-in SnapCenter para SAP HANA"].
+
+
+* Sistemas SAP HANA MDC
++
+** com um único inquilino ou com vários inquilinos
+
+
+* Sistemas SAP HANA com múltiplas partições
+* Replicação do sistema SAP HANA
+* Criptografia SAP HANA (dados, logs, backups)
+
+
+
+
+== Configurações de plataforma e infraestrutura suportadas
+
+O SnapCenter suporta as seguintes combinações de plataformas de host, sistemas de arquivos e plataformas de armazenamento.
+
+[cols="24%,47%,29%"]
+|===
+| Plataforma de hospedagem | Conexão de armazenamento e sistema de arquivos SAP HANA | Plataforma de armazenamento 
+
+
+| VMware | Montagens NFS no sistema operacional convidado | ONTAP AFF 
+
+
+| VMware | Armazenamento de dados FC com VMFS + VM com XFS com ou sem Linux LVM | ONTAP AFF ou ASA 
+
+
+| KVM | Montagens NFS no sistema operacional convidado | ONTAP AFF 
+
+
+| Servidor bare metal | Montagens NFS | ONTAP AFF 
+
+
+| Servidor bare metal | FC SAN + e XFS com ou sem Linux LVM | ONTAP AFF ou ASA (*) 
+
+
+| Máquina virtual do Azure | Montagens NFS | Azure NetApp Files 
+
+
+| AWS EC2 | Montagens NFS | FSx para ONTAP 
+|===
+(*): Suporte para ASA disponível a partir da versão 6.2 do SnapCenter
+
+
+NOTE: Os plug-ins HANA e Linux estão disponíveis apenas para a plataforma de CPU Intel. Para Linux em IBM Power, é necessário configurar uma implantação central de plug-in HANA, conforme descrito em link:hana-sc-generic-concepts.html#deployment-options-for-snapcenter-plug-in-for-sap-hana["Opções de implantação para o plug-in SnapCenter para SAP HANA"].
+
+
+
+== Funcionalidades e operações suportadas
+
+
+
+=== Explicação da abreviação
+
+* VBSR: SnapRestore baseado em volume + Um SnapRestore baseado em volume reverte o volume para o estado do Snapshot.
+* SFSR: SnapRestore de Arquivo Único + A SnapRestore de Arquivo Único pode ser usada para restaurar arquivos ou LUNs específicos dentro de um volume.
+
+
+Veja também https://docs.netapp.com/us-en/snapcenter/protect-hana/reference_types_of_restore_performed_for_auto_discovered_sap_hana_databases.html["Tipos de operações de restauração para bancos de dados SAP HANA descobertos automaticamente"]
+
+
+
+=== ONTAP AFF e FSx para ONTAP
+
+
+NOTE: Apenas a coluna 1 (montagens NFS) da tabela abaixo é relevante para o FSx para ONTAP.
+
+[cols="40%,20%,20%,20%"]
+|===
+| Operação | Montagens NFS em hardware dedicado ou em máquinas virtuais com VMware ou KVM. | FC SAN + Metal nu | Armazenamento de dados FC VMware VMFS 
+
+
+| *Operações de backup e restauração de snapshots para o banco de dados HANA* |  |  |  
+
+
+| Backup de instantâneo | Sim | Sim | Sim 
+
+
+| Instantâneo à prova de adulteração | Sim | Sim | Sim 
+
+
+| Restauração completa | VBSR ou SFSR (selecionável) | SFSR de LUN completo | Clonar, montar, copiar 
+
+
+| Restauração de inquilino único | SFSR | Clonar, montar, copiar | Clonar, montar, copiar 
+
+
+| * Operações de backup e restauração do SnapVault para banco de dados HANA* |  |  |  
+
+
+| Replicação SnapVault | Sim | Sim | Sim 
+
+
+| Instantâneo à prova de adulteração | Sim | Sim | Sim 
+
+
+| Restauração completa | Sim | Sim | Clonar, montar, copiar 
+
+
+| Restauração de inquilino único | Sim | Clonar, montar, copiar | Clonar, montar, copiar 
+
+
+| *Operação de recuperação do HANA a partir do destino Snapshot ou SnapVault primário* |  |  |  
+
+
+| Recuperação automatizada MDC para locatário único | Sim | Sim | Sim 
+
+
+| Recuperação automatizada MDC para múltiplos locatários | Não | Não | Não 
+
+
+| *Fazer backup e restaurar volumes que não sejam de dados* |  |  |  
+
+
+| Backup de instantâneo | Sim | Sim | Sim (*) 
+
+
+| Restaurar do Snapshot | VBSR ou SFSR (selecionável) | SFSR de LUN completo | VBSR (*) 
+
+
+| Replicação SnapVault | Sim | Sim | Sim (*) 
+
+
+| Restaurar a partir do destino SnapVault | Sim | Sim | Sim (*) 
+
+
+| *Atualização do Sistema SAP* |  |  |  
+
+
+| A partir do instantâneo primário | Sim | Sim (**) | Sim (**) 
+
+
+| Do destino SnapVault | Sim | Sim (**) | Sim (**) 
+
+
+| *HA e DR* |  |  |  
+
+
+| Suporte a Snapshots e SnapVault do HSR | Sim | Sim | Sim 
+
+
+| Atualizações de replicação do SnapMirror com SC | Sim | Sim | Sim 
+
+
+| Sincronização ativa do SnapMirror | NA | Sim | Sim 
+|===
+(*): Sem integração com VMware - Snapshot de imagem de falha e restauração completa do volume
+
+(**): Soluções alternativas necessárias para versões do SnapCenter anteriores à 6.2
+
+
+
+=== ONTAP ASA
+
+[cols="40%,30%,30%"]
+|===
+| Operação | FC SAN + Bare metal (*) | Armazenamento de dados FC VMware VMFS 
+
+
+| *Operações de backup e restauração de snapshots para o banco de dados HANA* |  |  
+
+
+| Backup de instantâneo | Sim | Sim 
+
+
+| Instantâneo à prova de adulteração | Não | Não 
+
+
+| Restauração completa | SFSR de LUN completo | Clonar, montar, copiar 
+
+
+| Restauração de inquilino único | Clonar, montar, copiar | Clonar, montar, copiar 
+
+
+| * Operações de backup e restauração do SnapVault para banco de dados HANA* |  |  
+
+
+| Replicação SnapVault | Sim | Sim 
+
+
+| Instantâneo à prova de adulteração | Não | Não 
+
+
+| Restauração completa | Sim | Clonar, montar, copiar 
+
+
+| Restauração de inquilino único | Clonar, montar, copiar | Clonar, montar, copiar 
+
+
+| *Operação de recuperação do HANA a partir do destino Snapshot ou SnapVault primário* |  |  
+
+
+| Recuperação automatizada MDC para locatário único | Sim | Sim 
+
+
+| Recuperação automatizada MDC para múltiplos locatários | Não | Não 
+
+
+| *Fazer backup e restaurar volumes que não sejam de dados* |  |  
+
+
+| Backup de instantâneo | Sim (*) | Sim (*) 
+
+
+| Restaurar do Snapshot | SFSR de LUN completo (*) | SFSR de LUN completo (*) 
+
+
+| Replicação SnapVault | Sim (*) | Sim (*) 
+
+
+| Restaurar a partir do destino SnapVault | Sim (*) | Sim (*) 
+
+
+| *Atualização do Sistema SAP* |  |  
+
+
+| A partir do instantâneo primário | Sim (**) | Sim (**) 
+
+
+| Do destino SnapVault | Sim (**) | Sim (**) 
+
+
+| *HA e DR* |  |  
+
+
+| Suporte a Snapshots e SnapVault do HSR | Sim | Sim 
+
+
+| Atualizações de replicação do SnapMirror acionadas pelo SnapCenter | Sim | Sim 
+
+
+| Sincronização ativa do SnapMirror | Sim | Sim 
+|===
+(*): Suporte a partir da versão 6.2 do SnapCenter
+
+(**): Soluções alternativas necessárias para versões do SnapCenter anteriores à 6.2
+
+
+
+=== Azure NetApp Files
+
+[cols="60%,40%"]
+|===
+| Operação | Montagens NFS 
+
+
+| *Operações de backup e restauração de snapshots para o banco de dados HANA* |  
+
+
+| Backup de instantâneo | Sim 
+
+
+| Instantâneo à prova de adulteração | Não 
+
+
+| Restauração completa no local | Reversão de volume ou SFSR (selecionável) 
+
+
+| Restauração de inquilino único | SFSR 
+
+
+| *Operações de backup e restauração ANF para banco de dados HANA* |  
+
+
+| Replicação de backup ANF | Sim 
+
+
+| Instantâneo à prova de adulteração | Não 
+
+
+| Restauração completa no local | Sim 
+
+
+| Restauração de inquilino único | Sim 
+
+
+| *Operação de recuperação do HANA a partir do Snapshot primário ou do backup ANF* |  
+
+
+| Recuperação automatizada MDC para locatário único | Sim 
+
+
+| Recuperação automatizada MDC para múltiplos locatários | Não 
+
+
+| *Fazer backup e restaurar volumes que não sejam de dados* |  
+
+
+| Backup de instantâneo | Sim 
+
+
+| Restaurar do Snapshot | Reversão de volume 
+
+
+| Replicação de backup ANF | Sim 
+
+
+| Restauração completa no local a partir do backup ANF | Não (*) 
+
+
+| *Atualização do Sistema SAP* |  
+
+
+| A partir do instantâneo primário | Sim 
+
+
+| Do backup ANF | Sim 
+
+
+| *HA e DR* |  
+
+
+| Suporte a snapshots HSR e backup ANF | Sim 
+
+
+| Atualização de replicação entre regiões acionada pelo SnapCenter | Não 
+|===
+(*): Na versão atual, a operação de restauração deve ser feita usando o portal do Azure ou a CLI.

@@ -1,0 +1,35 @@
+---
+sidebar: sidebar 
+permalink: backup/hana-sc-generic-sc-config-overview.html 
+keywords: SAP HANA, SnapCenter, backup and recovery, Azure NetApp Files, FSx for NetApp ONTAP 
+summary:  
+---
+= Saiba mais sobre como configurar o SnapCenter para ambientes SAP HANA.
+:allow-uri-read: 
+
+
+[role="lead"]
+Configure o SnapCenter para ambientes SAP HANA usando uma abordagem de duas fases: configuração inicial para recursos compartilhados (credenciais, sistemas de armazenamento e políticas) e configuração específica de recursos para sistemas HANA individuais (implantação de host, descoberta automática e configurações de proteção).
+
+A configuração do SnapCenter para um ambiente SAP HANA com múltiplos sistemas HANA pode ser dividida em duas áreas principais:
+
+* A configuração inicial
++
+** Configurações de credenciais, armazenamento e políticas. + Essas configurações ou recursos são normalmente consumidos por vários sistemas HANA.
+
+
+* Configuração específica de recursos do HANA
++
+** A configuração de host, HANA e proteção de recursos deve ser feita individualmente para cada sistema HANA.
+
+
+
+
+A figura abaixo ilustra os diferentes componentes de configuração e suas dependências.
+
+Todas as etapas de configuração são descritas detalhadamente nos tópicos a seguir.
+
+
+NOTE: As descrições e capturas de tela neste documento são baseadas em sistemas HANA descobertos automaticamente SnapCenter . Etapas de configuração adicionais ou diferentes para recursos configurados manualmente com um host plug-in central são descritas em link:hana-sc-generic-central-plugin.html["Configuração central do host do plug-in"].
+
+image:hana-sc-generic-image-016.png["largura=601, altura=319"]
