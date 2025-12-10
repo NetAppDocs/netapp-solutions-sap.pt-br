@@ -167,8 +167,8 @@ hana-1:/install #
 hana-1:/ # mkdir -p /hana/data/SMA/mnt00001
 hana-1:/ # mkdir -p /hana/log/SMA/mnt00001
 hana-1:/ # mkdir -p /hana/shared
-hana-1:/ # chmod –R 777 /hana/log/SMA
-hana-1:/ # chmod –R 777 /hana/data/SMA
+hana-1:/ # chmod -R 777 /hana/log/SMA
+hana-1:/ # chmod -R 777 /hana/data/SMA
 hana-1:/ # chmod -R 777 /hana/shared
 ....
 
@@ -234,7 +234,7 @@ NOTE: Com a configuração descrita, o diretório /usr/sap/SMA estará no VMDK d
 
 É necessário criar um arquivo de usuário para um usuário de banco de dados do sistema, que deve ser usado pelo SnapCenter. O número da instância DO HANA deve ser definido de acordo com a porta de comunicação. Em nossa instância de configuração, o número "00" é usado.
 
-Uma descrição mais detalhada pode ser encontrada em link:hana-br-scs-resource-config-hana-database-backups.html#sap-hana-backup-user-and-hdbuserstore-configuration["Configuração específica de recursos do SnapCenter para backups de bancos de dados SAP HANA"]
+Uma descrição mais detalhada pode ser encontrada em link:hana-sc-generic-sc-resource-config.html#sap-hana-backup-user-and-sap-hana-user-store-configuration["Configuração específica de recursos do SnapCenter para backups de bancos de dados SAP HANA"]
 
 ....
 smaadm@hana-1:/usr/sap/SMA/HDB00> hdbuserstore set SMAKEY hana-1:30013 SNAPCENTER <password>

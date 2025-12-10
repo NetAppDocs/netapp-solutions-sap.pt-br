@@ -63,7 +63,7 @@ Foram utilizadas as seguintes versões de software:
 * ONTAP 9.7P7
 
 
-Todos os sistemas SAP HANA devem ser configurados com base no guia de link:../bp/hana-aff-nfs-introduction.html["SAP HANA em sistemas NetApp AFF com NFS"]configuração . O SnapCenter e os recursos do SAP HANA foram configurados com base no guia de práticas recomendadas link:../backup/hana-br-scs-overview.html["Backup e recuperação do SAP HANA com o SnapCenter"].
+Todos os sistemas SAP HANA devem ser configurados de acordo com o guia de configuração. link:../bp/hana-aff-nfs-introduction.html["SAP HANA em sistemas NetApp AFF com NFS"]. O SnapCenter e os recursos do SAP HANA foram configurados com base no guia de melhores práticas. link:../backup/hana-sc-generic-scope.html["Backup e recuperação do SAP HANA com o SnapCenter"].
 
 image:sc-copy-clone-image41.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
 

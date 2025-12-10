@@ -16,7 +16,7 @@ summary:
 [role="lead"]
 Para saber mais sobre as informações descritas neste documento, consulte os seguintes documentos:
 
-* link:hana-br-scs-overview.html["Backup e recuperação do SAP HANA com o SnapCenter"]
+* link:hana-sc-generic-scope.html["Backup e recuperação do SAP HANA com o SnapCenter"]
 * link:../lifecycle/sc-copy-clone-introduction.html["Automatizando as operações de clonagem e cópia do sistema SAP HANA com o SnapCenter"]
 * Recuperação de desastres do SAP HANA com replicação de storage
 +

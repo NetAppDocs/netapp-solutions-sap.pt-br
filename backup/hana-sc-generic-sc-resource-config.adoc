@@ -25,7 +25,7 @@ A configuração de um banco de dados HANA no SnapCenter é feita seguindo os pa
 . A proteção de recursos do HANA deve ser configurada para o novo recurso do HANA adicionado.
 
 
-A configuração inicial do SnapCenter , conforme descrito no tópico anterior. link:hana-sc-generic-initial.html["Configuração inicial do SnapCenter"] Isso deve ser feito primeiro, pois credenciais, sistemas de armazenamento e políticas são necessários durante a configuração de recursos do banco de dados HANA. A figura abaixo resume as etapas e dependências.
+A configuração inicial do SnapCenter , conforme descrito no tópico anterior. link:hana-sc-generic-sc-initial-config.html["Configuração inicial do SnapCenter"] Isso deve ser feito primeiro, pois credenciais, sistemas de armazenamento e políticas são necessários durante a configuração de recursos do banco de dados HANA. A figura abaixo resume as etapas e dependências.
 
 A figura abaixo visualiza os diferentes componentes de configuração e suas dependências.
 

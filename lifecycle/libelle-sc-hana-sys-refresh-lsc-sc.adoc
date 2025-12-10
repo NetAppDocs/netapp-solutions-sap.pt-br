@@ -24,7 +24,7 @@ Nesta seção, a integração entre o LSC e o SnapCenter é descrita usando um b
 * * Uma instalação do SnapCenter com um host de comunicação central.* Um host de comunicação central é instalado com o agente SnapCenter, o plug-in SAP HANA e o cliente de banco de dados HANA que lida com todas as operações relacionadas ao banco de dados necessárias para fazer backup e restaurar um banco de dados SAP HANA para vários sistemas SAP HANA no cenário. Portanto, um host de comunicação central não precisa ter um sistema de banco de dados SAP HANA completo instalado.
 
 
-Para obter mais detalhes sobre esses diferentes agentes da SnapCenter e opções de instalação do plug-in do banco de dados SAP HANA, consulte o relatório técnico link:../backup/hana-br-scs-overview.html["TR-4614: Backup e recuperação do SAP HANA com o SnapCenter"^].
+Para obter mais detalhes sobre os diferentes agentes do SnapCenter e as opções de instalação do plug-in do banco de dados SAP HANA, consulte o relatório técnico. link:../backup/hana-sc-generic-scope.html["Backup e recuperação do SAP HANA com o SnapCenter"^].
 
 As seções a seguir destacam as diferenças entre a integração do LSC com o SnapCenter usando a instalação padrão ou o host de comunicação central. Notavelmente, todas as etapas de configuração que não são destacadas são as mesmas independentemente da opção de instalação e do banco de dados usado.
 
@@ -89,9 +89,8 @@ Recursos de documentação:
 
 * https://docs.netapp.com/us-en/snapcenter/["Centro de Documentação do SnapCenter"^]
 * https://www.netapp.com/pdf.html?item=/media/12403-tr4700.pdf["TR-4700: Plug-in SnapCenter para banco de dados Oracle"^]
-* https://www.netapp.com/pdf.html?item=/media/12405-tr4614pdf.pdf["TR-4614: Backup e recuperação do SAP HANA com o SnapCenter"^]
+* link:../backup/hana-sc-generic-scope.html["Backup e recuperação do SAP HANA com o SnapCenter"^]
 * link:sc-copy-clone-introduction.html["TR-4667: Automatizando as operações de clonagem e cópia do sistema SAP HANA com o SnapCenter"^]
-* https://fieldportal.netapp.com/content/883721["TR-4769 -Diretrizes de dimensionamento e práticas recomendadas da SnapCenter"^]
 * https://library.netapp.com/ecm/ecm_download_file/ECMLP2880726["Guia de referência de cmdlet do SnapCenter 4,6"^]
 
 

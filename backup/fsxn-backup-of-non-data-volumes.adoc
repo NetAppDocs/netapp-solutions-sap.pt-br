@@ -123,7 +123,7 @@ image:amazon-fsx-image69.png["Figura que mostra a caixa de diálogo de entrada/s
 
 . Selecione o escopo e o tipo de restauração.
 +
-O cenário padrão para sistemas de locatário único HANA MDC é usar recurso completo com reversão de volume. Para um sistema HANA MDC com vários locatários, talvez você queira restaurar apenas um único locatário. Para obter mais informações sobre a restauração de locatário único, link:hana-br-scs-restore-recovery.html["Restauração e recuperação (NetApp.com)"^]consulte .
+O cenário padrão para sistemas HANA MDC de locatário único é usar o recurso completo com reversão de volume. Para um sistema HANA MDC com vários tenants, talvez você queira restaurar apenas um único tenant. Para obter mais informações sobre a restauração de locatário único, consulte link:hana-sc-generic-restore.html["Restauração e recuperação (NetApp.com)"^].
 
 +
 image:amazon-fsx-image70.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]

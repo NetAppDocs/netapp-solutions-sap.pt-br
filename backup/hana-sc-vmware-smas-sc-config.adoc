@@ -16,7 +16,7 @@ summary:
 [role="lead"]
 Conforme declarado no início do documento, o objetivo do documento é fornecer as melhores práticas para um AMBIENTE HANA usando o VMware com VMFS e a sincronização ativa do SnapMirror. Apenas abordaremos detalhes e etapas importantes relevantes para esta solução específica e não explicaremos os conceitos gerais do SnapCenter. Estes conceitos e outras informações adicionais sobre o SnapCenter podem ser encontrados em:
 
-link:hana-br-scs-overview.html["TR-4614: Backup e recuperação do SAP HANA com o SnapCenter"]
+link:hana-sc-generic-scope.html["Backup e recuperação do SAP HANA com o SnapCenter"]
 
 link:hana-sr-scs-system-replication-overview.html["TR-4719: Replicação do sistema SAP HANA - backup e recuperação com o SnapCenter"]
 
