@@ -28,7 +28,7 @@ Para obter mais detalhes sobre os diferentes agentes do SnapCenter e as opções
 
 As seções a seguir destacam as diferenças entre a integração do LSC com o SnapCenter usando a instalação padrão ou o host de comunicação central. Notavelmente, todas as etapas de configuração que não são destacadas são as mesmas independentemente da opção de instalação e do banco de dados usado.
 
-Para executar um backup automatizado baseado em cópia Snapshot a partir do banco de dados de origem e criar um clone para o novo banco de dados de destino, a integração descrita entre o LSC e o SnapCenter usa as opções de configuração e os scripts descritos no link:sc-copy-clone-introduction.html["TR-4667: Automatizando as operações de clonagem e cópia do sistema SAP HANA com o SnapCenter"^].
+Para realizar um backup baseado em Snapshot copy automatizado do banco de dados de origem e criar um clone para o novo banco de dados de destino, a integração descrita entre LSC e SnapCenter usa as opções de configuração e scripts descritos em link:sc-copy-clone-introduction.html["Automatizando as operações de clonagem e cópia do sistema SAP HANA com o SnapCenter"^].
 
 
 
@@ -88,9 +88,9 @@ O mestre LSC e o trabalhador LSC devem ser instalados no ambiente SAP. Nessa imp
 Recursos de documentação:
 
 * https://docs.netapp.com/us-en/snapcenter/["Centro de Documentação do SnapCenter"^]
-* https://www.netapp.com/pdf.html?item=/media/12403-tr4700.pdf["TR-4700: Plug-in SnapCenter para banco de dados Oracle"^]
+* https://www.netapp.com/pdf.html?item=/media/12403-tr4700.pdf["SnapCenter Plug-in para banco de dados Oracle"^]
 * link:../backup/hana-sc-generic-scope.html["Backup e recuperação do SAP HANA com o SnapCenter"^]
-* link:sc-copy-clone-introduction.html["TR-4667: Automatizando as operações de clonagem e cópia do sistema SAP HANA com o SnapCenter"^]
+* link:sc-copy-clone-introduction.html["Automatizando as operações de clonagem e cópia do sistema SAP HANA com o SnapCenter"^]
 * https://library.netapp.com/ecm/ecm_download_file/ECMLP2880726["Guia de referência de cmdlet do SnapCenter 4,6"^]
 
 

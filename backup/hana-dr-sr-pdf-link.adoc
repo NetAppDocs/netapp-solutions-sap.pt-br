@@ -4,7 +4,7 @@ permalink: backup/hana-dr-sr-pdf-link.html
 keywords: tr-4646, pdf, sap, hana, backup, storage, replication, dr, snapmirror, snapcenter 
 summary: O TR-4646 é uma visão geral das opções para proteção de recuperação de desastres para SAP HANA. Ele inclui informações detalhadas de configuração e uma descrição de caso de uso de uma solução de recuperação de desastres de três locais baseada na replicação síncrona e assíncrona de armazenamento NetApp SnapMirror. A solução descrita usa o NetApp SnapCenter com o plug-in SAP HANA para gerenciar a consistência do banco de dados. 
 ---
-= TR-4646: Recuperação de desastres do SAP HANA com replicação de storage
+= Recuperação de desastres do SAP HANA com replicação de storage
 :hardbreaks:
 :allow-uri-read: 
 :nofooter: 
@@ -14,7 +14,7 @@ summary: O TR-4646 é uma visão geral das opções para proteção de recupera�
 
 
 [role="lead"]
-O TR-4646 é uma visão geral das opções para proteção de recuperação de desastres para SAP HANA. Ele inclui informações detalhadas de configuração e uma descrição de caso de uso de uma solução de recuperação de desastres de três locais baseada na replicação síncrona e assíncrona de armazenamento NetApp SnapMirror. A solução descrita usa o NetApp SnapCenter com o plug-in SAP HANA para gerenciar a consistência do banco de dados.
+Este documento fornece uma visão geral das opções de proteção contra desastres para SAP HANA. Inclui informações detalhadas de configuração e uma descrição de caso de uso de uma solução de recuperação de desastres em três sites, baseada em replicação de armazenamento NetApp SnapMirror síncrona e assíncrona. A solução descrita utiliza NetApp SnapCenter com o plug-in SAP HANA para gerenciar a consistência do banco de dados.
 
 Autor: Nils Bauer, NetApp
 

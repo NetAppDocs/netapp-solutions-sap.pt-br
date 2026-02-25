@@ -18,11 +18,11 @@ Para saber mais sobre as informações descritas neste documento, consulte os se
 
 * link:../index.html["Soluções de banco de dados SAP HANA e aplicações empresariais SAP HANA (NetApp.com)"]
 * link:../backup/hana-sc-generic-scope.html["Backup e recuperação do SAP HANA com o SnapCenter"]
-* link:../bp/hana-aff-fc-introduction.html["TR-4436: SAP HANA em sistemas FAS all-flash da NetApp com protocolo Fibre Channel"]
-* link:../bp/hana-aff-nfs-introduction.html["TR-4435: SAP HANA em sistemas FAS all-flash da NetApp com NFS"]
-* link:../backup/fsxn-overview.html["TR-4926: SAP HANA no Amazon FSX for NetApp ONTAP - Backup e recuperação com o SnapCenter"]
-* link:lama-ansible-introduction.html["TR-4953: Integração de gerenciamento de cenários SAP da NetApp com Ansible"]
-* link:libelle-sc-overview.html["TR-4929: Automatizando as operações de cópia do sistema SAP com o Libelle SystemCopy (NetApp.com)"]
+* link:../bp/hana-aff-fc-introduction.html["SAP HANA em NetApp All Flash FAS Systems com protocolo SAN Fibre Channel"]
+* link:../bp/hana-aff-nfs-introduction.html["SAP HANA em NetApp All Flash FAS Systems com NFS"]
+* link:../backup/fsxn-overview.html["SAP HANA no Amazon FSX for NetApp ONTAP - Backup e recuperação com o SnapCenter"]
+* link:lama-ansible-introduction.html["Integração do gerenciamento de cenário do SAP NetApp com o Ansible"]
+* link:libelle-sc-overview.html["Automatizando operações de cópia do sistema SAP com Libelle SystemCopy (netapp.com/br/)"]
 * link:../briefs/sap-alpaca-automation.html["Automatizar a cópia, a atualização e a clonagem de fluxos de trabalho do sistema SAP com ALPACA e NetApp SnapCenter"]
 * link:../briefs/sap-avantra-automation.html["Automatizar a cópia, atualização e clone fluxos de trabalho do sistema SAP com Avantra e NetApp SnapCenter"]
 
@@ -46,4 +46,7 @@ Reescrita completa abrangendo o SnapCenter 4,3 e scripts de automação aprimora
 | Versão 4,0 | Julho de 2024  a| 
 Documento abrange os sistemas NetApp no local, o FSX for ONTAP e Azure NetApp Files e as novas operações do SnapCenter 5,0 são montados e desmontáveis durante o clone criar e excluir fluxos de trabalho, além de etapas específicas adicionadas para SAN Fibre Channel, além de etapas específicas adicionais para Azure NetApp Files, script adaptado e simplificado `sc-system-refresh`, além de etapas necessárias incluídas para criptografia de volume SAP HANA habilitada
 
+
+
+| Versão 4.1 | Fevereiro de 2026 | Adicionadas as etapas necessárias para criptografia HANA e SAP local secure store LSS 
 |===

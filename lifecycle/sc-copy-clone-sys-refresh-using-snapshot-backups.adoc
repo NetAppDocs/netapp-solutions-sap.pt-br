@@ -29,15 +29,25 @@ Uma exceção dessa regra é um sistema SAP HANA com um único locatário, no qu
 
 NOTE: Assim que qualquer operação de criação, renomeação ou queda de inquilino for executada no sistema de origem, esse sinalizador de configuração será excluído pelo banco de dados SAP HANA. Portanto, mesmo que a configuração tenha sido trazida de volta para o SID, o sinalizador não está mais disponível e a exceção relativa à recuperação do locatário com o fluxo de trabalho 3 não é mais possível. Neste caso, a opção 2 é o fluxo de trabalho necessário.
 
-image:sc-copy-clone-image10.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+image:sc-copy-clone-image10.png[""]
 
-image:sc-copy-clone-image11.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+image:sc-copy-clone-image11.png[""]
 
 
 
 == Fluxo de trabalho de atualização do sistema com a criptografia SAP HANA habilitada
 
-Quando a criptografia de persistência do SAP HANA estiver ativada, etapas adicionais serão necessárias antes que você possa recuperar o banco de dados do SAP HANA no sistema de destino.
+Quando a criptografia de persistência do SAP HANA está habilitada e, dependendo do armazenamento seguro usado para as chaves raiz de criptografia, instância SFSS ou armazenamento seguro local LSS, etapas adicionais são necessárias antes que você possa recuperar o banco de dados SAP HANA no sistema de destino.
+
+Com o SFSS, as chaves raiz são armazenadas no sistema de arquivos e devem ser copiadas separadamente, além do banco de dados HANA. Os backups das chaves raiz devem então ser importados no sistema de destino para permitir a recuperação do banco de dados HANA. Isso precisa ser feito apenas uma vez, se as chaves raiz não forem alteradas.
+
+Com o LSS, as chaves raiz são copiadas e restauradas juntamente com o banco de dados HANA em uma única operação. Para poder recuperar o banco de dados HANA, é necessário ter a senha que foi usada para o backup das chaves raiz.
+
+As operações necessárias são descritas com mais detalhes nos capítulos seguintes.
+
+
+
+=== Armazenamento seguro SFSS
 
 No sistema de origem, você precisa criar um backup das chaves raiz de criptografia para o banco de dados do sistema, bem como para todos os bancos de dados de locatários. Os arquivos de backup devem ser copiados para o sistema de destino e as chaves raiz devem ser importadas do backup antes que a operação de recuperação seja executada.
 
@@ -45,7 +55,7 @@ Consulte também https://help.sap.com/docs/SAP_HANA_PLATFORM/6b94445c94ae495c83a
 
 
 
-=== Backup de chaves raiz
+==== Backup de chaves raiz
 
 É sempre necessário fazer uma cópia de segurança das chaves raiz, se tiverem sido efetuadas quaisquer alterações às chaves raiz. O comando backup requer o dbid como um parâmetro CLI. Os dbid podem ser identificados usando a instrução SQL abaixo.
 
@@ -96,7 +106,7 @@ done.
 ....
 
 
-=== Importação de chaves raiz no sistema de destino
+==== Importação de chaves raiz no sistema de destino
 
 A importação das chaves raiz é necessária inicialmente para a primeira operação de atualização do sistema. Se as chaves raiz não forem alteradas no sistema de origem, nenhuma importação adicional será necessária. O comando import requer o dbid como um parâmetro CLI. Os dbid podem ser identificados da mesma forma que descrito para o backup da chave raiz.
 
@@ -125,10 +135,40 @@ qs1adm@hana-7:/usr/sap/QS1/HDB11>
 ....
 
 
-=== Importação de chave raiz, se o dbid não existir no destino
+==== Importação de chave raiz, se o dbid não existir no destino
 
 Como descrito no capítulo anterior, o dbid é necessário importar a chave raiz para o sistema e todos os bancos de dados de inquilinos. Embora o banco de dados do sistema tenha sempre 0, os bancos de dados do locatário podem ter dbid diferentes.
 
-image:sc-copy-clone-image13.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+image:sc-copy-clone-image13.png[""]
 
 A saída acima mostra dois inquilinos com dbid 3 e dbid 4. Se o sistema de destino ainda não tiver hospedado um locatário com dbid.4, a importação da chave raiz falhará. Nesse caso, você precisa recuperar o banco de dados do sistema primeiro e, em seguida, importar a chave para o locatário com dbid 4.
+
+
+
+=== Armazenamento seguro LSS
+
+
+NOTE: É necessário usar pelo menos a versão 2.00.088 do HANA, caso contrário, o procedimento descrito não funcionará, veja também a nota SAP 3613110.
+
+Para recuperar um sistema HANA que utiliza criptografia e LSS, você precisa da senha que foi usada para fazer backup das chaves raiz.
+
+A instrução SQL
+
+....
+alter system set encryption root keys backup password <backup-pw-of-source-system>;
+....
+Pode ser usado para definir a senha do sistema de origem na configuração LSS do sistema de destino. A mesma instrução deve ser usada para o sistema e o banco de dados do locatário.
+
+Caso a senha não tenha sido definida previamente, você pode fornecer a senha durante a operação de recuperação.
+
+Banco de dados do sistema:
+
+....
+./exe/Python/bin/python /usr/sap/QM1/HDB22/exe/python_support/recoverSys.py --command "RECOVER DATA USING SNAPSHOT CLEAR LOG ENCRYPTION ROOT KEYS BACKUP PASSWORD '<backup-pw-of-source-system>'"
+....
+Banco de dados do tenant:
+
+....
+hdbsql SYSTEMDB=> RECOVER DATA for QM1 USING SNAPSHOT CLEAR LOG ENCRYPTION ROOT KEYS BACKUP PASSWORD '<backup-pw-of-source-system>';
+
+....

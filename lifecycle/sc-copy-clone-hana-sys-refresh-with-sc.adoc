@@ -28,7 +28,7 @@ Dependendo da configuração do banco de dados SAP HANA, etapas adicionais são 
 | MDC single tenent | Configuração padrão | Operação de clone do SnapCenter e execução opcional de script de recuperação. 
 
 
-|  | Criptografia de persistência do SAP HANA | Inicialmente, ou se as chaves raiz foram alteradas no sistema de origem, o(s) backup(s) de chave raiz deve(m) ser(m) importado(s) no sistema de destino antes que a recuperação possa ser executada. 
+|  | Criptografia de persistência do SAP HANA | SFSS: Inicialmente, ou se as chaves raiz tiverem sido alteradas no sistema de origem, backup(s) da(s) chave(s) raiz devem ser importados no sistema de destino antes que a recuperação possa ser executada. LSS: inicialmente, ou se a senha do backup da chave raiz tiver sido alterada, a senha deve ser definida na configuração do LSS. 
 
 
 |  | Fonte de replicação do sistema SAP HANA | Não são necessários passos adicionais. Se o sistema alvo não tiver HSR configurado, permanecerá um sistema autônomo. 
@@ -44,7 +44,7 @@ Ou MDC único inquilino com SID menor> nome do inquilino
 | Configuração padrão | Operação de clone do SnapCenter e execução opcional de script de recuperação. Script recupera todos os inquilinos. Se os nomes de locatários ou locatários não existirem nos nomes do sistema de destino, os diretórios necessários serão criados automaticamente durante a operação de recuperação do SAP HANA. Os nomes de inquilinos serão iguais à origem e precisam ser renomeados após a recuperação, se necessário. 
 
 
-|  | Criptografia de persistência do SAP HANA | Se um DBID do sistema de origem não existir antes no sistema de destino, o banco de dados do sistema deve ser recuperado primeiro, antes que o backup da chave raiz desse locatário possa ser importado. 
+|  | Criptografia de persistência do SAP HANA | SFSS: Se um DBID do sistema de origem não existir previamente no sistema de destino, o banco de dados do sistema deverá ser recuperado primeiro, antes que o backup da chave raiz deste tenant possa ser importado. LSS: A topologia LSS será sincronizada automaticamente com a topologia HANA durante a recuperação do(s) banco(s) de dados do tenant. 
 
 
 |  | Fonte de replicação do SISTEMA HANA | Não são necessários passos adicionais. Se o sistema alvo não tiver HSR configurado, permanecerá um sistema autônomo. 
@@ -196,7 +196,7 @@ NOTE: É crucial que o recurso e o host do sistema de destino tenham sido config
 
 image:sc-copy-clone-image19.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
 
-Em uma configuração de SAN Fibre Channel, nenhum endereço IP de exportação é necessário, mas você precisa fornecer o protocolo usado na próxima tela.
+Em uma configuração SAN Fibre Channel, você precisa fornecer o protocolo utilizado na próxima tela.
 
 
 NOTE: As capturas de tela mostram uma configuração de laboratório diferente usando uma conetividade FibreChannel.

@@ -54,7 +54,7 @@ Na maioria dos casos, os sistemas de teste/QA alvo são usados por pelo menos al
 NOTE: Ao dividir o volume FlexClone, o SnapCenter exclui todos os backups criados no sistema de destino.
 
 
-NOTE: Com o SnapCenter e o Azure NetApp Files, a operação de divisão de clones não está disponível, já que o Azure NetApp Files sempre divide o clone após a criação.
+NOTE: Com SnapCenter e Azure NetApp Files, a operação de divisão de clones não está disponível, o clone é sempre dividido após a criação.
 
 A operação de atualização, incluindo a divisão de clones, consiste nos seguintes passos.
 

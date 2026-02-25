@@ -15,6 +15,14 @@ Saiba o que há de novo em soluções para SAP.
 
 
 
+== 26 de fevereiro de 2026
+
+Solução https://docs.netapp.com/us-en/netapp-solutions-sap/lifecycle/sc-copy-clone-introduction.html["Automatizando as operações de clonagem e cópia do sistema SAP HANA com o SnapCenter"] atualizada para abranger a criptografia do volume SAP HANA com armazenamento local seguro (LSS).
+
+Solução atualizada https://docs.netapp.com/us-en/netapp-solutions-sap/backup/hana-sc-generic-scope.html["Backup e recuperação do SAP HANA com o SnapCenter"] para abranger a criptografia do volume SAP HANA com armazenamento seguro local (LSS), bem como novas configurações suportadas.
+
+
+
 == 02 de dezembro de 2025
 
 Nova solução:link:https://docs.netapp.com/us-en/netapp-solutions-sap/backup/hana-sc-generic-scope.html["Backup e recuperação do SAP HANA com o SnapCenter"^]

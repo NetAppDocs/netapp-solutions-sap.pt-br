@@ -224,25 +224,25 @@ NOTE: Apenas a coluna 1 (montagens NFS) da tabela abaixo é relevante para o FSx
 | *Fazer backup e restaurar volumes que não sejam de dados* |  |  
 
 
-| Backup de instantâneo | Sim (*) | Sim (*) 
+| Backup de instantâneo | Sim | Sim (*) 
 
 
-| Restaurar do Snapshot | SFSR de LUN completo (*) | SFSR de LUN completo (*) 
+| Restaurar do Snapshot | SFSR de LUN completo | SFSR de LUN completo (*) 
 
 
-| Replicação SnapVault | Sim (*) | Sim (*) 
+| Replicação SnapVault | Sim | Sim (*) 
 
 
-| Restaurar a partir do destino SnapVault | Sim (*) | Sim (*) 
+| Restaurar a partir do destino SnapVault | Sim | Sim (*) 
 
 
 | *Atualização do Sistema SAP* |  |  
 
 
-| A partir do instantâneo primário | Sim (**) | Sim (**) 
+| A partir do instantâneo primário | Sim | Sim (**) 
 
 
-| Do destino SnapVault | Sim (**) | Sim (**) 
+| Do destino SnapVault | Sim | Sim (**) 
 
 
 | *HA e DR* |  |  
