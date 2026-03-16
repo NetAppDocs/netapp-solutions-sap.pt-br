@@ -45,9 +45,6 @@ sunrpc.tcp_max_slot_table_entries = 128
 
 NOTE: O Saptune, incluído no SLES para versões do SAP os, pode ser usado para definir esses valores. Para obter mais informações, consulte https://launchpad.support.sap.com/#/notes/3024346["SAP Nota 3024346"^] (requer login SAP).
 
-....
-
-....
 
 
 == Parâmetros de configuração para Red Hat Enterprise Linux 7,2 ou posterior
@@ -78,22 +75,23 @@ NOTE: Desde o RedHat Enterprise Linux versão 8,6, as configurações também po
 == Crie subdiretórios em /hana/volume compartilhado
 
 
-NOTE: Os exemplos a seguir mostram um banco de dados SAP HANA com SID NF2.
+NOTE: Os exemplos a seguir mostram um banco de dados SAP HANA com SID=NF2 usando LSS.
 
 Para criar os subdiretórios necessários, execute uma das seguintes ações:
 
-* Para um sistema de host único, monte o `/hana/shared` volume e crie os `shared` subdiretórios e `usr-sap`.
+* Para um sistema de host único, monte o  `/hana/shared` volume e crie os subdiretórios  `shared`,  `lss-shared` e  `usr-sap`.
 
 
 ....
 sapcc-hana-tst-06:/mnt # mount <storage-hostname>:/NF2_shared /mnt/tmp
 sapcc-hana-tst-06:/mnt # cd /mnt/tmp
 sapcc-hana-tst-06:/mnt/tmp # mkdir shared
+sapcc-hana-tst-06:/mnt/tmp # mkdir lss-shared
 sapcc-hana-tst-06:/mnt/tmp # mkdir usr-sap
 sapcc-hana-tst-06:/mnt/tmp # cd ..
 sapcc-hana-tst-06:/mnt # umount /mnt/tmp
 ....
-* Para um sistema de vários hosts, monte o `/hana/shared` volume e crie os `shared` subdiretórios e `usr-sap` para cada host.
+* Para um sistema com múltiplos hosts, monte o `/hana/shared` volume e crie os `shared`, `lss-shared` e o `usr-sap` subdiretórios para cada host.
 +
 Os comandos de exemplo mostram um sistema HANA de vários hosts de 2 a 1.
 
@@ -103,6 +101,7 @@ Os comandos de exemplo mostram um sistema HANA de vários hosts de 2 a 1.
 sapcc-hana-tst-06:/mnt # mount <storage-hostname>:/NF2_shared /mnt/tmp
 sapcc-hana-tst-06:/mnt # cd /mnt/tmp
 sapcc-hana-tst-06:/mnt/tmp # mkdir shared
+sapcc-hana-tst-06:/mnt/tmp # mkdir lss-shared
 sapcc-hana-tst-06:/mnt/tmp # mkdir usr-sap-host1
 sapcc-hana-tst-06:/mnt/tmp # mkdir usr-sap-host2
 sapcc-hana-tst-06:/mnt/tmp # mkdir usr-sap-host3
@@ -114,7 +113,7 @@ sapcc-hana-tst-06:/mnt # umount /mnt/tmp
 == Crie pontos de montagem
 
 
-NOTE: Os exemplos a seguir mostram um banco de dados SAP HANA com SID NF2.
+NOTE: Os exemplos a seguir mostram um banco de dados SAP HANA com SID=NF2 usando LSS.
 
 Para criar os diretórios de ponto de montagem necessários, execute uma das seguintes ações:
 
@@ -125,11 +124,12 @@ Para criar os diretórios de ponto de montagem necessários, execute uma das seg
 sapcc-hana-tst-06:/ # mkdir -p /hana/data/NF2/mnt00001
 sapcc-hana-tst-06:/ # mkdir -p /hana/log/NF2/mnt00001
 sapcc-hana-tst-06:/ # mkdir -p /hana/shared
+sapcc-hana-tst-06:/ # mkdir -p /lss/shared/
 sapcc-hana-tst-06:/ # mkdir -p /usr/sap/NF2
-
 sapcc-hana-tst-06:/ # chmod –R 777 /hana/log/NF2
 sapcc-hana-tst-06:/ # chmod –R 777 /hana/data/NF2
 sapcc-hana-tst-06:/ # chmod -R 777 /hana/shared
+sapcc-hana-tst-06:/ # chmod -R 777 /lss/shared
 sapcc-hana-tst-06:/ # chmod -R 777 /usr/sap/NF2
 ....
 * Para um sistema de vários hosts, crie pontos de montagem e defina as permissões em todos os hosts de trabalho e de espera. Os comandos de exemplo a seguir são para um sistema HANA de vários hosts de 2 a 1.
@@ -145,11 +145,12 @@ sapcc-hana-tst-06:~ # mkdir -p /hana/data/NF2/mnt00002
 sapcc-hana-tst-06:~ # mkdir -p /hana/log/NF2/mnt00001
 sapcc-hana-tst-06:~ # mkdir -p /hana/log/NF2/mnt00002
 sapcc-hana-tst-06:~ # mkdir -p /hana/shared
+sapcc-hana-tst-06:/ # mkdir -p /lss/shared/
 sapcc-hana-tst-06:~ # mkdir -p /usr/sap/NF2
-
 sapcc-hana-tst-06:~ # chmod -R 777 /hana/log/NF2
 sapcc-hana-tst-06:~ # chmod -R 777 /hana/data/NF2
 sapcc-hana-tst-06:~ # chmod -R 777 /hana/shared
+sapcc-hana-tst-06:/ # chmod -R 777 /lss/shared
 sapcc-hana-tst-06:~ # chmod -R 777 /usr/sap/NF2
 ....
 * Segundo anfitrião do trabalhador:
@@ -161,11 +162,12 @@ sapcc-hana-tst-07:~ # mkdir -p /hana/data/NF2/mnt00002
 sapcc-hana-tst-07:~ # mkdir -p /hana/log/NF2/mnt00001
 sapcc-hana-tst-07:~ # mkdir -p /hana/log/NF2/mnt00002
 sapcc-hana-tst-07:~ # mkdir -p /hana/shared
+sapcc-hana-tst-07:/ # mkdir -p /lss/shared/
 sapcc-hana-tst-07:~ # mkdir -p /usr/sap/NF2
-
 sapcc-hana-tst-07:~ # chmod -R 777 /hana/log/NF2
 sapcc-hana-tst-07:~ # chmod -R 777 /hana/data/NF2
 sapcc-hana-tst-07:~ # chmod -R 777 /hana/shared
+sapcc-hana-tst-06:/ # chmod -R 777 /lss/shared
 sapcc-hana-tst-07:~ # chmod -R 777 /usr/sap/NF2
 ....
 * Anfitrião em espera:
@@ -177,11 +179,12 @@ sapcc-hana-tst-08:~ # mkdir -p /hana/data/NF2/mnt00002
 sapcc-hana-tst-08:~ # mkdir -p /hana/log/NF2/mnt00001
 sapcc-hana-tst-08:~ # mkdir -p /hana/log/NF2/mnt00002
 sapcc-hana-tst-08:~ # mkdir -p /hana/shared
+sapcc-hana-tst-07:/ # mkdir -p /lss/shared/
 sapcc-hana-tst-08:~ # mkdir -p /usr/sap/NF2
-
 sapcc-hana-tst-08:~ # chmod -R 777 /hana/log/NF2
 sapcc-hana-tst-08:~ # chmod -R 777 /hana/data/NF2
 sapcc-hana-tst-08:~ # chmod -R 777 /hana/shared
+sapcc-hana-tst-08:/ # chmod -R 777 /lss/shared
 sapcc-hana-tst-08:~ # chmod -R 777 /usr/sap/NF2
 ....
 
@@ -193,6 +196,7 @@ Diferentes opções de montagem devem ser usadas dependendo da versão NFS e da 
 * `/hana/data/SID/mnt0000*`
 * `/hana/log/SID/mnt0000*`
 * `/hana/shared`
+* `/lss/shared`
 * `/usr/sap/SID`
 
 
@@ -209,6 +213,9 @@ A tabela a seguir mostra as versões NFS que você deve usar para os diferentes 
 
 
 | /hana/compartilhado | NFSv3 ou NFSv4 | NFSv3 ou NFSv4 
+
+
+| /lss/shared | NFSv3 ou NFSv4 | NFSv3 ou NFSv4 
 
 
 | /Usr/sap/SID | NFSv3 ou NFSv4 | NFSv3 ou NFSv4 
@@ -251,11 +258,12 @@ sapcc-hana-tst-06:/ # cat /etc/fstab
 <storage-vif-log01>:/NF2_log_mnt00001 /hana/log/NF2/mnt00001 nfs rw,nfsvers=3,hard,timeo=600,nconnect=2,rsize=1048576,wsize=262144,bg,noatime,nolock 0 0
 <storage-vif-data01>:/NF2_shared/usr-sap /usr/sap/NF2 nfs rw,nfsvers=3,hard,timeo=600,nconnect=4,rsize=1048576,wsize=262144,bg,noatime,nolock 0 0
 <storage-vif-data01>:/NF2_shared/shared /hana/shared nfs rw,nfsvers=3,hard,timeo=600,nconnect=4,rsize=1048576,wsize=262144,bg,noatime,nolock 0 0
+<storage-vif-data01>:/NF2_shared/lss-shared /lss/shared nfs rw,nfsvers=3,hard,timeo=600,nconnect=4,rsize=1048576,wsize=262144,bg,noatime,nolock 0 0
 ....
-. Execute `mount –a` para montar os sistemas de arquivos em todos os hosts.
+. Execute o comando  `mount -a` para montar os sistemas de arquivos em todos os hosts.
 
 
-O próximo exemplo mostra um banco de dados SAP HANA de vários hosts com SID NF2 usando NFSv4,1 para sistemas de arquivos de dados e log e NFSv3 para `/hana/shared` os sistemas de arquivos e. `/usr/sap/NF2` É usado um tamanho de transferência NFS de 1MB GB para leituras e 256K GB para gravações.
+O próximo exemplo mostra um banco de dados SAP HANA com vários hosts e SID=NF2, usando NFSv4.1 para os sistemas de arquivos de dados e de log e NFSv3 para os sistemas de arquivos  `/hana/shared`, `/lss/shared`, e  `/usr/sap/NF2`. Um tamanho de transferência NFS de 1 MB para leituras e 256k para gravações é utilizado.
 
 . Adicione os sistemas de arquivos necessários ao `/etc/fstab` arquivo de configuração em todos os hosts.
 +
@@ -271,6 +279,7 @@ stlrx300s8-5:/ # cat /etc/fstab
 <storage-vif-log02>:/NF2_log_mnt00002 /hana/log/NF2/mnt00002 nfs rw,nfsvers=4.1,hard,timeo=600,nconnect=2,rsize=1048576,wsize=262144,bg,noatime,lock 0 0
 <storage-vif-data02>:/NF2_shared/usr-sap-host1 /usr/sap/NF2 nfs rw,nfsvers=3,hard,timeo=600,nconnect=4,rsize=1048576,wsize=262144,bg,noatime,nolock 0 0
 <storage-vif-data02>:/NF2_shared/shared /hana/shared nfs rw,nfsvers=3,hard,timeo=600,nconnect=4,rsize=1048576,wsize=262144,bg,noatime,nolock 0 0
+<storage-vif-data02>:/NF2_shared/lss-shared /lss/shared nfs rw,nfsvers=3,hard,timeo=600,nconnect=4,rsize=1048576,wsize=262144,bg,noatime,nolock 0 0
 ....
-. Execute `mount –a` para montar os sistemas de arquivos em todos os hosts.
+. Execute o comando  `mount -a` para montar os sistemas de arquivos em todos os hosts.
 

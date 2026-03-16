@@ -17,6 +17,36 @@ Esta seção descreve a configuração do sistema de armazenamento NetApp espec�
 
 
 
+== Visão geral da LUN
+
+A tabela a seguir mostra a configuração de LUN de um sistema SAP HANA com múltiplos hosts 2+1.
+
+|===
+| Finalidade | LUNs | Volume lógico LVM 
+
+
+| Host de dados 1 | FC5_data_mnt00001_1 FC5_data_mnt00001_2 | FC5_data_mnt00001-vol 
+
+
+| Host de dados 2 | FC5_data_mnt00002_1 FC5_data_mnt00002_2 | FC5_data_mnt00002-vol 
+
+
+| Host de log 1 | FC5_log_mnt00001_1 FC5_log_mnt00001_2 | FC5_log_mnt00001-vol 
+
+
+| Host de log 2 | FC5_log_mnt00002_1 FC5_log_mnt00002_2 | FC5_log_mnt00002-vol 
+|===
+
+NOTE: O volume /hana/shared deve ser acessível por todos os hosts SAP HANA e, portanto, geralmente é exportado usando NFS. Como os sistemas NetApp ASA não suportam NFS como protocolo, a NetApp recomenda o uso de um sistema AFF ou FAS adicional para o sistema de arquivos /hana/shared.
+
+
+NOTE: Com a configuração descrita, o `/usr/sap/SID` diretório no qual o diretório inicial padrão do usuário SIDadm está armazenado, está no disco local para cada host HANA. Em uma configuração de recuperação de desastres com replicação baseada em disco, a NetApp recomenda a criação de quatro subdiretórios adicionais `SID_shared` no volume para o `/usr/sap/SID` sistema de arquivos, de modo que cada host de banco de dados tenha todos os seus sistemas de arquivos no storage central.
+
+
+NOTE: Se o serviço SAP Local Secure Store (LSS) for utilizado, o  `/lss/shared/SID` diretório deve ser acessível em todos os hosts e, portanto, geralmente é exportado usando NFS. Como os sistemas NetApp ASA não suportam NFS como protocolo, a NetApp recomenda usar um sistema AFF ou FAS adicional para o sistema de arquivos /lss/shared.
+
+
+
 == Criação de LUNs e mapeamento de LUNs para grupos iniciadores
 
 Você pode usar o NetApp ONTAP System Manager para criar volumes de armazenamento e LUNs e mapeá-los para os igroups dos servidores e para a CLI do ONTAP .
@@ -39,6 +69,10 @@ lun create -path FC5_log_mnt00001_2 -size 260g -ostype linux  -class regular
 lun create -path FC5_log_mnt00002_1 -size 260g -ostype linux  -class regular
 lun create -path FC5_log_mnt00002_2 -size 260g -ostype linux  -class regular
 ....
++
+
+NOTE: Desative a proteção autônoma contra ransomware para esses LUNs usando a GUI
+
 . Crie o grupo de iniciadores para todos os servidores pertencentes ao sistema FC5.
 +
 ....
@@ -115,7 +149,7 @@ image:saphana_asa_fc_image21.png["Gerenciador de Sistema ONTAP - Criar LUNs de l
 
 . Forneça as informações necessárias:
 +
-.. o nome do log LUN a ser combinado com LVM, por exemplo `FC5_log_mnt00001`
+.. o nome dos LUNs de log a serem combinados com LVM, por exemplo `FC5_log_mnt00001`
 .. a quantidade de LUNs a serem combinados com LVM, por exemplo 2
 .. o tamanho de cada LUN, por exemplo 260 GB
 .. escolher `Linux` como `Host Operating system`
@@ -149,3 +183,11 @@ image:saphana_asa_fc_image24.png["Gerenciador de Sistema ONTAP - Criar LUNs de l
 Todos os LUNs necessários para um sistema SAP HANA de múltiplos hosts foram criados.
 
 image:saphana_asa_fc_image25.png["Gerenciador de Sistema ONTAP - Visão Geral do LUN"]
+
+
+
+=== Desative a proteção autônoma contra ransomware para todos os dados e LUNS de log
+
+Abra o menu de contexto de cada LUN de dados e de log e desative ransomware-protection
+
+image:saphana_asa_fc_image19_5.png["Gerenciador de Sistema ONTAP - Visão Geral do LUN"]

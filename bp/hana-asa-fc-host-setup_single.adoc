@@ -37,6 +37,9 @@ O Linux LVM está sendo usado para aumentar o desempenho e abordar limitações 
 NOTE: Com a configuração descrita, o `/usr/sap/FC5` diretório no qual o diretório home padrão do usuário FC5adm está armazenado, está no disco local. Em uma configuração de recuperação de desastres com replicação baseada em disco, a NetApp recomenda a criação de um LUN adicional para o  `/usr/sap/FC5` diretório para que todos os sistemas de arquivos fiquem no armazenamento central.
 
 
+NOTE: Se o serviço SAP Local Secure Store (LSS) for utilizado, o  `/lss/shared/SID` diretório, o diretório de instalação padrão do LSS, estará no disco local. Em uma configuração de recuperação de desastres com replicação baseada em disco, NetApp recomenda criar um LUN adicional para o  `/lss/shared/SID` diretório, para que todos os sistemas de arquivos estejam no armazenamento central.
+
+
 
 === Crie grupos de volumes LVM e volumes lógicos
 
