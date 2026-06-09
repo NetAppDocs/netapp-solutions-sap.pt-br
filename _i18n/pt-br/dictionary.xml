@@ -1655,8 +1655,6 @@
   <block id="6bfac05f3cc2c0adace9c385ef708fd9" category="paragraph"><block ref="6bfac05f3cc2c0adace9c385ef708fd9" category="inline-link-rx"></block></block>
   <block id="0efd230d120bc177f0918dac852f2cf2" category="list-text">Hardware de storage empresarial certificado para SAP HANA</block>
   <block id="244d98fed97800c3bc8073163dc1e3b2" category="list-text">Requisitos de storage do SAP HANA</block>
-  <block id="06ad3435fb38e020aa7a36d8924c9f5c" category="inline-link"><block ref="06ad3435fb38e020aa7a36d8924c9f5c" category="inline-link-rx"></block></block>
-  <block id="3710f13cc62644ea40b0af38f0b1198e" category="paragraph"><block ref="3710f13cc62644ea40b0af38f0b1198e" category="inline-link-rx"></block></block>
   <block id="ae36d6b58fffa77bdfe0d08c2e56cf30" category="summary">A partir do SAP HANA 2,0 SPS4, partições de volume de dados adicionais podem ser configuradas. Esse recurso permite configurar duas ou mais LUNs para o volume de dados de um banco de dados de locatário do SAP HANA e dimensionar além dos limites de tamanho e performance de um único LUN.</block>
   <block id="347050b0ee6af8facb503abbf8ce92c2" category="doc">Adição de partições de volume de dados adicionais para sistemas SAP HANA de um único host</block>
   <block id="2a986cf5abe7b7785ffcdece33cfc433" category="admonition">Não é necessário usar várias partições para cumprir os KPIs do SAP HANA. Um único LUN com uma única partição cumpre os KPIs necessários.</block>
@@ -5887,8 +5885,11 @@
   <block id="3d4f8b4b1b1faa02f0aa9e9f49fe9088" category="paragraph">Os Snapshots criados pela ONTAP Autonomous Ransomware Protection não podem ser usados para recuperação futura do banco de dados SAP HANA. Portanto, não é recomendável usá-la para volumes de dados e logs do SAP HANA e deve ser desativada para esses volumes. Use a proteção de dados baseada em SnapCenter com Snapshots à prova de adulteração para proteção contra ransomware: <block ref="f7a9a89a273a9d57fcd022d94d56f53f" category="inline-link-macro-rx"></block>. ONTAP Autonomous Ransomware Protection pode ser benéfica para outros volumes, como /hana/shared.</block>
   <block id="5c9e36a122daafc35d852512bd535596" category="admonition">Se o serviço SAP Local Secure Store (LSS) for utilizado, o diretório <block ref="1d7604fd1dd9d655c19ff0843bcd1cab" prefix=" " category="inline-code"></block> , o diretório de instalação padrão do LSS estará no disco local. Em uma configuração de recuperação de desastres com replicação baseada em disco, NetApp recomenda criar um diretório dentro do volume <block ref="07fe7fc9aa3cd33458708758a4a5854e" prefix=" " category="inline-code"></block> para o diretório <block ref="1d7604fd1dd9d655c19ff0843bcd1cab" prefix=" " category="inline-code"></block> para que todos os sistemas de arquivos estejam no armazenamento central.</block>
   <block id="3ee7f42a5f57f42357faa6066ecfb5d8" category="cell">/lss/shared/</block>
-  <block id="e72900b6484d9e136f9baaf67301d38d" category="paragraph"><block ref="8878a31e958f2f4fbc2f0cb5299a88fc" category="inline-link-rx"></block>]</block>
   <block id="b0b3e68761dd70d0fa49b725910dc993" category="list-text">Integração de data center personalizada do SAP HANA</block>
   <block id="37716fa00dd641976ad10af0418c9f93" category="inline-link">Integração do SAP HANA Tailored Data Center</block>
   <block id="74e5a15645e2d65a375593199e01c962" category="list-text"><block ref="74e5a15645e2d65a375593199e01c962" category="inline-link-rx"></block></block>
+  <block id="44fee80ab2b2a3105ec17b94b206cc8f" category="inline-link"><block ref="44fee80ab2b2a3105ec17b94b206cc8f" category="inline-link-rx"></block></block>
+  <block id="55162df4eaa40993b4b04219f5dd5e87" category="paragraph"><block ref="55162df4eaa40993b4b04219f5dd5e87" category="inline-link-rx"></block></block>
+  <block id="9b3c3b7775f8b0fe4b367630784b02be" category="inline-link"><block ref="9b3c3b7775f8b0fe4b367630784b02be" category="inline-link-rx"></block></block>
+  <block id="09e3bfa407b8475f684f4afa0d1a65d0" category="paragraph"><block ref="09e3bfa407b8475f684f4afa0d1a65d0" category="inline-link-rx"></block></block>
 </blocks>
