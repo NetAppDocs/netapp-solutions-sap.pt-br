@@ -572,8 +572,6 @@
   <block id="46b9839969e4bc429da9cc245c756450" category="cell">Versão 3,0</block>
   <block id="7b84e8d1abd1ca9b58ab3e77d620c832" category="summary">TR-4711 descreve o design de uma solução NetApp e CommVault para SAP HANA, que inclui a tecnologia de gerenciamento de snapshot CommVault IntelliSnap e a tecnologia NetApp Snapshot. A solução é baseada no storage NetApp e no pacote de proteção de dados CommVault.</block>
   <block id="170e3ae89d6261851ff484a8e771649e" category="paragraph">Autores: Marco Schoen, NetApp; Dr. Tristan Daude, CommVault Systems</block>
-  <block id="6b6da8403e50e999c81fff1b93ddd075" category="inline-link-macro"><block ref="6b6da8403e50e999c81fff1b93ddd075" category="inline-link-rx"></block></block>
-  <block id="974fc1d6f48a5236cf23f9d95df8992c" category="paragraph"><block ref="974fc1d6f48a5236cf23f9d95df8992c" category="inline-link-macro-rx"></block></block>
   <block id="1cc8efad9ef8bc01d2445bfc8d04e15c" category="doc">Replicação entre regiões do ANF com SAP HANA</block>
   <block id="477777d7db9a7b53d5e478c5db17b758" category="paragraph">Este documento aborda a replicação entre regiões do ANF com SAP HANA.</block>
   <block id="81dbd9083542b5058eeff2a69b9df0f1" category="summary">As informações agnósticas de aplicativos na replicação entre regiões podem ser encontradas no seguinte local.</block>
@@ -5892,4 +5890,6 @@
   <block id="55162df4eaa40993b4b04219f5dd5e87" category="paragraph"><block ref="55162df4eaa40993b4b04219f5dd5e87" category="inline-link-rx"></block></block>
   <block id="9b3c3b7775f8b0fe4b367630784b02be" category="inline-link"><block ref="9b3c3b7775f8b0fe4b367630784b02be" category="inline-link-rx"></block></block>
   <block id="09e3bfa407b8475f684f4afa0d1a65d0" category="paragraph"><block ref="09e3bfa407b8475f684f4afa0d1a65d0" category="inline-link-rx"></block></block>
+  <block id="5f3a885afe628dc765db372d552dfc3f" category="inline-link-macro"><block ref="5f3a885afe628dc765db372d552dfc3f" category="inline-link-rx"></block></block>
+  <block id="2deb8c2352bb64efaab57e5552bc808d" category="paragraph"><block ref="2deb8c2352bb64efaab57e5552bc808d" category="inline-link-macro-rx"></block></block>
 </blocks>
