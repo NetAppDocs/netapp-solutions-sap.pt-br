@@ -14,7 +14,7 @@ summary: Configure interfaces de rede SR-IOV no SUSE KVM para SAP HANA usando pl
 
 
 [role="lead"]
-Configure as interfaces de rede SR-IOV no SUSE KVM para SAP HANA.  Configure funções virtuais (VFs), atribua-as a máquinas virtuais (VMs) e configure conexões de rede redundantes para obter desempenho ideal e acesso ao armazenamento.
+Configure interfaces de rede SR-IOV no SUSE KVM para SAP HANA. Configure funções virtuais (VFs), atribua-as a máquinas virtuais (VMs) e configure conexões de rede redundantes para desempenho ideal e acesso ao storage. A rede em ponte também é suportada.
 
 
 

@@ -31,14 +31,14 @@ Certifique-se de que os seguintes componentes e configurações estejam instalad
 * Adaptadores de rede compatíveis com SR-IOV (por exemplo, série Mellanox ConnectX)
 * Adaptadores HBA Fibre Channel para acesso ao armazenamento FCP
 * Infraestrutura de rede que suporte as VLANs e os segmentos de rede necessários.
-* VM configurada de acordo com o https://documentation.suse.com/sbp/sap-15/pdf/SBP-SLES4SAP-HANAonKVM-SLES15SP5_en.pdf["Melhores práticas da SUSE para SAP HANA em KVM"^]
+* VM configurada de acordo com o  https://documentation.suse.com/sbp/sap-15/html/SBP-SLES4SAP-HANAonKVM-SLES15SP7/["Melhores práticas da SUSE para SAP HANA em KVM"^]
 
 
 
 
 == Considerações importantes
 
-* O protocolo SR-IOV deve ser utilizado para comunicação de rede SAP HANA e para acesso ao armazenamento usando NFS. Cada função virtual (VF) atribuída a uma VM requer pelo menos 10 Gbit/s de largura de banda.
+* SR-IOV deve ser usado para comunicação de rede do SAP HANA e para acesso ao storage usando NFS, se possível, mas a rede em ponte também é suportada. Cada função virtual (VF) atribuída a uma VM requer pelo menos 10 Gbit/s de largura de banda.
 * As portas HBA FCP físicas devem ser atribuídas à VM como dispositivos PCI para usar LUNs FCP.  Uma porta física só pode ser atribuída a uma máquina virtual.
 * Sistemas SAP HANA com múltiplos hosts não são suportados nesta configuração.
 
@@ -47,7 +47,7 @@ Certifique-se de que os seguintes componentes e configurações estejam instalad
 
 == Recursos adicionais
 
-* Para obter as informações mais recentes, incluindo a arquitetura de CPU compatível e suas limitações, consulte a Nota SAP. https://me.sap.com/notes/3538596["3538596 - SAP HANA em virtualização SUSE KVM com SLES 15 SP5 - SAP para mim"] .
+* Para obter as informações mais recentes, incluindo a arquitetura de CPU compatível e limitações, consulte a SAP Note https://me.sap.com/notes/3741904["3741904 - SAP HANA em virtualização SUSE KVM com SLES 15 SP7 - SAP for Me"].
 * Para obter informações sobre como configurar sistemas de armazenamento ONTAP , consulte o https://docs.netapp.com/us-en/ontap["Documentação do ONTAP 9"] .
 * Para configuração de armazenamento SAP HANA com sistemas NetApp , consulte o https://docs.netapp.com/us-en/netapp-solutions-sap/["Documentação de soluções SAP da NetApp"] .
 
