@@ -18,6 +18,7 @@ As soluções da NetApp para otimizar o gerenciamento do ciclo de vida do SAP s�
 
 
 
+[[data-refresh-of-qa-test-sandbox-or-training-systems]]
 == Atualização de dados dos sistemas de QA, teste, sandbox ou treinamento
 
 Existem vários cenários em que os dados de um sistema de origem devem ser disponibilizados a um sistema de destino para fins de teste ou treinamento. Esses sistemas de teste e treinamento devem ser atualizados regularmente com os dados do sistema de origem para garantir que os testes e o treinamento sejam realizados com o conjunto de dados atual. Essas operações de atualização do sistema consistem em várias tarefas nas camadas de infraestrutura, banco de dados e aplicativos, e podem levar vários dias dependendo do nível de automação.
@@ -30,6 +31,7 @@ O fluxo de trabalho para operações de atualização do sistema é descrito na 
 
 
 
+[[address-logical-corruption]]
 == Solucione a corrupção lógica
 
 A corrupção lógica pode ser causada por erros de software, erros humanos ou sabotagem. Infelizmente, a corrupção lógica geralmente não pode ser resolvida com soluções padrão de alta disponibilidade e recuperação de desastres. Como resultado, dependendo da camada, aplicação, sistema de arquivos ou armazenamento onde a corrupção lógica ocorreu, os requisitos máximos de tempo de inatividade e perda de dados podem, às vezes, não ser atendidos.
@@ -46,6 +48,7 @@ O fluxo de trabalho da criação do sistema de reparação é descrito na secç�
 
 
 
+[[disaster-recovery-testing]]
 == Teste de recuperação de desastres
 
 Uma estratégia eficaz de recuperação de desastres precisa testar o fluxo de trabalho necessário. Testes demonstram se a estratégia funciona e se a documentação interna é suficiente. Ele também permite que os administradores treinem os procedimentos necessários.

@@ -15,12 +15,14 @@ summary: Este documento se concentra na recuperação de desastres para SAP HANA
 
 
 
+[[the-challenge]]
 == O desafio
 
 A continuidade dos negócios é essencial em organizações de TI.  Eles devem ser capazes de fornecer serviços de alta disponibilidade para os aplicativos de missão crítica que seus clientes precisam para administrar seus negócios.  Caso contrário, seus clientes enfrentarão queda de produtividade e as organizações de comércio eletrônico poderão sofrer um impacto direto em sua receita.
 
 
 
+[[the-solution]]
 == A Solução
 
 A NetApp desenvolveu um portfólio completo de tecnologias e ferramentas para ajudar as organizações de TI a criar ou adaptar seus planos de recuperação de desastres para responder a todas as demandas de negócios:

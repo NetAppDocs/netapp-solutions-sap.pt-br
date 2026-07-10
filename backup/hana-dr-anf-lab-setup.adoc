@@ -31,6 +31,7 @@ image:saphana-dr-anf_image7.png["Figura que mostra a caixa de diálogo de entrad
 
 
 
+[[snapshot-backup-configuration-with-azacsnap]]
 == Configuração de backup do Snapshot com AzAcSnap
 
 No local principal, o AzAcSnap foi configurado para criar backups Snapshot consistentes com aplicações do SISTEMA HANA PR1. Esses backups do Snapshot estão disponíveis no volume de dados do ANF do sistema PR1 HANA. Eles também estão registrados no catálogo de backup do SAP HANA, conforme mostrado nas duas figuras a seguir. Os backups de snapshot foram programados para cada 4 horas.

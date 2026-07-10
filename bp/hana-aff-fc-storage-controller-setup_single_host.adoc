@@ -10,6 +10,7 @@ summary: Esta seção descreve a configuração do sistema de storage NetApp. Vo
 
 
 
+[[single-host]]
 == Host único
 
 [role="lead"]
@@ -17,6 +18,7 @@ Esta seção descreve a configuração do sistema de armazenamento NetApp espec�
 
 
 
+[[volume-and-lun-configuration-for-sap-hana-single-host-systems]]
 == Configuração de volume e LUN para sistemas SAP HANA de host único
 
 A figura a seguir mostra a configuração de volume de quatro sistemas SAP HANA de um único host. Os volumes de dados e log de cada sistema SAP HANA são distribuídos a diferentes controladores de storage. Por exemplo, o volume `SID1_data_mnt00001` é configurado no controlador A e o volume `SID1_log_mnt00001` é configurado no controlador B. em cada volume, um único LUN é configurado.
@@ -65,6 +67,7 @@ NOTE: Se o serviço SAP Local Secure Store (LSS) for utilizado, o  `/lss/shared/
 
 
 
+[[volume-and-lun-configuration-for-sap-hana-single-host-systems-using-linux-lvm]]
 == Configuração de volume e LUN para sistemas SAP HANA de host único usando Linux LVM
 
 O LVM Linux pode ser usado para aumentar o desempenho e para lidar com as limitações de tamanho de LUN. Os diferentes LUNs de um grupo de volumes LVM devem ser armazenados em um agregado diferente e em um controlador diferente. A tabela a seguir mostra um exemplo para dois LUNs por grupo de volume.
@@ -80,6 +83,7 @@ NOTE: Não é necessário usar o LVM com vários LUNs para atender aos KPIs do S
 |===
 
 
+[[volume-options]]
 == Opções de volume
 
 As opções de volume listadas na tabela a seguir devem ser verificadas e definidas em todos os volumes usados para o SAP HANA.
@@ -101,6 +105,7 @@ NOTE: O exemplo abaixo define essas opções durante a criação do volume
 
 
 
+[[creating-luns-and-mapping-luns-to-initiator-groups-using-the-cli]]
 === Criação de LUNs e mapeamento de LUNs para grupos iniciadores usando a CLI
 
 Esta seção mostra um exemplo de configuração usando a linha de comando com o ONTAP 9 para um sistema de host único SAP HANA com SID FC5 usando LVM e dois LUNs por grupo de volume LVM:

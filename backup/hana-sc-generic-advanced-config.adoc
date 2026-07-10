@@ -13,6 +13,7 @@ Configure as definições avançadas do SnapCenter para ambientes SAP HANA, incl
 
 
 
+[[warning-message-with-virtualized-environments-and-in-guest-mounts]]
 == Mensagem de aviso em ambientes virtualizados e montagens no sistema operacional convidado.
 
 Ao usar, por exemplo, o VMware com montagens NFS no sistema operacional convidado, o SnapCenter exibirá uma mensagem de aviso informando que o plug-in do SnapCenter para VMware deve ser usado. Como o plug-in do VMware não é necessário para montagens no sistema operacional convidado, a mensagem de aviso pode ser ignorada e desativada. Para configurar o SnapCenter para suprimir este aviso, a seguinte configuração deve ser aplicada:
@@ -25,6 +26,7 @@ image:hana-sc-generic-image-134.png["largura=601, altura=176"]
 
 
 
+[[deactivate-automated-log-backup-housekeeping]]
 == Desativar a limpeza automática de cópias de segurança de registos
 
 A limpeza e o backup de logs estão ativados por padrão e podem ser desativados no nível do host do plug-in HANA. Utilize o comando do PowerShell:
@@ -33,6 +35,7 @@ O comando Set-SmConfigSettings -Plugin -HostName <nome_do_host_plugin> -PluginCo
 
 
 
+[[enable-secure-communication-to-hana-database]]
 == Habilitar a comunicação segura com o banco de dados HANA
 
 Se os bancos de dados HANA estiverem configurados com comunicação segura, o comando hdbsql executado pelo SnapCenter deverá usar opções adicionais de linha de comando.
@@ -55,6 +58,7 @@ O script wrapper hdbsqls chama o hdbsql com as opções de linha de comando nece
 ....
 
 
+[[disable-auto-discovery-on-the-hana-plug-in-host]]
 == Desative a deteção automática no host do plug-in HANA
 
 Para desativar a descoberta automática no host do plug-in HANA, siga os passos abaixo:

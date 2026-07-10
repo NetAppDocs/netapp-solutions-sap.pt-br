@@ -17,6 +17,7 @@ As janelas de backup estão diminuindo, enquanto a quantidade de dados a serem c
 
 
 
+[[backup-and-recovery-using-snapshot-backups]]
 == Backup e recuperação usando backups de instantâneo
 
 Você pode usar a tecnologia NetApp Snapshot para criar backups de banco de dados em minutos. O tempo necessário para criar uma cópia de Snapshot é independente do tamanho do banco de dados, pois uma cópia de Snapshot não move nenhum bloco de dados físico na plataforma de armazenamento. Além disso, o uso da tecnologia Snapshot não afeta o desempenho do sistema SAP em produção, uma vez que todas as operações são executadas no sistema de armazenamento. Portanto, você pode agendar a criação de cópias de instantâneo sem levar em consideração os períodos de pico de diálogo ou atividade em lote. Os clientes SAP on NetApp normalmente agendam vários backups de Snapshot online durante o dia; por exemplo, a cada seis horas é comum. Esses backups instantâneos são normalmente mantidos por três a cinco dias no sistema de armazenamento primário antes de serem removidos ou transferidos para um armazenamento mais barato para retenção a longo prazo.
@@ -33,6 +34,7 @@ O SnapVault e o backup ANF oferecem vantagens significativas em comparação com
 
 
 
+[[runtime-of-snapshot-backup-and-restore-operations]]
 == Tempo de execução das operações de backup e restauração do Snapshot
 
 A figura a seguir mostra o HANA Studio de um cliente usando operações de backup de Snapshot. A imagem mostra que o banco de dados HANA (com aproximadamente 4 TB de tamanho) é copiado em 1 minuto e 20 segundos usando a tecnologia de backup Snapshot e em mais de 4 horas com uma operação de backup baseada em arquivos.
@@ -43,12 +45,14 @@ image:hana-sc-generic-image-001.png["largura=624, altura=267"]
 
 
 
+[[recovery-time-objective-comparison]]
 == Comparação do objetivo de tempo de recuperação
 
 Esta seção apresenta uma comparação do objetivo de tempo de recuperação (RTO) de backups de Snapshot baseados em arquivos e backups de Snapshot baseados em armazenamento. O RTO é definido pela soma do tempo necessário para restaurar, recuperar e, em seguida, iniciar o banco de dados.
 
 
 
+[[time-needed-to-restore-database]]
 === Tempo necessário para restaurar o banco de dados
 
 Com um backup baseado em arquivo, o tempo de restauração depende do tamanho do banco de dados e da infraestrutura de backup, que define a velocidade de restauração em megabytes por segundo. Por exemplo, se a infraestrutura oferecer suporte a uma operação de restauração a uma velocidade de 250MBps Gbps, levará aproximadamente 4,5 horas para restaurar um banco de dados de tamanho 4TB na persistência.
@@ -57,6 +61,7 @@ Com os backups Snapshot da NetApp , o tempo de restauração é independente do 
 
 
 
+[[time-needed-to-recover-database]]
 === Tempo necessário para recuperar o banco de dados
 
 O tempo de recuperação depende do número de logs que devem ser aplicados após a restauração. Este número é determinado pela frequência em que os backups de dados são feitos.
@@ -67,12 +72,14 @@ Os backups de snapshots são normalmente agendados com maior frequência, pois n
 
 
 
+[[time-needed-to-start-database]]
 === Tempo necessário para iniciar o banco de dados
 
 A hora de início do banco de dados depende do tamanho do banco de dados e do tempo necessário para carregar os dados na memória. Nos exemplos a seguir, presume-se que os dados podem ser carregados com 1000Mbps. Carregar 4TB GB na memória demora cerca de 1hour e 10 minutos. O horário de início é o mesmo para operações de restauração e recuperação baseadas em Snapshot e arquivo.
 
 
 
+[[restore-and-recovery-sample-calculation]]
 === Cálculo de amostra de restauração e recuperação
 
 A figura a seguir mostra uma comparação entre operações de restauração e recuperação com backup diário baseado em arquivos e backups de snapshot com diferentes programações.
@@ -85,6 +92,7 @@ image:hana-sc-generic-image-002.png["largura=624, altura=326"]
 
 
 
+[[use-cases-and-values-of-accelerated-backup-and-cloning-operations]]
 == Casos de uso e valores de operações de clonagem e backup acelerados
 
 A execução de backups é uma parte essencial de qualquer estratégia de proteção de dados. Os backups são programados regularmente para garantir que você possa se recuperar de falhas do sistema. Esse é o caso de uso mais óbvio, mas também há outras tarefas de gerenciamento de ciclo de vida do SAP, onde acelerar as operações de backup e recuperação é crucial.

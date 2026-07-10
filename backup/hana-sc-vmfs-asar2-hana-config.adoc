@@ -15,6 +15,7 @@ summary:
 
 
 
+[[configure-snapcenter-database-user]]
 == Configurar usuário do banco de dados SnapCenter
 
 É necessário criar um arquivo de usuário para um usuário de banco de dados do sistema, que deve ser usado pelo SnapCenter.
@@ -23,6 +24,7 @@ image:sc-hana-asrr2-vmfs-image8.png["Figura demonstrando o conteúdo que está s
 
 
 
+[[configure-hdb-userstore-key]]
 == Configurar chave hdb userstore
 
 Uma chave de armazenamento de usuário deve ser criada para o usuário vfsadm. O número da instância HANA deve ser definido adequadamente para a comunicação da porta. Em nossa instância de configuração, o número "45" é usado.

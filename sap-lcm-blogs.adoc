@@ -18,6 +18,7 @@ Visão geral dos blogs destacando o SAP Lifecycle Management.
 
 
 
+[[sap-lifecycle-management-blogs]]
 == Blogs do SAP Lifecycle Management
 
 * link:https://blogs.sap.com/2021/10/27/whitepaper-sap-landscape-management-with-netapp/["Gestão de cenários SAP com NetApp"]

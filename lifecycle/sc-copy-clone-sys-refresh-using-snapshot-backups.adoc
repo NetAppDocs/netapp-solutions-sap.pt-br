@@ -18,6 +18,7 @@ As soluções da NetApp para otimizar o gerenciamento do ciclo de vida do SAP s�
 
 
 
+[[tenant-names-at-target-system]]
 == Nome(s) do inquilino no sistema de destino
 
 As etapas necessárias para executar uma atualização do sistema SAP HANA dependem da configuração do locatário do sistema de origem e do nome do locatário necessário no sistema de destino, como mostrado na figura abaixo.
@@ -35,6 +36,7 @@ image:sc-copy-clone-image11.png[""]
 
 
 
+[[system-refresh-workflow-with-enabled-sap-hana-encryption]]
 == Fluxo de trabalho de atualização do sistema com a criptografia SAP HANA habilitada
 
 Quando a criptografia de persistência do SAP HANA está habilitada e, dependendo do armazenamento seguro usado para as chaves raiz de criptografia, instância SFSS ou armazenamento seguro local LSS, etapas adicionais são necessárias antes que você possa recuperar o banco de dados SAP HANA no sistema de destino.
@@ -47,6 +49,7 @@ As operações necessárias são descritas com mais detalhes nos capítulos segu
 
 
 
+[[secure-store-sfss]]
 === Armazenamento seguro SFSS
 
 No sistema de origem, você precisa criar um backup das chaves raiz de criptografia para o banco de dados do sistema, bem como para todos os bancos de dados de locatários. Os arquivos de backup devem ser copiados para o sistema de destino e as chaves raiz devem ser importadas do backup antes que a operação de recuperação seja executada.
@@ -145,6 +148,7 @@ A saída acima mostra dois inquilinos com dbid 3 e dbid 4. Se o sistema de desti
 
 
 
+[[secure-store-lss]]
 === Armazenamento seguro LSS
 
 

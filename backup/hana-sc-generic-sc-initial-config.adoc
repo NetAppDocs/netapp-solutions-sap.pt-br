@@ -45,10 +45,12 @@ Os capítulos seguintes descrevem os passos iniciais de configuração.
 
 
 
+[[credentials-configuration]]
 == Configuração de credenciais
 
 
 
+[[credentials-for-hana-plug-in-deployment]]
 === Credenciais para implantação do plug-in HANA
 
 As credenciais são configuradas na seção Configurações, selecionando a guia Credenciais. É possível adicionar credenciais clicando no ícone +.
@@ -61,6 +63,7 @@ image:hana-sc-generic-image-019.png["largura=287, altura=247"]
 
 
 
+[[credentials-for-azure-netapp-files]]
 === Credenciais para o Azure NetApp Files
 
 É necessário configurar uma entidade de serviço do Azure para permitir que o SnapCenter execute as operações necessárias para os volumes do Azure Networking. O exemplo abaixo mostra as permissões mínimas necessárias, que devem ser incluídas.
@@ -155,10 +158,12 @@ image:hana-sc-generic-image-021.png["largura=252, altura=246"]
 
 
 
+[[storage-system-configuration]]
 == Configuração do sistema de storage
 
 
 
+[[ontap-systems-and-fsx-for-ontap]]
 === Sistemas ONTAP e FSx para ONTAP
 
 O sistema ONTAP ou o FSx para ONTAP podem ser adicionados ao SnapCenter fornecendo credenciais de cluster ou credenciais para cada SVM necessária. Quando as credenciais do cluster são fornecidas, todas as SVMs do cluster são adicionadas ao SnapCenter.
@@ -188,6 +193,7 @@ image:hana-sc-generic-image-024.png["largura=331, altura=199"]
 
 
 
+[[azure-netapp-files]]
 === Azure NetApp Files
 
 Após a configuração das credenciais ANF, as contas NetApp ANF podem ser adicionadas ao SnapCenter. As contas NetApp são configuradas na seção Sistemas de armazenamento, selecionando a guia Azure NetApp Files . Uma nova conta NetApp é adicionada clicando no ícone +.
@@ -200,12 +206,14 @@ image:hana-sc-generic-image-026.png["largura=401, altura=176"]
 
 
 
+[[storage-configuration-when-using-snapmirror-active-sync]]
 === Configuração de armazenamento ao usar o SnapMirror ActiveSync.
 
 As etapas específicas de configuração de armazenamento são descritas em https://docs.netapp.com/us-en/netapp-solutions-sap/backup/hana-sc-vmware-smas-sc-config.html#add-storage-systems["Configuração de armazenamento com sincronização ativa SnapMirror"].
 
 
 
+[[policies-configuration]]
 == Configuração de políticas
 
 Conforme discutido na seção Políticas de estratégia de proteção de dados, elas geralmente são configuradas independentemente do recurso e podem ser usadas para vários sistemas SAP HANA.
@@ -232,6 +240,7 @@ image:hana-sc-generic-image-028.png["largura=601, altura=138"]
 
 
 
+[[snapshot-backups-with-ontap-systems-and-fsx-for-ontap]]
 === Backups de snapshots com sistemas ONTAP e FSx para ONTAP
 
 As políticas de backup de snapshots para o sistema ONTAP ou FSx para ONTAP podem combinar um snapshot local com operações de replicação ou bloqueio de snapshot (snapshot à prova de adulteração). Este exemplo mostra uma política com replicação para um armazenamento secundário usando o SnapVault.
@@ -263,6 +272,7 @@ image:hana-sc-generic-image-032.png["largura=385, altura=119"]
 
 
 
+[[snapshot-backups-with-azure-netapp-files]]
 === Backups de instantâneos com o Azure NetApp Files
 
 As políticas de backup de snapshots para o Azure NetApp Files podem combinar um snapshot local com um backup do ANF, que replica os dados do snapshot para o blob do Azure. Este exemplo mostra uma política usada para replicação com backup ANF.
@@ -292,6 +302,7 @@ image:hana-sc-generic-image-036.png["largura=376, altura=138"]
 
 
 
+[[block-integrity-check-operations-for-all-platforms]]
 === Operações de verificação de integridade de blocos para todas as plataformas
 
 
@@ -328,6 +339,7 @@ image:hana-sc-generic-image-040.png["largura=366, altura=101"]
 
 
 
+[[policy-configuration-when-using-snapmirror-active-sync]]
 === Configuração de políticas ao usar o SnapMirror ActiveSync.
 
 As etapas específicas de configuração da política são descritas no documento. https://docs.netapp.com/us-en/netapp-solutions-sap/backup/hana-sc-vmware-smas-sc-config.html#policy-configuration["Configuração de política SnapMirror ActiveSync"].

@@ -18,6 +18,7 @@ A integração de uma estrutura de automação moderna, como o Ansible, aos work
 
 
 
+[[where-to-find-additional-information]]
 == Onde encontrar informações adicionais
 
 Para saber mais sobre as informações descritas neste documento, consulte os seguintes documentos e/ou sites:
@@ -70,6 +71,7 @@ https://www.netapp.com/support-and-training/documentation/["https://www.netapp.c
 
 
 
+[[version-history]]
 == Histórico de versões
 
 |===

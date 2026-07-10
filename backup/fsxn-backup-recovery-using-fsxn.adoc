@@ -28,6 +28,7 @@ O SnapVault oferece vantagens significativas em comparação com os backups trad
 
 
 
+[[runtime-of-snapshot-backup-and-restore-operations]]
 == Tempo de execução das operações de backup e restauração do Snapshot
 
 A figura a seguir mostra o HANA Studio de um cliente usando operações de backup Snapshot. A imagem mostra que o backup do banco de DADOS HANA (de tamanho aproximado de 4TB TB) é feito em 1 minuto e 20 segundos usando a tecnologia de backup Snapshot e mais de 4 horas com uma operação de backup baseada em arquivo.
@@ -38,12 +39,14 @@ image:amazon-fsx-image1.png["Figura que mostra a caixa de diálogo de entrada/sa
 
 
 
+[[recovery-time-objective-comparison]]
 == Comparação do objetivo de tempo de recuperação
 
 Esta seção fornece uma comparação entre o objetivo de tempo de recuperação (rto) de backups Snapshot baseados em arquivo e baseados em storage. O rto é definido pela soma do tempo necessário para restaurar, recuperar e, em seguida, iniciar o banco de dados.
 
 
 
+[[time-needed-to-restore-database]]
 === Tempo necessário para restaurar o banco de dados
 
 Com um backup baseado em arquivo, o tempo de restauração depende do tamanho do banco de dados e da infraestrutura de backup, que define a velocidade de restauração em megabytes por segundo. Por exemplo, se a infraestrutura oferecer suporte a uma operação de restauração a uma velocidade de 250MBps Gbps, levará aproximadamente 4,5 horas para restaurar um banco de dados de tamanho 4TB na persistência.
@@ -52,12 +55,14 @@ Com os backups de cópia Snapshot do storage, o tempo de restauração é indepe
 
 
 
+[[time-needed-to-start-database]]
 === Tempo necessário para iniciar o banco de dados
 
 A hora de início do banco de dados depende do tamanho do banco de dados e do tempo necessário para carregar os dados na memória. Nos exemplos a seguir, presume-se que os dados podem ser carregados com 1000Mbps. Carregar 4TB GB na memória demora cerca de 1hour e 10 minutos. O horário de início é o mesmo para operações de restauração e recuperação baseadas em Snapshot e arquivo.
 
 
 
+[[time-needed-to-recover-database]]
 === Tempo necessário para recuperar o banco de dados
 
 O tempo de recuperação depende do número de logs que devem ser aplicados após a restauração. Este número é determinado pela frequência em que os backups de dados são feitos.
@@ -76,6 +81,7 @@ image:amazon-fsx-image2.png["Figura que mostra a caixa de diálogo de entrada/sa
 
 
 
+[[use-cases-and-values-of-accelerated-backup-and-cloning-operations]]
 == Casos de uso e valores de operações de clonagem e backup acelerados
 
 A execução de backups é uma parte essencial de qualquer estratégia de proteção de dados. Os backups são programados regularmente para garantir que você possa se recuperar de falhas do sistema. Esse é o caso de uso mais óbvio, mas também há outras tarefas de gerenciamento de ciclo de vida do SAP, onde acelerar as operações de backup e recuperação é crucial.

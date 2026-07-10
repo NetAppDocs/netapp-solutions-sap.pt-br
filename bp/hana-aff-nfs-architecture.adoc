@@ -40,6 +40,7 @@ image:saphana_aff_nfs_image4b.png["Par de HA adicional adicionado"]
 
 
 
+[[sap-hana-backup]]
 == Backup de SAP HANA
 
 O software ONTAP presente em todas as controladoras de storage NetApp fornece um mecanismo incorporado para fazer backup de bancos de dados SAP HANA em operação sem afetar a performance. Os backups de Snapshot do NetApp baseados em storage são uma solução de backup totalmente compatível e integrada, disponível para contêineres únicos SAP HANA e para sistemas SAP HANA multitenant Database Containers (MDC) com um único locatário ou vários locatários.
@@ -65,6 +66,7 @@ NOTE: Para obter informações detalhadas sobre a solução de backup e recupera
 
 
 
+[[sap-hana-disaster-recovery]]
 == Recuperação de desastres do SAP HANA
 
 A recuperação de desastres (DR) do SAP HANA pode ser feita na camada de banco de dados usando a replicação do sistema SAP HANA ou na camada de storage usando tecnologias de replicação de storage. A seção a seguir fornece uma visão geral das soluções de recuperação de desastres com base na replicação de storage.
@@ -73,6 +75,7 @@ Para obter informações detalhadas sobre as soluções de recuperação de desa
 
 
 
+[[storage-replication-based-on-snapmirror]]
 === Replicação de storage baseada no SnapMirror
 
 A figura a seguir mostra uma solução de recuperação de desastres em três locais usando replicação síncrona de SnapMirror para o data center de DR local e SnapMirror assíncrono para replicar os dados para o data center de DR remoto.
@@ -93,6 +96,7 @@ A replicação síncrona oferece o modo StrictSync. Se a gravação no storage s
 
 
 
+[[storage-replication-based-on-metrocluster]]
 === Replicação de storage baseada no MetroCluster
 
 A figura a seguir mostra uma visão geral de alto nível da solução. O cluster de storage em cada local fornece alta disponibilidade local e é usado para o workload de produção. Os dados de cada local são replicados em sincronia para o outro local e estão disponíveis em caso de failover de desastres.

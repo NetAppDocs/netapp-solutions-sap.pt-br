@@ -24,6 +24,7 @@ Autor: Nils Bauer, NetApp
 
 
 
+[[scope-of-this-document]]
 == Âmbito deste documento
 
 O documento não se destina a ser uma descrição passo a passo de como configurar o ambiente completo, mas abrange conceitos e detalhes relevantes relacionados com:

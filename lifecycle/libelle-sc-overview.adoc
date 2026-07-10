@@ -32,24 +32,28 @@ Embora essas soluções da NetApp resolvam o problema de gerenciar com eficiênc
 
 
 
+[[application-integrated-snapshot-copy-operation]]
 == Operação de cópia Snapshot integrada à aplicação
 
 A capacidade de criar cópias NetApp Snapshot consistentes com aplicações na camada de storage é a base para as operações de cópia do sistema e clone de sistema descritas neste documento. As cópias Snapshot baseadas em storage são criadas com o plug-in NetApp SnapCenter para SAP HANA ou SAP qualquer DBS em sistemas NetApp ONTAP nativos ou usando https://docs.microsoft.com/en-us/azure/azure-netapp-files/azacsnap-introduction["Ferramenta Snapshot consistente de aplicativos Microsoft Azure"^] (AzAcSnap) e interfaces fornecidas pelo banco de dados SAP HANA e Oracle executados no Microsoft Azure. Ao usar o SAP HANA, o SnapCenter e o AzAcSnap Registram cópias Snapshot no catálogo de backup do SAP HANA, para que os backups possam ser usados para restauração e recuperação, bem como para operações de clonagem.
 
 
 
+[[off-site-backup-andor-disaster-recovery-data-replication]]
 == Backup externo e/ou replicação de dados de recuperação de desastres
 
 As cópias Snapshot consistentes com aplicações podem ser replicadas na camada de storage para um local de backup externo ou um local de recuperação de desastre controlado pelo SnapCenter no local. A replicação é baseada em alterações de bloco e, portanto, é eficiente em espaço e largura de banda. A mesma tecnologia está disponível para sistemas SAP HANA e Oracle executados no Azure com Azure NetApp Files usando o recurso replicação entre regiões (CRR) para replicar com eficiência volumes Azure NetApp Files entre regiões do Azure.
 
 
 
+[[use-any-snapshot-copy-for-sap-system-copy-or-clone-operations]]
 == Use qualquer cópia Snapshot para operações de clone ou cópia de sistema SAP
 
 A integração de software e tecnologia NetApp permite que você use qualquer cópia Snapshot de um sistema de origem para uma operação de clone ou cópia do sistema SAP. Essa cópia Snapshot pode ser selecionada no mesmo storage usado nos sistemas de produção SAP, no storage usado para backups externos (como backup Azure NetApp Files no Azure) ou no local de recuperação de desastres (volumes de destino do Azure NetApp Files CRR). Essa flexibilidade permite separar os sistemas de desenvolvimento e teste da produção, se necessário, e abrange outros cenários, como o teste da recuperação de desastres no local de recuperação de desastres.
 
 
 
+[[automation-with-integration]]
 == Automação com integração
 
 Existem vários cenários e casos de uso para o provisionamento de sistemas de teste SAP, e você também pode ter requisitos diferentes para o nível de automação. Os produtos de software da NetApp integram-se a produtos de gerenciamento de ciclo de vida e banco de dados da SAP e de outros fornecedores terceirizados (por exemplo, Libelle) para dar suporte a diferentes cenários e níveis de automação.
@@ -60,6 +64,7 @@ Um provisionamento ou atualização completos e totalmente automatizado de siste
 
 
 
+[[libelle-systemcopy]]
 == Libelle SystemCopy
 
 Libelle SystemCopy é uma solução de software baseada em estrutura para criar cópias de sistema e paisagem totalmente automatizadas. Com o toque proverbial de um botão, os sistemas de teste e QA podem ser atualizados com novos dados de produção. O Libelle SystemCopy oferece suporte a todos os bancos de dados e sistemas operacionais convencionais, fornece seus próprios mecanismos de cópia para todas as plataformas, mas, ao mesmo tempo, integra procedimentos de backup/restauração ou ferramentas de armazenamento, como cópias Snapshot do NetApp e volumes NetApp FlexClone. As atividades necessárias durante uma cópia do sistema são controladas de fora da pilha SAP ABAP. Desta forma, não são necessários transportes ou outras alterações nas aplicações SAP. Geralmente, todas as etapas necessárias para concluir com êxito um procedimento de cópia do sistema podem ser categorizadas em quatro etapas:
@@ -76,6 +81,7 @@ Para as fases Check, Pre e Post, o LSC vem com mais de 450 tarefas pré-configur
 
 
 
+[[use-cases-for-sap-system-refresh-and-cloning]]
 == Casos de uso para atualização e clonagem do sistema SAP
 
 Existem vários cenários em que os dados de um sistema de origem devem ser disponibilizados para um sistema de destino:

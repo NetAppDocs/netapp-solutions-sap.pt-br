@@ -24,6 +24,7 @@ Autor: Nils Bauer, NetApp
 
 
 
+[[introduction]]
 == Introdução
 
 As demandas dinâmicas do mercado também afetam os ambientes SAP de uma empresa, de modo que eles exigem integrações, mudanças e atualizações regulares. Os departamentos DE TI devem implementar essas mudanças com menos recursos e em períodos de tempo mais curtos. Minimizar o risco ao implantar essas alterações requer testes e treinamento completos que exigem sistemas SAP adicionais com dados reais da produção.
@@ -36,18 +37,21 @@ image:sc-copy-clone-image1.png["Figura que mostra a caixa de diálogo de entrada
 
 
 
+[[application-integrated-snapshot-backup-operations]]
 === *Operações de backup Snapshot integradas ao aplicativo*
 
 A capacidade de criar backups Snapshot consistentes com aplicações na camada de storage é a base para as operações de cópia do sistema e clone de sistema descritas neste documento. Os backups Snapshot baseados em storage são criados com o plug-in NetApp SnapCenter para SAP HANA e as interfaces fornecidas pelo banco de dados SAP HANA. O SnapCenter Registra os backups de Snapshot no catálogo de backup do SAP HANA para que os backups possam ser usados para restauração e recuperação, bem como para operações de clonagem.
 
 
 
+[[off-site-backup-andor-disaster-recovery-data-replication]]
 === *Replicação de dados de backup e/ou recuperação de desastres fora do local*
 
 Os backups Snapshot consistentes com aplicações podem ser replicados na camada de storage para um local de backup externo ou um local de recuperação de desastres controlado pela SnapCenter. A replicação é baseada em blocos novos e alterados, portanto, é eficiente em espaço e largura de banda.
 
 
 
+[[use-any-snapshot-backup-for-sap-system-copy-or-clone-operations]]
 === *Use qualquer backup Snapshot para operações de cópia ou clone do sistema SAP*
 
 A integração de software e tecnologia NetApp permite que você use qualquer backup instantâneo de um sistema de origem para uma operação de cópia ou clone do sistema SAP. Esse backup Snapshot pode ser selecionado no mesmo storage usado nos sistemas de produção SAP, no storage usado para backups externos ou no storage no local de recuperação de desastres. Essa flexibilidade permite separar os sistemas de desenvolvimento e teste da produção, se necessário, e abrange outros cenários, como o teste da recuperação de desastres no local de recuperação de desastres.
@@ -57,6 +61,7 @@ NOTE: A clonagem a partir do backup externo ou armazenamento de recuperação de
 
 
 
+[[automation-with-integration]]
 === *Automação com integração*
 
 Existem vários cenários e casos de uso para o provisionamento de sistemas de teste SAP, e você também pode ter requisitos diferentes para o nível de automação. Os produtos de software da NetApp integram-se a produtos de gerenciamento de ciclo de vida e banco de dados da SAP para dar suporte a diferentes cenários e níveis de automação.

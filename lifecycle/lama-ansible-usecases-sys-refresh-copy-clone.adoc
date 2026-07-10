@@ -26,6 +26,7 @@ image:lama-ansible-image3.png["Essa imagem mostra uma comparação entre o proce
 
 
 
+[[address-logical-corruption]]
 == Solucione a corrupção lógica
 
 A corrupção lógica pode ser causada por erros de software, erros humanos ou sabotagem. Infelizmente, a corrupção lógica muitas vezes não pode ser tratada com soluções padrão de alta disponibilidade e recuperação de desastres. Como resultado, dependendo da camada, aplicativo, sistema de arquivos ou armazenamento em que ocorreu a corrupção lógica, o tempo de inatividade mínimo e os requisitos de perda de dados aceitáveis às vezes não podem ser atendidos.
@@ -40,6 +41,7 @@ image:lama-ansible-image4.png["Esta imagem mostra o processo passo a passo para 
 
 
 
+[[disaster-recovery-testing]]
 == Teste de recuperação de desastres
 
 Uma estratégia eficaz de recuperação de desastres requer o teste do fluxo de trabalho necessário. Testes demonstram se a estratégia funciona e se a documentação interna é suficiente. Ele também permite que os administradores treinem sobre os procedimentos necessários.

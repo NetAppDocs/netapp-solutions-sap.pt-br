@@ -18,12 +18,14 @@ Esta seção descreve a configuração do sistema de storage NetApp. Você deve 
 
 
 
+[[storage-efficiency]]
 == Eficiência de storage
 
 A deduplicação in-line, a deduplicação in-line entre volumes, a compressão e a compactação in-line são compatíveis com SAP HANA em uma configuração SSD.
 
 
 
+[[ontap-autonomous-ransomware-protection]]
 == Proteção autônoma contra ransomware ONTAP
 
 Os snapshots criados pela ONTAP Autonomous Ransomware Protection não podem ser usados para recuperação futura do banco de dados SAP HANA. Portanto, não é recomendável usá-los para volumes de dados e logs do SAP HANA e deve ser desativado para esses volumes. Use a proteção de dados baseada em SnapCenter com snapshots à prova de adulteração para proteção contra ransomware: link:../backup/hana-sc-generic-scope.html["Backup e recuperação do SAP HANA com o SnapCenter"]. ONTAP Autonomous Ransomware Protection pode ser benéfico para outros volumes, como /hana/shared.
@@ -32,18 +34,21 @@ Os snapshots criados pela ONTAP Autonomous Ransomware Protection não podem ser 
 
 
 
+[[quality-of-service]]
 == Qualidade do serviço
 
 O QoS pode ser usado para limitar a taxa de transferência de storage para sistemas SAP HANA específicos ou aplicações que não sejam SAP em um controlador compartilhado.
 
 
 
+[[production-and-devtest]]
 === Produção e desenvolvimento/teste
 
 Um caso de uso seria limitar o rendimento dos sistemas de desenvolvimento e teste para que eles não possam influenciar os sistemas de produção em uma configuração mista. Durante o processo de dimensionamento, você deve determinar os requisitos de desempenho de um sistema que não seja de produção. Os sistemas de desenvolvimento e teste podem ser dimensionados com valores de desempenho mais baixos, normalmente na faixa de 20% a 50% de um KPI do sistema de produção conforme definido pelo SAP. A e/S de gravação grande tem o maior efeito de desempenho no sistema de storage. Portanto, o limite de taxa de transferência de QoS deve ser definido para uma porcentagem dos valores de KPI de performance de storage SAP HANA de gravação correspondentes nos volumes de dados e log.
 
 
 
+[[shared-environments]]
 === Ambientes compartilhados
 
 Outro caso de uso é limitar a taxa de transferência de cargas de trabalho de gravação pesadas, especialmente para evitar que essas cargas de trabalho tenham impacto em outras cargas de trabalho de gravação sensíveis à latência. Nesses ambientes, é prática recomendada aplicar uma política de grupo de QoS de teto de taxa de transferência não compartilhada a cada LUN em cada máquina virtual de storage (SVM) para restringir a taxa de transferência máxima de cada objeto de storage individual ao valor especificado. Isso reduz a possibilidade de que um único workload possa influenciar negativamente outros workloads.
@@ -70,6 +75,7 @@ NOTE: O limite também se aplica a leituras. Portanto, use LUNs suficientes para
 
 
 
+[[configure-storage]]
 == Configurar o armazenamento
 
 A visão geral a seguir resume as etapas de configuração de armazenamento necessárias. Cada passo é abordado com mais detalhes nas seções subsequentes. Nesta seção, assumimos que o hardware de armazenamento está configurado e que o software ONTAP já está instalado. Além disso, a conexão das portas de storage FCP à malha SAN já precisa estar em vigor.
@@ -81,6 +87,7 @@ A visão geral a seguir resume as etapas de configuração de armazenamento nece
 
 
 
+[[nvme-based-disk-shelves]]
 === Prateleiras de disco baseadas em NVMe
 
 Cada compartimento de disco NVMe de NS224 GB é conetado a duas portas de 100GbE GbE por controladora, conforme mostrado na figura a seguir. Os discos são distribuídos automaticamente para ambos os controladores do par HA.
@@ -89,6 +96,7 @@ image:saphana_asa_fc_image11a.png["Conexão com compartimento de disco NVMe de N
 
 
 
+[[initiator-groups]]
 === Grupos de iniciadores
 
 Um grupo de servidores pode ser configurado para cada servidor ou para um grupo de servidores que exigem acesso a um LUN. A configuração do igrupo requer os nomes de portas mundiais (WWPNs) dos servidores.

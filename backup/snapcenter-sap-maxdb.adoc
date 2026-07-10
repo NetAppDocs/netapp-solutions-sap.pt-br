@@ -18,6 +18,7 @@ Este documento descreve as especificidades de integração do SnapCenter para o 
 
 
 
+[[introduction]]
 == Introdução
 
 O documento não se destina a ser uma descrição passo a passo de como configurar o ambiente completo, mas abrange conceitos e detalhes relevantes relacionados com:
@@ -30,6 +31,7 @@ O documento não se destina a ser uma descrição passo a passo de como configur
 
 
 
+[[example-configuration-overview]]
 == Exemplo de visão geral da configuração
 
 Exemplo de implementação para o Plugin SnapCenter MaxDB para um sistema SAP em execução no nosso Centro de demonstração.
@@ -41,12 +43,14 @@ Alternativamente, a estrutura de volume descrita em link:https://techcommunity.m
 
 
 
+[[demo-environment]]
 == Ambiente de demonstração
 
 image:sc-sap-maxdb-image01.png["Figura destacando o ambiente de demonstração que foi usado"]
 
 
 
+[[software-versions]]
 == Versões de software
 
 [cols="50%, 50%"]
@@ -67,6 +71,7 @@ image:sc-sap-maxdb-image01.png["Figura destacando o ambiente de demonstração q
 |===
 
 
+[[maxdb-volume-design]]
 == MaxDB volume Design
 
 O layout de menor volume a seguir deve ser usado para habilitar casos de uso de backup / recuperação e clonar para o banco de dados SAP MaxDB. A configuração de exemplo usa <SID>: M02.
@@ -107,6 +112,7 @@ O layout de menor volume a seguir deve ser usado para habilitar casos de uso de 
 |===
 
 
+[[steps-to-protect-database-m02]]
 == Passos para proteger banco de dados M02
 
 * Verifique a distribuição do ficheiro, de acordo com o esquema da amostra
@@ -118,6 +124,7 @@ O layout de menor volume a seguir deve ser usado para habilitar casos de uso de 
 
 
 
+[[prerequisites-on-host]]
 == Pré-requisitos no Host
 
 Mais informações atuais podem estar disponíveis link:https://docs.netapp.com/us-en/snapcenter/protect-scu/reference_prerequisites_for_adding_hosts_and_installing_snapcenter_plug_ins_package_for_linux.html["aqui"].
@@ -136,6 +143,7 @@ Antes de adicionar um host e instalar o pacote de plug-ins para Linux, você dev
 
 
 
+[[prerequisites-for-the-database-create-backup-templates-enable-logbackup]]
 == Pré-requisitos para o banco de dados – criar modelos de backup, ativar Logbackup
 
 * Criar diretórios para backups de dados e log (/sapdb/M02/backup/data, /sapdb/M02/backup/log – proprietário sdba – permissões 755)
@@ -177,6 +185,7 @@ Antes de adicionar um host e instalar o pacote de plug-ins para Linux, você dev
 
 
 
+[[deploy-snapcenter-agent-to-host-sap-lnx25]]
 == Implante o agente do SnapCenter para hospedar o sap-lnx25HANA
 
 Mais informações podem ser encontradas no link:https://docs.netapp.com/us-en/snapcenter/protect-scu/task_add_hosts_and_install_the_snapcenter_plug_ins_package_for_linux.html["Documentação do SnapCenter"].
@@ -187,6 +196,7 @@ image:sc-sap-maxdb-image02.png["Captura de tela da interface de usuário Adicion
 
 
 
+[[create-snapcenter-resource-configuration-for-database-m02]]
 == Criar Configuração de recursos do SnapCenter para Banco de dados M02
 
 Recursos -> SAP MaxDB -> Adicionar recursos
@@ -246,6 +256,7 @@ image:sc-sap-maxdb-image13.png["Captura de tela da interface do usuário Adicion
 
 
 
+[[sequence-to-recover-system-m02]]
 == Sequência para recuperar o sistema M02
 
 . Pare o SAP System M02 (incluindo banco de dados), pare o sapinit
@@ -262,6 +273,7 @@ image:sc-sap-maxdb-image13.png["Captura de tela da interface do usuário Adicion
 
 
 
+[[recover-instance-m02]]
 == Recuperar instância M02
 
 * Pare o SAP System e o DB M02 no host sap-lnx25HANA
@@ -371,10 +383,12 @@ NOTE: Mais informações sobre a recuperação estão disponíveis no link:https
 
 
 
+[[additional-information-and-version-history]]
 == Informações adicionais e histórico de versões
 
 
 
+[[recorded-demos]]
 === Demos gravadas
 
 As seguintes demonstrações recodificadas estão disponíveis para suportar a documentação.
@@ -385,6 +399,7 @@ video::4b9ca452-d282-44c1-82ab-b2e501188b0f[panopto,width=360]
 video::ecd66443-637f-4e67-90a0-b2e501188acf[panopto,width=360]
 
 
+[[external-documentation]]
 === Documentação externa
 
 Para saber mais sobre as informações descritas neste documento, consulte os seguintes documentos e/ou sites:
@@ -408,6 +423,7 @@ Para saber mais sobre as informações descritas neste documento, consulte os se
 
 
 
+[[version-history]]
 === Histórico de versões
 
 [cols="25%, 25%, 50%"]

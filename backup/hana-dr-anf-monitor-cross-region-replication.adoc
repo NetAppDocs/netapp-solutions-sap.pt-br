@@ -34,6 +34,7 @@ image:saphana-dr-anf_image16.png["Figura que mostra a caixa de diálogo de entra
 
 
 
+[[replicated-snapshot-backups]]
 == Backups de snapshot replicados
 
 Com cada atualização de replicação da origem para o volume de destino, todas as alterações de bloco ocorridas entre a última e a atualização atual são replicadas para o volume de destino. Isso também inclui os snapshots, que foram criados no volume de origem. A captura de tela a seguir mostra os instantâneos disponíveis no volume de destino. Como já discutido, cada um dos snapshots criados pela ferramenta AzAcSnap são imagens consistentes com aplicativos do banco de DADOS HANA que podem ser usadas para executar um ponto de salvamento ou uma recuperação avançada.

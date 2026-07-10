@@ -21,6 +21,7 @@ NOTE: O uso de dois ou mais volumes individuais para o volume de dados está dis
 
 
 
+[[enabling-additional-data-volume-partitions]]
 == Habilitando partições adicionais de volume de dados
 
 . Para ativar partições de volume de dados adicionais, adicione a seguinte entrada ao `global.ini` utilizar o SAP HANA Studio ou Cockpit na configuração SYSTEMDB.
@@ -35,6 +36,7 @@ NOTE: Adicionar o parâmetro manualmente ao `global.ini` arquivo requer a reinic
 
 
 
+[[volume-configuration-for-a-single-host-sap-hana-system]]
 == Configuração de volume para um sistema SAP HANA de um único host
 
 O layout de volumes para um sistema SAP HANA de um único host com várias partições é como o layout de um sistema com uma partição de volume de dados, mas com um volume de dados adicional armazenado em um agregado diferente como o volume de log e o outro volume de dados. A tabela a seguir mostra um exemplo de configuração de um sistema de host único SAP HANA com duas partições de volume de dados.
@@ -66,6 +68,7 @@ Crie o novo volume de dados e monte-o no namespace usando o Gerenciador de siste
 
 
 
+[[volume-configuration-for-multiple-host-sap-hana-system]]
 == Configuração de volume para sistema SAP HANA de vários hosts
 
 O layout de volumes para um sistema SAP HANA de vários hosts com várias partições é como o layout de um sistema com uma partição de volume de dados, mas com um volume de dados adicional armazenado em um agregado diferente como o volume de log e o outro volume de dados. A tabela a seguir mostra um exemplo de configuração de um sistema de vários hosts SAP HANA com duas partições de volume de dados.
@@ -151,6 +154,7 @@ Crie o novo volume de dados e monte-o no namespace usando o Gerenciador de siste
 
 
 
+[[host-configuration]]
 == Configuração de host
 
 Além das tarefas descritas na seçãolink:hana-fas-nfs-host-setup.html[""Configuração do host","], você deve criar os pontos de montagem adicionais e entradas fstab para o(s) novo(s) volume(s) de dados adicionais, e você deve montar os novos volumes.
@@ -205,6 +209,7 @@ NOTE: Use uma interface virtual de armazenamento diferente para se conetar a cad
 
 
 
+[[adding-an-additional-data-volume-partition]]
 == Adicionando uma partição de volume de dados adicional
 
 Execute a seguinte instrução SQL contra o banco de dados do locatário para adicionar uma partição de volume de dados adicional ao banco de dados do locatário. Use o caminho para volume(s) adicional(s):

@@ -35,6 +35,7 @@ As subseções a seguir descrevem o processo de recuperação com e sem recupera
 
 
 
+[[recovery-to-latest-hana-data-volume-backup-savepoint]]
 == Recuperação para o ponto de salvamento mais recente DO backup de volume de DADOS HANA
 
 A recuperação para o mais recente backup savepoint é executada com os seguintes comandos como usuário pr1adm:
@@ -57,6 +58,7 @@ A saída do comando a seguir mostra a execução da recuperação.
 
 
 
+[[system-database-recovery]]
 === Recuperação de banco de dados do sistema
 
 ....
@@ -87,6 +89,7 @@ pr1adm@vm-pr1:/usr/sap/PR1/HDB01>
 ....
 
 
+[[tenant-database-recovery]]
 === Recuperação de banco de dados do locatário
 
 Se uma chave de armazenamento de usuário não tiver sido criada para o usuário pr1adm no sistema de origem, uma chave deve ser criada no sistema de destino. O usuário do banco de dados configurado na chave deve ter Privileges para executar operações de recuperação de locatário.
@@ -109,6 +112,7 @@ O banco de DADOS HANA agora está ativo e o fluxo de trabalho de recuperação d
 
 
 
+[[recovery-with-forward-recovery-using-logcatalog-backups]]
 == Recuperação com recuperação avançada usando backups de log/catálogo
 
 Os backups de log e o catálogo de BACKUP HANA estão sendo replicados a partir do sistema de origem.
@@ -136,6 +140,7 @@ A saída do comando a seguir mostra a execução da recuperação.
 
 
 
+[[system-database-recovery]]
 === Recuperação de banco de dados do sistema
 
 ....
@@ -165,6 +170,7 @@ recoverSys finished successfully: 2021-02-19 16:07:20
 ....
 
 
+[[tenant-database-recovery]]
 === Recuperação de banco de dados do locatário
 
 ....
@@ -182,6 +188,7 @@ O banco de DADOS HANA agora está ativo e o fluxo de trabalho de recuperação d
 
 
 
+[[check-consistency-of-latest-log-backups]]
 == Verifique a consistência dos backups de log mais recentes
 
 Como a replicação do volume de backup de log é realizada independentemente do processo de backup de log executado pelo banco de dados SAP HANA, pode haver arquivos de backup de log abertos e inconsistentes no local de recuperação de desastres. Somente os arquivos de backup de log mais recentes podem ser inconsistentes, e esses arquivos devem ser verificados antes que uma recuperação avançada seja executada no site de recuperação de desastres usando a `hdbbackupcheck` ferramenta.

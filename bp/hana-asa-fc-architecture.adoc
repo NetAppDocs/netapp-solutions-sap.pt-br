@@ -37,6 +37,7 @@ image:saphana_asa_fc_image4a.png["Adição de par de HA de storage adicional"]
 
 
 
+[[sap-hana-backup]]
 == Backup de SAP HANA
 
 O software ONTAP presente em todas as controladoras de storage NetApp fornece um mecanismo incorporado para fazer backup de bancos de dados SAP HANA em operação sem afetar a performance. Os backups de Snapshot baseados em storage NetApp são uma solução de backup totalmente compatível e integrada, disponível para volumes únicos SAP HANA e para sistemas SAP HANA MDC com um único locatário ou vários locatários.
@@ -62,6 +63,7 @@ NOTE: Na criação destes documentos, apenas VMs baseadas em VMware usando VMDKs
 
 
 
+[[sap-hana-disaster-recovery]]
 == Recuperação de desastres do SAP HANA
 
 A recuperação de desastres do SAP HANA pode ser feita na camada de banco de dados usando a replicação do sistema SAP HANA ou na camada de storage usando tecnologias de replicação de storage. A seção a seguir fornece uma visão geral das soluções de recuperação de desastres com base na replicação de storage.
@@ -70,6 +72,7 @@ Para obter informações detalhadas sobre as soluções de recuperação de desa
 
 
 
+[[storage-replication-based-on-snapmirror]]
 === Replicação de storage baseada no SnapMirror
 
 A figura a seguir mostra uma solução de recuperação de desastres em três locais usando a sincronização ativa do SnapMirror para o datacenter de recuperação de desastres local e o SnapMirror assíncrono para replicar os dados para o datacenter de recuperação de desastres remoto. A sincronização ativa do SnapMirror permite que os serviços de negócios continuem operando mesmo em caso de falha total do local, permitindo que os aplicativos realizem failover transparente usando uma cópia secundária (RPO = 0 e RTO = 0). Não há necessidade de intervenção manual ou script personalizado para acionar um failover com a sincronização ativa do SnapMirror. A partir do ONTAP 9.15.1, o SnapMirror active Sync é compatível com uma funcionalidade ativo-ativo simétrica. Ativo-ativo simétrico habilita operações de e/S de leitura e gravação de ambas as cópias de um LUN protegido com replicação síncrona bidirecional, de modo que ambas as cópias LUN possam servir operações de e/S localmente.

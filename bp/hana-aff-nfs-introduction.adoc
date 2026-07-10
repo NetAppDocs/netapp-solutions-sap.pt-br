@@ -72,6 +72,7 @@ NOTE: Consulte as notas relevantes do SAP para diretrizes de configuração do s
 
 
 
+[[sap-hana-tailored-data-center-integration]]
 == Integração personalizada do data center do SAP HANA
 
 Os controladores de storage da NetApp AFF são certificados no programa SAP HANA TDI usando os protocolos NFS (nas) e FC (SAN). Eles podem ser implantados em qualquer um dos cenários atuais do SAP HANA, como SAP Business Suite em HANA, S/4HANAHANA, BW/4HANAHANA ou SAP Business Warehouse no HANA em configurações de host único ou vários hosts. Qualquer servidor certificado para uso com SAP HANA pode ser combinado com as soluções de storage certificadas da NetApp. Veja a figura a seguir para uma visão geral da arquitetura do SAP HANA TDI.
@@ -85,6 +86,7 @@ Para obter mais informações sobre os pré-requisitos e recomendações para si
 
 
 
+[[sap-hana-using-vmware-vsphere]]
 == SAP HANA usando o VMware vSphere
 
 Existem várias opções para conetar o armazenamento a máquinas virtuais (VMs). A opção preferida é conectar os volumes de storage ao NFS diretamente do sistema operacional convidado. Usando essa opção, a configuração de hosts e armazenamento não difere entre hosts físicos e VMs.

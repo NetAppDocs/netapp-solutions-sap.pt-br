@@ -22,6 +22,7 @@ image:amazon-fsx-image8.png["Figura que mostra a caixa de diálogo de entrada/sa
 
 
 
+[[overview-of-configuration-steps]]
 === Visão geral das etapas de configuração
 
 Existem algumas etapas de configuração que você deve executar na camada FSX for ONTAP. Você pode fazer isso com o Gerenciador de nuvem do NetApp ou a linha de comando FSX for ONTAP.

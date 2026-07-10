@@ -18,6 +18,7 @@ Este documento descreve as especificidades de integração do SnapCenter para o 
 
 
 
+[[introduction]]
 == Introdução
 
 O documento não se destina a ser uma descrição passo a passo de como configurar o ambiente completo, mas abrange conceitos e detalhes relevantes relacionados com:
@@ -32,6 +33,7 @@ Autor: Michael Schlosser, NetApp
 
 
 
+[[example-configuration-overview]]
 === Exemplo de visão geral da configuração
 
 Exemplo de implementação para o plug-in SnapCenter ASE para um sistema SAP em execução na Plataforma Azure.
@@ -43,12 +45,14 @@ Alternativamente, a estrutura de volume descrita neste link:https://techcommunit
 
 
 
+[[demo-environment]]
 === Ambiente de demonstração
 
 image:sc-sap-ase-image01.png["Figura destacando o ambiente de demonstração que foi usado"]
 
 
 
+[[software-versions]]
 === Versões de software
 
 [cols="50%, 50%"]
@@ -69,6 +73,7 @@ image:sc-sap-ase-image01.png["Figura destacando o ambiente de demonstração que
 |===
 
 
+[[ase-volume-design]]
 === Design de volume ASE
 
 O layout do menor volume a seguir deve ser usado para habilitar casos de uso de backup/recuperação e clonar para o banco de dados SAP ASE. A configuração de exemplo usa <SID>: A01.
@@ -121,6 +126,7 @@ O layout do menor volume a seguir deve ser usado para habilitar casos de uso de 
 |===
 
 
+[[steps-to-protect-database-a01]]
 === Passos para proteger banco de dados A01
 
 * Verifique a distribuição do ficheiro, de acordo com o esquema da amostra
@@ -132,6 +138,7 @@ O layout do menor volume a seguir deve ser usado para habilitar casos de uso de 
 
 
 
+[[prerequisites-on-host]]
 === Pré-requisitos no Host
 
 Mais informações atuais podem estar disponíveis link:https://docs.netapp.com/us-en/snapcenter/protect-scu/reference_prerequisites_for_adding_hosts_and_installing_snapcenter_plug_ins_package_for_linux.html["aqui"].
@@ -150,6 +157,7 @@ Antes de adicionar um host e instalar o pacote de plug-ins para Linux, você dev
 
 
 
+[[prerequisites-for-the-database-enable-logging-and-backups]]
 === Pré-requisitos para a base de dados – Ativar registo e cópias de segurança
 
 * Criar diretórios para backups e log_archives (/sybase/A01/backups, /sybase/A01/log_archives)
@@ -198,6 +206,7 @@ Antes de adicionar um host e instalar o pacote de plug-ins para Linux, você dev
 
 
 
+[[optional-create-dedicated-database-user]]
 === Opcional – criar usuário de banco de dados dedicado
 
 Para ambientes SAP, o usuário sapsa pode ser usado.
@@ -223,6 +232,7 @@ Para ambientes SAP, o usuário sapsa pode ser usado.
 
 
 
+[[deploy-snapcenter-agent-to-host-vm-a01]]
 === Implante o agente do SnapCenter no host vm-A01
 
 Mais informações podem ser encontradas no link:https://docs.netapp.com/us-en/snapcenter/protect-scu/task_add_hosts_and_install_the_snapcenter_plug_ins_package_for_linux.html["Documentação do SnapCenter"].
@@ -233,6 +243,7 @@ image:sc-sap-ase-image02.png["Captura de tela da caixa de diálogo Adicionar hos
 
 
 
+[[create-snapcenter-instance-resource-configuration-for-database-a01]]
 === Criar configuração de recurso de instância do SnapCenter para banco de dados A01
 
 Recursos -> SAP ASE -> Adicionar recursos
@@ -300,6 +311,7 @@ A tabela a seguir lista os parâmetros do plug-in Sybase, fornece suas configura
 |===
 
 
+[[sequence-to-recover-system-a01]]
 === Sequência para recuperar o sistema A01
 
 . Pare o SAP System A01 (incluindo banco de dados), pare o sapinit
@@ -316,6 +328,7 @@ A tabela a seguir lista os parâmetros do plug-in Sybase, fornece suas configura
 
 
 
+[[recover-instance-a01]]
 === Recuperar instância A01
 
 * Pare o SAP System e o DB A01 no host vm-A01
@@ -398,10 +411,12 @@ image:sc-sap-ase-image11.png["Captura de ecrã do resumo da restauração instan
 
 
 
+[[additional-information-and-version-history]]
 == Informações adicionais e histórico de versões
 
 
 
+[[quiesce-vs-prepare]]
 === Quiesce vs. Prepare
 
 Consulte a documentação no link: Página de ajuda do https://help.sap.com/docs/SAP_ASE/4e870f06a15b4bbeb237cca890000421/d9d3ce996bdd415693cdb17663bfc0e3.html?locale=en-US&version=16.0.2.0[SAP].
@@ -414,6 +429,7 @@ image:sc-sap-ase-image13.png["Captura de tela do comando do banco de dados quies
 
 
 
+[[recorded-demos]]
 === Demos gravadas
 
 As seguintes demonstrações recodificadas estão disponíveis para suportar a documentação.
@@ -424,6 +440,7 @@ video::079554d1-452c-42e5-95f6-b2b900c1fa86[panopto,width=360]
 video::0aba8433-e0d0-4c40-be0a-b2b900c1fb54[panopto,width=360]
 
 
+[[external-documentation]]
 === Documentação externa
 
 Para saber mais sobre as informações descritas neste documento, consulte os seguintes documentos e/ou sites:
@@ -447,6 +464,7 @@ Para saber mais sobre as informações descritas neste documento, consulte os se
 
 
 
+[[version-history]]
 === Histórico de versões
 
 [cols="30%, 30%, 40%"]

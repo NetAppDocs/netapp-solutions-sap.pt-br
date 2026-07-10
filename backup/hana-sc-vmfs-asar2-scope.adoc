@@ -20,6 +20,7 @@ Autor: Nils Bauer, NetApp
 
 
 
+[[scope-of-this-document]]
 == Âmbito deste documento
 
 Ele não serve como um guia passo a passo para configurar todo o ambiente, mas se concentra em detalhes específicos do SnapCenter e do HANA no VMFS, incluindo:

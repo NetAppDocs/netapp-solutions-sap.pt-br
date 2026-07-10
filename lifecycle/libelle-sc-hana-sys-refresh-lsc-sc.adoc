@@ -32,6 +32,7 @@ Para realizar um backup baseado em Snapshot copy automatizado do banco de dados 
 
 
 
+[[overview]]
 == Visão geral
 
 A figura a seguir mostra um fluxo de trabalho típico de alto nível para um ciclo de vida de atualização do sistema SAP com o SnapCenter sem LSC:
@@ -53,6 +54,7 @@ image:libelle-sc-image1.png["Figura que mostra a caixa de diálogo de entrada/sa
 
 
 
+[[prerequisites-and-limitations]]
 == Pré-requisitos e limitações
 
 Os seguintes pré-requisitos devem ser cumpridos:
@@ -96,12 +98,14 @@ Recursos de documentação:
 
 
 
+[[lab-setup]]
 == Configuração do laboratório
 
 Esta seção descreve um exemplo de arquitetura que foi configurado em um data center de demonstração. A configuração foi dividida em uma instalação padrão e uma instalação usando um host de comunicação central.
 
 
 
+[[standard-installation]]
 === Instalação padrão
 
 A figura a seguir mostra uma instalação padrão na qual o agente SnapCenter, juntamente com o plug-in do banco de dados, foi instalado localmente no servidor de origem e no servidor de banco de dados de destino. Na configuração do laboratório, instalamos o plug-in SAP HANA, além disso, o trabalhador LSC também foi instalado no servidor de destino. Para simplificar e reduzir o número de servidores virtuais, instalamos o mestre LSC no servidor SnapCenter. A comunicação entre os diferentes componentes é ilustrada na figura seguinte.
@@ -110,6 +114,7 @@ image:libelle-sc-image7.png["Figura que mostra a caixa de diálogo de entrada/sa
 
 
 
+[[central-communication-host]]
 === Central de comunicação host
 
 A figura a seguir mostra a configuração usando um host de comunicação central. Nessa configuração, o agente SnapCenter junto com o plug-in SAP HANA e o cliente do banco de dados HANA foram instalados em um servidor dedicado. Nesta configuração, usamos o servidor SnapCenter para instalar o host de comunicação central. Além disso, o trabalhador LSC foi novamente instalado no servidor de destino. Para simplificar e reduzir o número de servidores virtuais, decidimos também instalar o mestre LSC no servidor SnapCenter. A comunicação entre os diferentes componentes é ilustrada na figura abaixo.
@@ -118,6 +123,7 @@ image:libelle-sc-image8.png["Figura que mostra a caixa de diálogo de entrada/sa
 
 
 
+[[initial-one-time-preparation-steps-for-libelle-systemcopy]]
 == Etapas iniciais de preparação única para Libelle SystemCopy
 
 Existem três componentes principais de uma instalação LSC:
@@ -144,6 +150,7 @@ Para a integração principal, devemos separar novamente as etapas de configura�
 
 
 
+[[standard-installation]]
 === Instalação padrão
 
 Esta seção descreve as etapas de configuração necessárias ao usar uma instalação padrão onde o agente SnapCenter e o plug-in de banco de dados necessário estão instalados nos sistemas de origem e destino. Ao usar uma instalação padrão, todas as tarefas necessárias para montar o volume do clone e restaurar e recuperar o sistema de destino são realizadas a partir do agente SnapCenter que está sendo executado no sistema de banco de dados de destino no próprio servidor. Isso permite o acesso a todos os detalhes relacionados a clones que estão disponíveis por meio de variáveis ambientais do agente SnapCenter. Portanto, você só precisa criar uma tarefa adicional na fase de cópia do LSC. Essa tarefa realiza o processo de cópia Snapshot no sistema de banco de dados de origem e o processo de clone e restauração e recuperação no sistema de banco de dados de destino. Todas as tarefas relacionadas ao SnapCenter são acionadas usando um script do PowerShell que é inserido na tarefa LSC `NTAP_SYSTEM_CLONE` .
@@ -174,6 +181,7 @@ Não há necessidade de executar o mestre LSC e o satélite LSC no próprio serv
 
 
 
+[[central-communication-host]]
 === Central de comunicação host
 
 Para integração entre LSC e SnapCenter usando um host de comunicação central, os únicos ajustes que devem ser feitos são executados na fase de cópia. A cópia Snapshot e o clone são criados usando o agente SnapCenter no host de comunicação central. Portanto, todos os detalhes sobre os volumes recém-criados estão disponíveis apenas no host de comunicação central e não no servidor de banco de dados de destino. No entanto, esses detalhes são necessários no servidor de banco de dados de destino para montar o volume do clone e realizar a recuperação. Esta é a razão pela qual duas tarefas adicionais são necessárias na fase de cópia. Uma tarefa é executada no host de comunicação central e uma tarefa é executada no servidor de banco de dados de destino. Estas duas tarefas são mostradas na imagem abaixo.
@@ -233,6 +241,7 @@ image:libelle-sc-image20.png["Figura que mostra a caixa de diálogo de entrada/s
 
 
 
+[[sap-hana-system-refresh-operation]]
 == Operação de atualização do sistema SAP HANA
 
 Agora que todas as tarefas de integração necessárias entre o LSC e o NetApp SnapCenter foram executadas, iniciar uma atualização de sistema SAP totalmente automatizada é uma tarefa com um clique.

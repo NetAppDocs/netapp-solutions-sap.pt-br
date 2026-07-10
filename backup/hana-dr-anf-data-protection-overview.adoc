@@ -23,6 +23,7 @@ image:saphana-dr-anf_image2.png["Figura que mostra a caixa de diálogo de entrad
 
 
 
+[[business-application-requirements]]
 == Requisitos de aplicação empresarial
 
 Existem dois indicadores-chave para aplicações empresariais:
@@ -35,6 +36,7 @@ Esses requisitos são definidos pelo tipo de aplicativo usado e pela natureza do
 
 
 
+[[high-availability]]
 == Alta disponibilidade
 
 A infraestrutura para SAP HANA, como máquinas virtuais, rede e storage, precisa ter componentes redundantes para garantir que não haja um único ponto de falha. O MS Azure fornece redundância para os diferentes componentes de infraestrutura.
@@ -45,6 +47,7 @@ Se o tempo de inatividade do aplicativo não for aceitável em caso de falha do 
 
 
 
+[[logical-corruption]]
 == Corrupção lógica
 
 A corrupção lógica pode ser causada por erros de software, erros humanos ou sabotagem. Infelizmente, a corrupção lógica muitas vezes não pode ser tratada com soluções padrão de alta disponibilidade e recuperação de desastres. Como resultado, dependendo da camada, aplicativo, sistema de arquivos ou storage em que ocorreu a corrupção lógica, os requisitos de rto e RPO às vezes não podem ser atendidos.
@@ -58,6 +61,7 @@ NOTE: As etapas necessárias para configurar um sistema de reparo são idêntica
 
 
 
+[[backups]]
 == Backups
 
 Os backups são criados para permitir a restauração e a recuperação de diferentes conjuntos de dados pontuais. Normalmente, esses backups são mantidos por alguns dias a algumas semanas.
@@ -70,6 +74,7 @@ Em contraste, uma solução de backup deve resolver a corrupção lógica, porqu
 
 
 
+[[synchronous-or-asynchronous-data-replication]]
 == Replicação de dados síncrona ou assíncrona
 
 O RPO determina principalmente qual método de replicação de dados você deve usar. Se o RPO precisar ser zero, mesmo quando o storage primário e de backup forem perdidos, os dados precisam ser replicados de forma síncrona. No entanto, existem limitações técnicas para replicação síncrona, como a distância entre duas regiões do Azure. Na maioria dos casos, a replicação síncrona não é apropriada para distâncias maiores que 100km devido à latência e, portanto, essa não é uma opção para replicação de dados entre regiões do Azure.
@@ -78,6 +83,7 @@ Se um RPO maior for aceitável, a replicação assíncrona poderá ser usada em 
 
 
 
+[[hana-system-replication-with-or-without-data-preload]]
 == Replicação do SISTEMA HANA com ou sem pré-carga dos dados
 
 O tempo de inicialização de um banco de dados SAP HANA é muito mais longo do que o dos bancos de dados tradicionais, porque uma grande quantidade de dados precisa ser carregada na memória antes que o banco de dados possa fornecer a performance esperada. Portanto, uma parte significativa do rto é o tempo necessário para iniciar o banco de dados. Com qualquer replicação baseada em storage e com O HANA System Replication sem pré-carga dos dados, o banco de dados SAP HANA precisa ser iniciado em caso de failover para o local de recuperação de desastre.

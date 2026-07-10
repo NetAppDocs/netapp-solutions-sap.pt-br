@@ -18,4 +18,5 @@ Visão geral dos vídeos e demonstrações destacando as melhores práticas de c
 
 
 
+[[sap-configuration-best-practices-videos-and-demos]]
 == Vídeos e demonstrações das melhores práticas de configuração do SAP

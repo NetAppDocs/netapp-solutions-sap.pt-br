@@ -10,6 +10,7 @@ summary: A partir do SAP HANA 1,0 SPS10, a SAP introduziu parâmetros para ajust
 
 
 
+[[io-stack-configuration-for-sap-hana]]
 == Configuração de pilha de e/S para SAP HANA
 
 A partir do SAP HANA 1,0 SPS10, a SAP introduziu parâmetros para ajustar o comportamento de e/S e otimizar o banco de dados para o sistema de arquivos e storage usado.

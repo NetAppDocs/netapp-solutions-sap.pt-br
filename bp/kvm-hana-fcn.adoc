@@ -57,6 +57,7 @@ As portas físicas são repassadas para a máquina virtual, portanto, nenhuma pr
 
 
 
+[[whats-next]]
 == O que vem a seguir?
 
 Depois de configurar a rede Fibre Channel,link:kvm-hana-storage.html["Configurar o armazenamento NetApp para SAP HANA"] .

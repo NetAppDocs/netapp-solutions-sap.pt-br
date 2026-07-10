@@ -10,6 +10,7 @@ summary: A documentação também contém informações sobre configurações mu
 
 
 
+[[single-host-setup]]
 == Configuração de host único
 
 [role="lead"]
@@ -17,6 +18,7 @@ Este capítulo descreve a configuração de um host único SAP HANA usando Linux
 
 
 
+[[lun-configuration-for-sap-hana-single-host-systems]]
 == Configuração de LUN para sistemas de host único SAP HANA
 
 No host SAP HANA, grupos de volume e volumes lógicos precisam ser criados e montados, como indicado na tabela a seguir.
@@ -41,6 +43,7 @@ NOTE: Se o serviço SAP Local Secure Store (LSS) for utilizado, o  `/lss/shared/
 
 
 
+[[create-lvm-volume-groups-and-logical-volumes]]
 === Crie grupos de volumes LVM e volumes lógicos
 
 . Inicialize todos os LUNs como um volume físico.
@@ -82,6 +85,7 @@ vgchange -a y
 ....
 
 
+[[create-file-systems]]
 === Criar sistemas de arquivos
 
 Crie o sistema de arquivos XFS em todos os volumes lógicos de dados e log e no LUN compartilhado hana.
@@ -93,6 +97,7 @@ mkfs.xfs /dev/mapper/svm1-FC5_shared
 ....
 
 
+[[create-mount-points]]
 === Crie pontos de montagem
 
 Crie os diretórios de ponto de montagem necessários e defina as permissões no host do banco de dados:
@@ -107,6 +112,7 @@ sapcc-hana-tst:/ # chmod 777 /hana/shared
 ....
 
 
+[[mount-file-systems]]
 === Montar sistemas de arquivos
 
 Para montar sistemas de arquivos durante a inicialização do sistema usando o  `/etc/fstab` arquivo de configuração, adicione os sistemas de arquivos necessários ao  `/etc/fstab` arquivo de configuração:

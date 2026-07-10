@@ -24,6 +24,7 @@ O backup em volume que não é de dados da SnapCenter permite que cópias Snapsh
 
 
 
+[[configure-non-data-volume-resources]]
 === Configurar recursos de volume que não sejam de dados
 
 Siga estas etapas para configurar recursos de volume que não sejam de dados:

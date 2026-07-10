@@ -18,6 +18,7 @@ Este documento se concentra na integração das tecnologias NetApp e FlexClone e
 
 
 
+[[solution-overview]]
 == Visão geral da solução
 
 As operações de sistemas e soluções SAP são muito complexas. No entanto, para as empresas que usam SAP, os sistemas e serviços são centrais para seus processos de negócios. Ao automatizar tarefas operacionais diárias recorrentes, como operações de cópia e atualização do sistema, os administradores de sistemas SAP podem gerenciar mais sistemas com menos esforço, produzir resultados repetíveis e reduzir erros humanos.
@@ -32,12 +33,14 @@ Este documento descreve como O ALPACA se integra ao NetApp SnapCenter, a ferrame
 
 
 
+[[target-audience]]
 === Público-alvo
 
 Este documento destina-se a administradores de sistemas SAP que realizaram cópias do sistema SAP manualmente e que gostariam de automatizar esta atividade com ALPACA. O objetivo pretendido de combinar as tecnologias NetApp Snapshot e FlexClone, orquestradas pela NetApp SnapCenter, com fluxos de trabalho ALPACA é reduzir a duração de cópias do sistema SAP totalmente automatizadas.
 
 
 
+[[sap-system-clone-copy-and-refresh-scenarios]]
 === Cenários de clone, cópia e atualização do sistema SAP
 
 O termo cópia do sistema SAP é frequentemente usado como sinônimo de três processos diferentes: Clone do sistema SAP, cópia do sistema SAP e atualização do sistema SAP. É importante distinguir entre essas operações, porque os fluxos de trabalho e os casos de uso diferem.
@@ -61,6 +64,7 @@ Embora esses sejam três casos de uso diferentes, o processo de gerenciamento de
 
 
 
+[[solution-technology]]
 === Tecnologia da solução
 
 A solução global consiste nestes componentes principais:
@@ -90,6 +94,7 @@ image:sap-alpaca-image5.png["Imagem que mostra o servidor ALPACA, o servidor Net
 
 
 
+[[use-case-summary]]
 === Resumo do caso de uso
 
 Existem vários cenários em que os dados de um sistema de origem devem ser disponibilizados a um sistema de destino para fins de teste ou treinamento. Esses sistemas de teste e treinamento devem ser atualizados regularmente com dados do sistema de origem para garantir que os testes e treinamentos sejam realizados com o conjunto de dados atual. Essas operações de atualização do sistema consistem em várias tarefas nas camadas de infraestrutura, banco de dados e aplicativos, e podem levar vários dias, dependendo do nível de automação.
@@ -102,12 +107,14 @@ image:sap-alpaca-image6.png["Imagem que mostra possíveis melhorias de eficiênc
 
 
 
+[[integrating-the-technology-components]]
 === Integração dos componentes tecnológicos
 
 A integração real do SnapCenter em um fluxo de trabalho ALPACA consiste em usar scripts shell para acessar a API REST do NetApp SnapCenter. Essa integração baseada em API REST cria uma cópia Snapshot do sistema de origem SAP, cria um volume FlexClone e o monta no sistema de destino SAP. Os administradores de storage e SAP sabem como desenvolver scripts que são acionados pelo SnapCenter e executados pelo agente SnapCenter para automatizar tarefas de operação diárias recorrentes. Essa arquitetura fracamente acoplada, que aciona tarefas do SnapCenter por meio de scripts de shell, permite que eles reutilizem seus procedimentos de automação existentes para alcançar os resultados desejados mais rapidamente usando ALPACA como um mecanismo de fluxo de trabalho para automação de ponta a ponta.
 
 
 
+[[conclusion]]
 == Conclusão
 
 A combinação da tecnologia de gerenciamento de dados ALPACA e NetApp fornece uma solução poderosa que pode reduzir drasticamente o tempo e o esforço necessários para as tarefas mais complexas e demoradas relacionadas à administração do sistema SAP. Esta combinação também pode ajudar a evitar o desvio de configuração que o erro humano pode causar entre os sistemas.
@@ -116,6 +123,7 @@ Como as atualizações do sistema, as cópias, os clones e os testes de recupera
 
 
 
+[[where-to-find-additional-information]]
 == Onde encontrar informações adicionais
 
 Para saber mais sobre as informações contidas neste documento, consulte os seguintes documentos e sites:
@@ -127,6 +135,7 @@ Para saber mais sobre as informações contidas neste documento, consulte os seg
 
 
 
+[[version-history]]
 == Histórico de versões
 
 [cols="25,25,50"]
