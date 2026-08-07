@@ -20,6 +20,6 @@ Para saber mais sobre as informações descritas neste documento, consulte os se
 * link:../lifecycle/sc-copy-clone-introduction.html["Automatizando as operações de clonagem e cópia do sistema SAP HANA com o SnapCenter"]
 * Recuperação de desastres do SAP HANA com replicação de storage
 +
-https://www.netapp.com/pdf.html?item=/media/8584-tr4646pdf.pdf["https://www.netapp.com/us/media/tr-4646.pdf"^]
+https://www.netapp.com/pdf.html?item=/media/8584-tr4646.pdf["https://www.netapp.com/us/media/tr-4646.pdf"^]
 
 

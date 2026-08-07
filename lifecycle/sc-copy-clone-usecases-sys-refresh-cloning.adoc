@@ -59,6 +59,6 @@ Os testes de recuperação de desastres para SnapMirror assíncronos e síncrono
 
 image:sc-copy-clone-image6.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"] Uma descrição detalhada passo a passo pode ser encontrada nos relatórios técnicos
 
-https://www.netapp.com/pdf.html?item=/media/8584-tr4646pdf.pdf["Recuperação de desastres do SAP HANA com replicação de storage"]
+https://www.netapp.com/pdf.html?item=/media/8584-tr4646.pdf["Recuperação de desastres do SAP HANA com replicação de storage"]
 
 link:../backup/hana-dr-anf-data-protection-overview.html["Recuperação de desastres do SAP HANA com o Azure NetApp Files"]
