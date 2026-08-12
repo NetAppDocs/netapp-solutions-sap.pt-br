@@ -19,6 +19,8 @@ indexpage:
     - title: SAP HANA em sistemas NetApp FAS com guia de configuração de protocolo
         Fibre Channel
       url: bp/hana-fas-fc-introduction.html
+    - title: SAP HANA com SUSE KVM e armazenamento NetApp
+      url: "/bp/kvm-hana-introduction.html"
   - title: SAP HANA no local
     links:
     - title: Proteção de dados do SAP HANA com o SnapCenter em execução em servidores
@@ -30,6 +32,9 @@ indexpage:
     - title: Proteção de dados SAP HANA com SnapCenter com sistemas VMware VMFS e
         NetApp ASA
       url: backup/hana-sc-vmfs-asar2-scope.html
+    - title: Proteção de dados SAP HANA com o SnapCenter usando VMware VMFS e SnapMirror
+        active sync no NetApp ASA R2
+      url: "/backup/hana-sc-vmfs-asar2-smas-introduction.html"
     - title: Recuperação de desastres do SAP HANA com replicação de storage
       url: backup/hana-dr-sr-pdf-link.html
     - title: Atualização do sistema SAP HANA com LSC e SnapCenter

@@ -1,0 +1,42 @@
+---
+sidebar: sidebar 
+permalink: backup/hana-sc-vmfs-asar2-smas-sc-br-syscopy.html 
+keywords: SAP HANA, SnapCenter, backup and recovery, system copy 
+summary:  
+---
+= SnapCenter Backup & Recovery e cópia do sistema SAP HANA
+:allow-uri-read: 
+
+
+
+
+[[snapcenter-backup-recovery-and-sap-hana-system-copy]]
+== SnapCenter Backup & Recovery e cópia do sistema SAP HANA
+
+[role="lead"]
+NetApp SnapCenter otimiza tarefas do ciclo de vida do SAP HANA, como backup e recuperação e cópia do sistema SAP HANA, e está integrado ao banco de dados SAP HANA e às ferramentas de gerenciamento de ciclo de vida, combinando proteção de dados eficiente integrada ao aplicativo com o provisionamento flexível de sistemas de teste SAP, conforme mostrado na figura a seguir.
+
+image:hana-sc-vmfs-asar2-smas-image-080.png["Figura que mostra a caixa de diálogo de entrada/saída ou que representa o conteúdo escrito"]
+
+Este capítulo fornece informações sobre onde encontrar informações adicionais sobre SnapCenter Backup & Recovery e operações de Cópia do Sistema SAP HANA.
+
+
+
+[[backup-operations]]
+=== Operações de backup
+
+As operações de backup são executadas da mesma forma que descrito em https://docs.netapp.com/us-en/netapp-solutions-sap/backup/hana-sc-generic-backup-operations.html["Saiba mais sobre operações de backup para snapshots do SAP HANA no SnapCenter."].
+
+
+
+[[restore-and-recovery]]
+=== Restauração e recuperação
+
+As operações de restauração e recuperação são executadas da mesma forma que descrito https://docs.netapp.com/us-en/netapp-solutions-sap/backup/hana-sc-generic-restore.html["Restaure e recupere bancos de dados SAP HANA com o SnapCenter."].
+
+
+
+[[sap-system-refresh]]
+=== Atualização do sistema SAP
+
+Informações mais detalhadas sobre operações de atualização e clonagem do sistema SAP usando o SnapCenter podem ser encontradas em  https://docs.netapp.com/us-en/netapp-solutions-sap/lifecycle/sc-copy-clone-introduction.html["Automatizando as operações de clonagem e cópia do sistema SAP HANA com o SnapCenter"].

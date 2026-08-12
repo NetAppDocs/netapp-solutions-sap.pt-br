@@ -1,0 +1,141 @@
+---
+sidebar: sidebar 
+permalink: backup/hana-sc-vmfs-asar2-smas-introduction.html 
+keywords: SAP HANA, VMware, SnapCenter, backup and recovery, SnapMirror active sync, symmetric active-active, NetApp ASA R2 
+summary:  
+---
+= Proteção de dados SAP HANA com o SnapCenter usando VMware VMFS e SnapMirror active sync no NetApp ASA R2
+:allow-uri-read: 
+
+
+[role="lead"]
+Este documento descreve as melhores práticas para proteção de dados usando o SnapCenter para sistemas HANA executados em VMware com datastores usando VMFS e LUNs armazenados em sistemas NetApp ASAr2 usando SnapMirror active sync em uma configuração ativo-ativo. O documento fornece uma visão geral da arquitetura da solução, das versões de software necessárias e do público-alvo. Também descreve a integração do SnapCenter com SAP HANA e ONTAP para operações de backup e recuperação consistentes com a aplicação.
+
+
+
+[[introduction]]
+== Introdução
+
+O SAP HANA é uma plataforma crítica para os negócios que exige proteção de dados altamente disponível, resiliente e consistente com a aplicação. Para ambientes SAP HANA de produção, a disponibilidade de storage e os recursos de restauração/recuperação devem ser projetados para minimizar o tempo de inatividade, proteger contra falhas e oferecer suporte à recuperação rápida de problemas lógicos ou operacionais.
+
+Este documento descreve a implementação da proteção de dados SAP HANA usando **NetApp SnapCenter**, **NetApp SnapMirror active sync**, e **NetApp ASA storage systems** em um ambiente VMware vSphere. A solução é baseada em uma **arquitetura simétrica ativo-ativo**, onde o armazenamento SAP HANA é replicado de forma síncrona entre dois clusters de armazenamento ONTAP usando SnapMirror active sync. Essa configuração permite o acesso contínuo do host ao armazenamento replicado a partir de ambos os sites e oferece suporte a failover automatizado para cenários de alta disponibilidade.
+
+Este documento aborda a configuração de volumes de armazenamento SAP HANA apresentados como LUNs para hosts VMware ESXi, a criação de datastores VMFS para o sistema SAP HANA e a integração do banco de dados SAP HANA ao SnapCenter para operações de backup e recuperação consistentes com a aplicação.
+
+
+
+[[intended-audience]]
+=== Público-alvo
+
+Este documento destina-se a administradores de storage, administradores VMware, administradores SAP Basis e arquitetos de infraestrutura que são responsáveis por projetar, implantar e proteger ambientes SAP HANA no storage NetApp.
+
+Os leitores devem ter um conhecimento básico de:
+
+* Administração do SAP HANA.
+* Gerenciamento do datastore VMware vSphere e VMFS.
+* O ONTAP System Manager.
+* Conceitos de SAN, como LUNs, iniciadores, WWPNs e mapeamento de host.
+* NetApp SnapMirror, SnapVault e grupos de consistência.
+* NetApp SnapCenter conceitos de backup e recuperação.
+
+
+
+
+[[solution-overview]]
+=== Visão geral da solução
+
+A solução combina as seguintes tecnologias da NetApp e da VMware:
+
+* **NetApp ASA storage systems** para acesso ao storage baseado em SAN.
+* **Grupos de consistência do ONTAP** para gerenciar unidades de storage relacionadas ao SAP HANA como uma única entidade protegida.
+* **SnapMirror active sync** no modo **AutomatedFailOverDuplex** para fornecer replicação síncrona ativo-ativo simétrica.
+* Configuração e instalação do ONTAP Mediator
+* **VMware vSphere e datastores VMFS** para hospedar a máquina virtual SAP HANA e seus discos de dados, logs, compartilhados e de sistema operacional.
+* **NetApp SnapCenter Server, SnapCenter Agent e Plug-in para SAP HANA e VMware vSphere** para criar backups de Snapshot consistentes com a aplicação.
+* **SnapMirror e SnapVault replication** para replicação de backup assíncrona adicional para um sistema secundário.
+
+
+Nessa arquitetura, LUNs dedicadas são criadas para os volumes de dados, logs, compartilhados e sistema operacional do SAP HANA. Essas LUNs são mapeadas para hosts VMware ESXi e usadas para criar datastores VMFS. A máquina virtual SAP HANA então utiliza discos virtuais separados localizados nos datastores correspondentes.
+
+image:hana-sc-vmfs-asar2-smas-image-001.png["imagem"]
+
+As unidades de dados, logs e storage compartilhado do SAP HANA são agrupadas em um grupo de consistência do ONTAP e protegidas com SnapMirror active sync. Isso garante que o layout de storage do SAP HANA seja replicado de forma consistente entre os clusters ONTAP participantes. Opcionalmente, o datastore do sistema operacional também pode ser protegido usando a mesma abordagem.
+
+
+
+[[snapmirror-active-sync-for-sap-hana]]
+=== SnapMirror Active Sync para SAP HANA
+
+SnapMirror active sync (SMas) permite a continuidade dos negócios ao replicar dados de forma síncrona entre dois clusters ONTAP. Em uma configuração ativo-ativo simétrica, ambos os sites de storage podem fornecer acesso ativo aos LUNs replicados. Isso permite que o ambiente VMware e SAP HANA continue operando mesmo se um sistema de storage ou um site ficar indisponível.
+
+Para cargas de trabalho SAP HANA, isso proporciona os seguintes benefícios:
+
+* Replicação síncrona do storage SAP HANA.
+* Proteção consistente de aplicações usando grupos de consistência do ONTAP.
+* Failover automatizado usando o SnapMirror active sync.
+* Caminhos de acesso ativo-ativo para hosts VMware ESXi conectados à SAN.
+* Tempo de recuperação reduzido em caso de falha do sistema de storage ou do local.
+* Gerenciamento simplificado usando o ONTAP System Manager e o SnapCenter.
+
+
+A configuração neste documento usa a política **AutomatedFailOverDuplex** para habilitar o comportamento ativo-ativo da sincronização ativa do SnapMirror.
+
+image:hana-sc-vmfs-asar2-smas-image-002.png["imagem"]
+
+
+
+[[snapcenter-integration]]
+=== SnapCenter Integração
+
+SnapCenter é usado para gerenciar backups consistentes de aplicativos SAP HANA. Após a implantação do sistema SAP HANA, o plug-in SnapCenter para SAP HANA é instalado no host SAP HANA. Um usuário dedicado do banco de dados SAP HANA e uma chave de armazenamento de usuário segura são criados para permitir que o SnapCenter se comunique com o banco de dados SAP HANA.
+
+As políticas de backup do SnapCenter são então configuradas para diferentes requisitos de proteção. Por exemplo, uma política horária pode ser usada para cópias Snapshot locais frequentes e reconhecimento de sincronização ativa do SnapMirror, enquanto uma política diária pode ser usada para atualizar um destino assíncrono do SnapVault ou MirrorAndVault para retenção de backup de longo prazo.
+
+Ao integrar o SnapCenter com SAP HANA e ONTAP, a solução proporciona:
+
+* Backups Snapshot do SAP HANA consistentes com a aplicação.
+* Agendamento de backup baseado em políticas.
+* Gerenciamento de retenção de cópias Snapshot e backups de logs.
+* SnapMirror e SnapVault atualizam a orquestração.
+* Monitoramento e gerenciamento centralizados de backup.
+* Fluxos de trabalho de restauração e recuperação simplificados.
+
+
+image:hana-sc-vmfs-asar2-smas-image-003.png["imagem"]
+
+
+
+[[document-scope]]
+=== Escopo do documento
+
+Este documento fornece um exemplo de configuração passo a passo para as seguintes tarefas:
+
+. Criando LUNs no armazenamento ASA da NetApp.
+. Configurando o acesso do host para hosts VMware ESXi.
+. Criando grupos de consistência do ONTAP.
+. Ativando a sincronização ativa do SnapMirror no modo ativo-ativo.
+. Instalação e configuração do ONTAP Mediator
+. Configurando replicação assíncrona adicional para fins de backup.
+. Criando datastores VMFS do VMware.
+. Implantação de uma máquina virtual SAP HANA.
+. Instalando o sistema operacional e o SAP HANA.
+. Adicionando sistemas de storage ONTAP ao SnapCenter.
+. Criando políticas de backup do SnapCenter.
+. Criando um usuário de banco de dados SAP HANA para o SnapCenter.
+. Configurando a chave do repositório de usuários seguro do SAP HANA.
+. Registrando o sistema SAP HANA no SnapCenter.
+. Agendamento e execução de backups do SAP HANA.
+
+
+Os procedimentos são concebidos como um guia de implementação e devem ser adaptados para corresponder ao ambiente do cliente, aos padrões de nomenclatura, ao projeto de rede, ao layout de storage e aos requisitos de dimensionamento do SAP.
+
+
+
+[[architecture-summary]]
+=== Resumo da arquitetura
+
+Em linhas gerais, a solução consiste em dois clusters NetApp ONTAP usando armazenamento ASA, conectados a hosts VMware ESXi por meio de SAN. O SAP HANA é executado dentro de uma máquina virtual VMware. Datastores separados são usados para o sistema operacional do SAP HANA, volume de dados, volume de logs e volume compartilhado.
+
+As unidades de armazenamento relacionadas ao SAP HANA são protegidas pela sincronização ativa do SnapMirror por meio dos grupos de consistência do ONTAP. Isso garante que os volumes de dados, logs e volumes compartilhados sejam replicados juntos e mantenham a consistência na ordem de gravação. O SnapCenter é então usado para criar backups compatíveis com o SAP HANA e para acionar as operações de Snapshot e replicação necessárias do ONTAP.
+
+Essa combinação oferece uma solução de proteção de dados altamente disponível e operacionalmente eficiente para cargas de trabalho SAP HANA executadas em VMware com o armazenamento ASA da NetApp.

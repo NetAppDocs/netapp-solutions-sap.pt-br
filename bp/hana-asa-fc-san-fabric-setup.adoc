@@ -13,6 +13,7 @@ summary: Cada servidor SAP HANA precisa ter uma conexão de SAN FCP redundante c
 :imagesdir: ../media/
 
 
+[role="lead"]
 Cada servidor SAP HANA precisa ter uma conexão de SAN FCP redundante com um mínimo de largura de banda de 8Gbps Gbps. Para cada host SAP HANA conectado a um controlador de storage, pelo menos 8Gbpsx a largura de banda precisa ser configurada no controlador de storage.
 
 A figura a seguir mostra um exemplo com quatro hosts SAP HANA conectados a duas controladoras de storage. Cada host do SAP HANA tem duas portas FCP conectadas à malha redundante. Na camada de storage, quatro portas FCP são configuradas para fornecer a taxa de transferência necessária para cada host SAP HANA.

@@ -129,6 +129,23 @@ entries:
     url: "/backup/hana-sc-vmfs-asar2sap-refresh.html"
   - title: Informações adicionais e histórico de versões
     url: "/backup/hana-sc-vmfs-asar2-add-info.html"
+- title: Proteção de dados SAP HANA com o SnapCenter usando VMware VMFS e SnapMirror
+    active sync no NetApp ASA R2
+  entries:
+  - title: Introdução
+    url: "/backup/hana-sc-vmfs-asar2-smas-introduction.html"
+  - title: Configurando os sistemas ONTAP ASA R2
+    url: "/backup/hana-sc-vmfs-asar2-smas-config_asar2.html"
+  - title: Configuração do VMware - Criação de datastore e máquina virtual
+    url: "/backup/hana-sc-vmfs-asar2-smas-vmware_config.html"
+  - title: Configuração do SnapCenter
+    url: "/backup/hana-sc-vmfs-asar2-smas-sc_config.html"
+  - title: SnapCenter Backup & Recovery e cópia do sistema SAP HANA
+    url: "/backup/hana-sc-vmfs-asar2-smas-sc-br-syscopy.html"
+  - title: Conclusão
+    url: "/backup/hana-sc-vmfs-asar2-smas-conclusion.html"
+  - title: Informações adicionais
+    url: "/backup/hana-sc-vmfs-asar2-smas-add_info.html"
 - title: Backup e recuperação de replicação do sistema SAP HANA com o SnapCenter
   entries:
   - title: Visão geral do SAP HANA System Replication

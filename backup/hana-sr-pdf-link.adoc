@@ -18,4 +18,4 @@ O TR-4719 descreve como a tecnologia NetApp SnapCenter e o plug-in SAP HANA pode
 
 Nils Bauer, NetApp
 
-link:https://www.netapp.com/pdf.html?item=/media/17030-tr4719pdf.pdf["https://www.netapp.com/pdf.html?item=/media/17030-tr4719pdf.pdf"]
+link:https://www.netapp.com/pdf.html?item=/media/17030-tr4719.pdf["https://www.netapp.com/pdf.html?item=/media/17030-tr4719.pdf"]

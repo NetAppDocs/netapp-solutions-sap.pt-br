@@ -5,14 +5,15 @@ keywords: FCP, fibre channel, fiber channel, configuration,
 summary:  
 ---
 = Arquitetura
-:hardbreaks:
 :allow-uri-read: 
-:nofooter: 
-:icons: font
-:linkattrs: 
-:imagesdir: ../media/
 
 
+
+
+[[architecture]]
+== Arquitetura
+
+[role="lead"]
 Os hosts do SAP HANA são conectados a controladores de storage usando uma infraestrutura FCP redundante e software multipath. Uma infraestrutura de switch FCP redundante é necessária para fornecer conectividade de host para storage SAP HANA tolerante a falhas em caso de falha no switch ou no adaptador de barramento do host (HBA). O zoneamento apropriado deve ser configurado no switch para permitir que todos os hosts HANA alcancem os LUNs necessários nos controladores de storage.
 
 Diferentes modelos da família de produtos do sistema ASA podem ser combinados e combinados na camada de storage para permitir crescimento e diferentes necessidades de desempenho e capacidade. O número máximo de hosts SAP HANA que pode ser anexado ao sistema de storage é definido pelos requisitos de performance do SAP HANA e pelo modelo de controladora NetApp usado. O número de compartimentos de disco necessários só é determinado pelos requisitos de capacidade e performance dos sistemas SAP HANA.

@@ -15,10 +15,17 @@ Saiba o que há de novo em soluções para SAP.
 
 
 
+[[12-august-2026]]
+== 12 de agosto de 2026
+
+Nova solução  https://docs.netapp.com/us-en/netapp-solutions-sap/backup/hana-sc-vmfs-asar2-smas-introduction.html["Proteção de dados SAP HANA com o SnapCenter usando VMware VMFS e SnapMirror active sync no NetApp ASA R2"^]. As melhores práticas para proteção de dados usando o SnapCenter para sistemas HANA executados em VMware com datastores usando VMFS e LUNs armazenados em sistemas NetApp ASAr2 usando o SnapMirror active sync estão descritas neste documento.
+
+
+
 [[05-august-2026]]
 == 05 de agosto de 2026
 
-A nova solução  https://review.docs.netapp.com/us-en/netapp-solutions-sap_hana-sc-bare-metal-asar2/backup/hana-sc-bare-metal-asar2-scope.html["NetApp SnapCenter para SAP HANA em servidores bare metal com NetApp ASA systems"^] fornece as melhores práticas para a proteção de dados do SAP HANA com a NetApp SnapCenter, abrangendo diretrizes de configuração e operação do SnapCenter para proteger sistemas SAP HANA em sistemas ONTAP ASA com servidores bare metal.
+A nova solução  https://docs.netapp.com/us-en/netapp-solutions-sap/backup/hana-sc-bare-metal-asar2-scope.html["NetApp SnapCenter para SAP HANA em servidores bare metal com NetApp ASA systems"^] fornece as melhores práticas para a proteção de dados do SAP HANA com a NetApp SnapCenter, abrangendo diretrizes de configuração e operação do SnapCenter para proteger sistemas SAP HANA em sistemas ONTAP ASA com servidores bare metal.
 
 
 
