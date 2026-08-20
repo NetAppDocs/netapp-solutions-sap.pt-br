@@ -96,6 +96,18 @@ A replicação síncrona oferece o modo StrictSync. Se a gravação no storage s
 
 
 
+==== SnapMirror active sync para NAS
+
+NetApp SnapMirror active sync para NAS com SAP HANA sobre NFSv4.1 é baseado no espelhamento de SVM entre dois clusters ONTAP. Essa arquitetura replica de forma síncrona tanto os dados do NAS quanto a configuração SVM relevante, ajudando a fornecer disponibilidade contínua e proteção de RPO zero para cargas de trabalho SAP HANA de missão crítica.
+
+Ao utilizar a replicação SVM, componentes essenciais do NAS, como volumes, interfaces lógicas, políticas de exportação, configurações de NFS e configurações de acesso, são espelhados no site secundário. Isso reduz a complexidade operacional e permite que o ambiente secundário assuma o controle rapidamente caso o site primário ou o sistema de storage fique indisponível.
+
+O ONTAP Mediator monitora os sistemas ONTAP participantes e auxilia nas decisões de quorum durante cenários de falha. Ele ajuda a prevenir condições de "split-brain" e permite um comportamento de failover controlado. Juntos, o SnapMirror active sync para NAS e o ONTAP Mediator fornecem uma base de storage resiliente para ambientes SAP HANA que exigem alta disponibilidade, replicação síncrona e objetivos de recuperação robustos.
+
+image:saphana_aff_nfs_image6.png["Sincronização ativa do NetApp SnapMirror"]
+
+
+
 [[storage-replication-based-on-metrocluster]]
 === Replicação de storage baseada no MetroCluster
 
