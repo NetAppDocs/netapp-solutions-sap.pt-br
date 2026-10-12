@@ -8,6 +8,9 @@ summary:
 :allow-uri-read: 
 
 
+[role="lead"]
+Encontre links para a documentação relacionada ao SAP HANA, ao SnapCenter e à NetApp e revise o histórico de versões desta solução.
+
 Melhores práticas do HANA:
 
 * https://docs.netapp.com/us-en/netapp-solutions-sap/bp/hana-asa-fc-introduction.html["SAP HANA em sistemas NetApp ASA com protocolo Fibre Channel"].

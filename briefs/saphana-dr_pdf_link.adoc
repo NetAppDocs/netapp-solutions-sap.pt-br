@@ -13,6 +13,9 @@ summary: Este documento se concentra na recuperação de desastres para SAP HANA
 :imagesdir: ../media/
 
 
+[role="lead"]
+Use o portfólio de tecnologias e ferramentas da NetApp para criar ou adaptar planos de recuperação de desastres que mantenham os aplicativos SAP HANA de missão crítica disponíveis.
+
 
 
 [[the-challenge]]

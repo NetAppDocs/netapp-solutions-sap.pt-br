@@ -13,6 +13,9 @@ summary:
 :imagesdir: ../media/
 
 
+[role="lead"]
+Configure o usuário do banco de dados SAP HANA e a chave hdb userstore que o SnapCenter usa para se comunicar com o sistema HANA.
+
 
 
 [[configure-snapcenter-database-user]]
